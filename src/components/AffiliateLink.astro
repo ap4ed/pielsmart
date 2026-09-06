@@ -1,0 +1,70 @@
+---
+/**
+ * AffiliateLink — centralized affiliate link renderer.
+ *
+ * Usage:
+ *   <AffiliateLink productId="foreo-ufo-3" />
+ *   <AffiliateLink productId="foreo-ufo-3" provider="mercadolibre" label="Ver en MercadoLibre" />
+ *
+ * Adding MercadoLibre to a product:
+ *   In products.ts, add: mercadolibre: { url: 'https://...' }
+ *   Then pass provider="mercadolibre" here — no other changes needed.
+ */
+import { getProduct, buildAmazonUrl, type Provider } from '../data/products';
+
+interface Props {
+  productId: string;
+  provider?: Provider;
+  label?: string;
+  class?: string;
+}
+
+const {
+  productId,
+  provider = 'amazon',
+  label,
+  class: className = '',
+} = Astro.props;
+
+const product = getProduct(productId);
+if (!product) throw new Error(`Product not found: ${productId}`);
+
+let href = '';
+let defaultLabel = '';
+
+if (provider === 'amazon') {
+  href = buildAmazonUrl(product.amazon.asin, product.amazon.tag);
+  defaultLabel = `Ver ${product.name} en Amazon`;
+} else if (provider === 'mercadolibre') {
+  if (!product.mercadolibre) throw new Error(`No MercadoLibre URL for product: ${productId}`);
+  href = product.mercadolibre.url;
+  defaultLabel = `Ver ${product.name} en MercadoLibre`;
+}
+
+const linkLabel = label ?? defaultLabel;
+---
+
+<a
+  href={href}
+  target="_blank"
+  rel="nofollow noopener noreferrer sponsored"
+  class={`affiliate-link ${className}`}
+>
+  {linkLabel}
+</a>
+
+<style>
+  .affiliate-link {
+    display: inline-block;
+    background-color: #e07b39;
+    color: #fff;
+    padding: 0.6rem 1.4rem;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s;
+  }
+  .affiliate-link:hover {
+    background-color: #c5612a;
+  }
+</style>

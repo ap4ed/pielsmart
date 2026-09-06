@@ -1,0 +1,176 @@
+---
+/**
+ * Individual review page template.
+ * Each review is a product entry from products.ts.
+ * This is a working template — content is placeholder until real posts are written.
+ */
+import ReviewLayout from '../../layouts/ReviewLayout.astro';
+import AffiliateLink from '../../components/AffiliateLink.astro';
+import ComparisonTable from '../../components/ComparisonTable.astro';
+import { products } from '../../data/products';
+
+export function getStaticPaths() {
+  return products.map((p) => ({
+    params: { categoria: p.categoria, slug: p.id },
+    props: { product: p },
+  }));
+}
+
+const { product } = Astro.props;
+
+// Placeholder review data — replace with real content per post
+const reviewMeta = {
+  ratingValue: 4.5,
+  datePublished: '2026-09-06',
+  priceRange: '$100–$250',
+};
+
+const pros = [
+  'Resultados visibles desde la primera semana',
+  'Fácil de usar en casa',
+  'Diseño premium y materiales de calidad',
+];
+
+const cons = [
+  'Precio elevado vs alternativas básicas',
+  'Requiere uso constante para mantener resultados',
+];
+
+const comparisonRows = [
+  { caracteristica: 'Tecnología', [product.name]: 'LED / Microcorriente' },
+  { caracteristica: 'Tiempo de uso', [product.name]: '10–20 min/día' },
+  { caracteristica: 'Garantía', [product.name]: '1–2 años' },
+  { caracteristica: 'App requerida', [product.name]: 'Opcional' },
+  { caracteristica: 'Precio aprox.', [product.name]: reviewMeta.priceRange },
+];
+---
+
+<ReviewLayout
+  title={`${product.name}: Reseña y análisis completo — PielSmart`}
+  description={`Reseña honesta del ${product.name} de ${product.brand}. Lo probamos en NAZ Beauty Shop. ¿Vale la pena? Aquí nuestra opinión definitiva.`}
+  product={{
+    name: product.name,
+    brand: product.brand,
+    description: `Dispositivo de belleza ${product.brand} para uso en casa.`,
+    ratingValue: reviewMeta.ratingValue,
+    ratingCount: 1,
+  }}
+  datePublished={reviewMeta.datePublished}
+>
+  <div class="review-header">
+    <span class="categoria-badge">{product.categoria.replace(/-/g, ' ')}</span>
+    <h1>{product.name}: Reseña completa</h1>
+    <p class="review-meta">
+      Por PielSmart · Actualizado: {new Date(reviewMeta.datePublished).toLocaleDateString('es-419', { year: 'numeric', month: 'long', day: 'numeric' })}
+    </p>
+    <nav class="breadcrumb" aria-label="Ruta de navegación">
+      <a href="/">Inicio</a> <span>/</span>
+      <a href={`/${product.categoria}/`}>{product.categoria.replace(/-/g, ' ')}</a>
+      <span>/</span> <span>{product.name}</span>
+    </nav>
+  </div>
+
+  <!-- VEREDICTO (lo que el lector quiere ver primero) -->
+  <div class="verdict-box">
+    <h2>Nuestro veredicto</h2>
+    <p>
+      El <strong>{product.name}</strong> es nuestra recomendación principal en esta categoría.
+      Lo probamos extensamente en NAZ Beauty Shop con clientes reales y los resultados hablan solos.
+      Si buscas un dispositivo que realmente cumpla lo que promete, este es.
+    </p>
+    <AffiliateLink productId={product.id} />
+  </div>
+
+  <!-- QUÉ ES -->
+  <h2>¿Qué es el {product.name}?</h2>
+  <p>
+    [Descripción detallada del dispositivo — qué hace, cómo funciona, para qué tipo de piel
+    o problema está diseñado. Escrito en primera persona con experiencia real de NAZ Beauty Shop.]
+  </p>
+
+  <!-- POR QUÉ LO ELEGIMOS -->
+  <h2>Por qué lo elegimos</h2>
+  <p>
+    [Explica los 2-3 criterios clave que este producto cumple mejor que la competencia.
+    Referencia experiencia directa con clientes en NAZ Beauty Shop.]
+  </p>
+
+  <!-- PROS Y CONTRAS -->
+  <div class="pros-cons">
+    <div class="pros">
+      <h3>✅ Pros</h3>
+      <ul>
+        {pros.map((p) => <li>{p}</li>)}
+      </ul>
+    </div>
+    <div class="cons">
+      <h3>❌ Contras</h3>
+      <ul>
+        {cons.map((c) => <li>{c}</li>)}
+      </ul>
+    </div>
+  </div>
+
+  <!-- CÓMO LO EVALUAMOS -->
+  <h2>Cómo lo evaluamos</h2>
+  <p>
+    [Describe el proceso de evaluación — cuánto tiempo lo usaron, en qué condiciones,
+    con qué tipos de piel, qué criterios técnicos revisaron. Esta sección refuerza E-E-A-T.]
+  </p>
+
+  <!-- TABLA COMPARATIVA -->
+  <h2>Especificaciones rápidas</h2>
+  <ComparisonTable
+    products={[product.name]}
+    rows={comparisonRows}
+  />
+
+  <!-- CTA FINAL -->
+  <div class="cta-final">
+    <p>¿Listo para probarlo?</p>
+    <AffiliateLink productId={product.id} label={`Ver ${product.name} en Amazon →`} />
+  </div>
+
+  <!-- DIVULGACIÓN -->
+  <p class="disclosure-note">
+    <em>
+      Como Asociado de Amazon ganamos comisiones por compras elegibles a través de los enlaces en este artículo.
+      Esto no afecta nuestro análisis — probamos los productos independientemente de si generan comisión.
+      <a href="/divulgacion/">Más información sobre nuestra política de afiliados.</a>
+    </em>
+  </p>
+</ReviewLayout>
+
+<style>
+  .breadcrumb {
+    font-size: 0.85rem;
+    color: #6b7280;
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .breadcrumb a { color: #6b7280; text-decoration: none; }
+  .breadcrumb a:hover { color: #e07b39; }
+
+  .cta-final {
+    background: #f9fafb;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    margin: 2rem 0;
+  }
+  .cta-final p {
+    margin: 0 0 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  .disclosure-note {
+    font-size: 0.82rem;
+    color: #9ca3af;
+    border-top: 1px solid #f3f4f6;
+    padding-top: 1rem;
+    margin-top: 2rem;
+  }
+</style>

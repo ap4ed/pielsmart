@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const categorias = [
+  {
+    slug: 'mascarillas-led',
+    nombre: 'Mascarillas LED',
+    descripcion: 'Luz roja, azul e infrarroja para acné, líneas de expresión y luminosidad.',
+    emoji: '💡',
+  },
+  {
+    slug: 'microcorriente',
+    nombre: 'Microcorriente',
+    descripcion: 'Tonificación muscular facial no invasiva. El "gym facial" que funciona.',
+    emoji: '⚡',
+  },
+  {
+    slug: 'microneedling',
+    nombre: 'Microneedling',
+    descripcion: 'Microagujas para estimular colágeno y mejorar textura de la piel.',
+    emoji: '🔬',
+  },
+  {
+    slug: 'limpieza-facial',
+    nombre: 'Limpieza Facial',
+    descripcion: 'Dispositivos de limpieza profunda para poros limpios y piel saludable.',
+    emoji: '✨',
+  },
+];
+---
+
+<BaseLayout
+  title="PielSmart — Reseñas de Dispositivos de Belleza para LATAM"
+  description="Reseñas honestas y comparaciones de los mejores dispositivos de belleza: mascarillas LED, microcorriente, microneedling y más. Probados de verdad en NAZ Beauty Shop."
+>
+  <section class="hero">
+    <h1>Los mejores dispositivos de belleza, probados de verdad.</h1>
+    <p class="hero-sub">
+      Somos NAZ Beauty Shop en Panamá — vendemos y usamos estas marcas a diario
+      (FOREO, MEDICUBE, GESKE, MIXSOON, SHARK). Nuestras reseñas vienen de experiencia real,
+      no de fichas técnicas.
+    </p>
+  </section>
+
+  <section class="categorias">
+    <h2>Explora por categoría</h2>
+    <div class="categoria-grid">
+      {categorias.map(({ slug, nombre, descripcion, emoji }) => (
+        <a href={`/${slug}/`} class="categoria-card">
+          <span class="emoji">{emoji}</span>
+          <h3>{nombre}</h3>
+          <p>{descripcion}</p>
+          <span class="ver-mas">Ver reseñas →</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="por-que">
+    <h2>¿Por qué confiar en PielSmart?</h2>
+    <div class="razones">
+      <div class="razon">
+        <strong>Experiencia real de retail</strong>
+        <p>Operamos NAZ Beauty Shop en Panamá. Compramos, vendemos y probamos estas marcas con clientes reales — no somos un blog que solo lee manuales.</p>
+      </div>
+      <div class="razon">
+        <strong>Picks decisivos, no listas interminables</strong>
+        <p>Por categoría te decimos cuál comprar y por qué. Sin listas de 20 productos que no ayudan a nadie.</p>
+      </div>
+      <div class="razon">
+        <strong>Para LATAM, en español de verdad</strong>
+        <p>Precios en USD (funciona para compradores en toda América Latina vía Amazon US). Español latinoamericano, sin traducciones genéricas.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    text-align: center;
+    padding: 3rem 0 2rem;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    margin-bottom: 1rem;
+  }
+  .hero-sub {
+    font-size: 1.1rem;
+    color: #4b5563;
+    line-height: 1.8;
+  }
+
+  .categorias { margin: 3rem 0; }
+  .categorias h2 { margin-bottom: 1.5rem; }
+
+  .categoria-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1.25rem;
+  }
+  .categoria-card {
+    display: block;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .categoria-card:hover {
+    border-color: #e07b39;
+    box-shadow: 0 4px 12px rgba(224, 123, 57, 0.12);
+  }
+  .categoria-card .emoji { font-size: 2rem; display: block; margin-bottom: 0.75rem; }
+  .categoria-card h3 { margin: 0 0 0.5rem; font-size: 1.1rem; }
+  .categoria-card p { margin: 0 0 1rem; font-size: 0.9rem; color: #4b5563; line-height: 1.6; }
+  .ver-mas { font-size: 0.9rem; font-weight: 600; color: #e07b39; }
+
+  .por-que { margin: 3rem 0; }
+  .por-que h2 { margin-bottom: 1.5rem; }
+  .razones {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+  .razon {
+    background: #f9fafb;
+    border-radius: 8px;
+    padding: 1.25rem;
+  }
+  .razon strong { display: block; margin-bottom: 0.5rem; font-size: 1rem; }
+  .razon p { margin: 0; font-size: 0.9rem; color: #4b5563; line-height: 1.6; }
+</style>

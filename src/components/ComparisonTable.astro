@@ -1,0 +1,66 @@
+---
+interface Row {
+  caracteristica: string;
+  [product: string]: string;
+}
+
+interface Props {
+  products: string[];
+  rows: Row[];
+}
+
+const { products, rows } = Astro.props;
+---
+
+<div class="comparison-wrapper">
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th>Característica</th>
+        {products.map((p) => <th>{p}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((row) => (
+        <tr>
+          <td class="feature">{row.caracteristica}</td>
+          {products.map((p) => <td>{row[p] ?? '—'}</td>)}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .comparison-wrapper {
+    overflow-x: auto;
+    margin: 2rem 0;
+  }
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  .comparison-table th,
+  .comparison-table td {
+    padding: 0.65rem 1rem;
+    border: 1px solid #e5e7eb;
+    text-align: left;
+  }
+  .comparison-table thead th {
+    background: #1a1a2e;
+    color: #fff;
+    font-weight: 600;
+  }
+  .comparison-table thead th:first-child {
+    background: #f3f4f6;
+    color: #374151;
+  }
+  .comparison-table tbody tr:nth-child(even) td {
+    background: #f9fafb;
+  }
+  .comparison-table .feature {
+    font-weight: 600;
+    color: #374151;
+  }
+</style>

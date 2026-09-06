@@ -1,0 +1,128 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getProductsByCategoria } from '../../data/products';
+
+export function getStaticPaths() {
+  return [
+    {
+      params: { categoria: 'mascarillas-led' },
+      props: {
+        nombre: 'Mascarillas LED',
+        descripcion: 'Las mejores mascarillas LED para el rostro: luz roja, azul e infrarroja para tratar acné, líneas de expresión y apagamiento. Comparamos los modelos que realmente funcionan.',
+        intro: 'Las mascarillas LED son uno de los dispositivos de belleza con más evidencia clínica detrás. Usadas en clínicas dermatológicas y ahora disponibles para uso en casa, pueden marcar una diferencia real — si sabes cuál elegir.',
+      },
+    },
+    {
+      params: { categoria: 'microcorriente' },
+      props: {
+        nombre: 'Microcorriente',
+        descripcion: 'Reseñas de los mejores dispositivos de microcorriente facial: tonificación muscular no invasiva para levantar y definir el rostro.',
+        intro: 'La microcorriente imita las señales eléctricas naturales del cuerpo para re-entrenar los músculos faciales. El resultado es un lift visible sin cirugía — pero no todos los dispositivos entregan la misma intensidad ni resultados.',
+      },
+    },
+    {
+      params: { categoria: 'microneedling' },
+      props: {
+        nombre: 'Microneedling',
+        descripcion: 'Los mejores dispositivos de microneedling para casa: estimulación de colágeno, mejora de textura y reducción de poros. Probados y comparados.',
+        intro: 'El microneedling en casa ha mejorado enormemente. Los dispositivos actuales son seguros, precisos y mucho más efectivos que los primeros rollos de aguja. Aquí te decimos cuál vale la pena.',
+      },
+    },
+    {
+      params: { categoria: 'limpieza-facial' },
+      props: {
+        nombre: 'Limpieza Facial',
+        descripcion: 'Reseñas de dispositivos de limpieza facial: ultrasonido, cepillos sónicos y más. Poros limpios, piel más saludable.',
+        intro: 'Una buena limpieza es la base de cualquier rutina de skincare. Los dispositivos correctos limpian más profundo que las manos solas y preparan mejor la piel para absorber activos.',
+      },
+    },
+  ];
+}
+
+const { categoria } = Astro.params;
+const { nombre, descripcion, intro } = Astro.props;
+const productos = getProductsByCategoria(categoria);
+---
+
+<BaseLayout title={`${nombre} — PielSmart`} description={descripcion}>
+  <div class="hub-header">
+    <nav class="breadcrumb" aria-label="Ruta de navegación">
+      <a href="/">Inicio</a> <span>/</span> <span>{nombre}</span>
+    </nav>
+    <h1>{nombre}</h1>
+    <p class="intro">{intro}</p>
+  </div>
+
+  {productos.length > 0 ? (
+    <section class="reviews-list">
+      <h2>Nuestras reseñas</h2>
+      <div class="review-cards">
+        {productos.map((p) => (
+          <a href={`/${categoria}/${p.id}/`} class="review-card">
+            <div class="brand-badge">{p.brand}</div>
+            <h3>{p.name}</h3>
+            <span class="leer-mas">Leer reseña →</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  ) : (
+    <p class="coming-soon">Reseñas próximamente. Estamos probando los dispositivos ahora mismo.</p>
+  )}
+</BaseLayout>
+
+<style>
+  .hub-header { margin-bottom: 2.5rem; }
+  .breadcrumb {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-bottom: 0.75rem;
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+  }
+  .breadcrumb a { color: #6b7280; text-decoration: none; }
+  .breadcrumb a:hover { color: #e07b39; }
+  .hub-header h1 { margin-bottom: 0.75rem; font-size: 2rem; }
+  .intro { font-size: 1.05rem; color: #4b5563; line-height: 1.8; max-width: 720px; margin: 0; }
+
+  .reviews-list h2 { margin-bottom: 1.25rem; }
+  .review-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.25rem;
+  }
+  .review-card {
+    display: block;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .review-card:hover {
+    border-color: #e07b39;
+    box-shadow: 0 4px 12px rgba(224, 123, 57, 0.12);
+  }
+  .brand-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6b7280;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    padding: 0.15rem 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .review-card h3 { margin: 0 0 1rem; font-size: 1.05rem; }
+  .leer-mas { font-size: 0.9rem; font-weight: 600; color: #e07b39; }
+
+  .coming-soon {
+    color: #6b7280;
+    font-style: italic;
+    padding: 2rem 0;
+  }
+</style>

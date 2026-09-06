@@ -1,0 +1,140 @@
+---
+/**
+ * ReviewLayout — wraps individual review pages.
+ * Adds Product + Review schema (schema.org) to <head>.
+ */
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalUrl?: string;
+  product: {
+    name: string;
+    brand: string;
+    image?: string;
+    description: string;
+    ratingValue: number;      // e.g. 4.5
+    ratingCount?: number;     // number of reviews
+    priceRange?: string;      // e.g. "$150–$200"
+  };
+  author?: string;
+  datePublished: string;      // ISO 8601 e.g. "2026-09-06"
+  dateModified?: string;
+}
+
+const {
+  title,
+  description,
+  canonicalUrl,
+  product,
+  author = 'PielSmart',
+  datePublished,
+  dateModified = datePublished,
+} = Astro.props;
+
+const productSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: product.name,
+  brand: { '@type': 'Brand', name: product.brand },
+  description: product.description,
+  ...(product.image ? { image: product.image } : {}),
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: product.ratingValue,
+    reviewCount: product.ratingCount ?? 1,
+    bestRating: 5,
+    worstRating: 1,
+  },
+};
+
+const reviewSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Review',
+  name: title,
+  reviewBody: description,
+  author: { '@type': 'Organization', name: author },
+  datePublished,
+  dateModified,
+  reviewRating: {
+    '@type': 'Rating',
+    ratingValue: product.ratingValue,
+    bestRating: 5,
+    worstRating: 1,
+  },
+  itemReviewed: {
+    '@type': 'Product',
+    name: product.name,
+    brand: { '@type': 'Brand', name: product.brand },
+  },
+};
+---
+
+<BaseLayout title={title} description={description} canonicalUrl={canonicalUrl}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(productSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(reviewSchema)} />
+  </Fragment>
+  <slot />
+</BaseLayout>
+
+<style is:global>
+  .review-header {
+    margin-bottom: 2rem;
+  }
+  .review-header .categoria-badge {
+    display: inline-block;
+    background: #fef3c7;
+    color: #92400e;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+  }
+  .review-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .review-meta {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+  }
+  .verdict-box {
+    border: 2px solid #e07b39;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    background: #fff8f3;
+    margin: 2rem 0;
+  }
+  .verdict-box h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+    color: #e07b39;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+  @media (max-width: 600px) {
+    .pros-cons { grid-template-columns: 1fr; }
+  }
+  .pros-cons .pros,
+  .pros-cons .cons {
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  .pros-cons .pros { background: #f0fdf4; border: 1px solid #bbf7d0; }
+  .pros-cons .cons { background: #fff1f2; border: 1px solid #fecdd3; }
+  .pros-cons h3 { margin: 0 0 0.5rem; font-size: 0.95rem; }
+  .pros-cons ul { margin: 0; padding-left: 1.2rem; }
+  .pros-cons li { margin-bottom: 0.3rem; font-size: 0.9rem; }
+</style>
