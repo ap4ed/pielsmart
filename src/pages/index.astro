@@ -1,56 +1,66 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const categorias = [
+const pillars = [
   {
-    slug: 'mascarillas-led',
-    nombre: 'Mascarillas LED',
-    descripcion: 'Luz roja, azul e infrarroja para acné, líneas de expresión y luminosidad.',
-    emoji: '💡',
+    slug: 'skincare',
+    nombre: 'Skincare',
+    descripcion: 'Retinol, ácido hialurónico, serum, protector solar y más',
+    emoji: '🧴',
   },
   {
-    slug: 'microcorriente',
-    nombre: 'Microcorriente',
-    descripcion: 'Tonificación muscular facial no invasiva. El "gym facial" que funciona.',
-    emoji: '⚡',
+    slug: 'maquillaje',
+    nombre: 'Maquillaje',
+    descripcion: 'Base, labial, mascara, iluminador, bb cream y todo lo que necesitas',
+    emoji: '💄',
   },
   {
-    slug: 'microneedling',
-    nombre: 'Microneedling',
-    descripcion: 'Microagujas para estimular colágeno y mejorar textura de la piel.',
-    emoji: '🔬',
+    slug: 'cabello',
+    nombre: 'Cabello',
+    descripcion: 'Shampoo, planchas, rizadores, tinte y tratamientos capilares',
+    emoji: '💇',
   },
   {
-    slug: 'limpieza-facial',
-    nombre: 'Limpieza Facial',
-    descripcion: 'Dispositivos de limpieza profunda para poros limpios y piel saludable.',
+    slug: 'unas',
+    nombre: 'Uñas',
+    descripcion: 'Diseños de uñas acrílicas, de gel, esmaltes y más tendencias',
+    emoji: '💅',
+  },
+  {
+    slug: 'perfumes',
+    nombre: 'Perfumes',
+    descripcion: 'Los mejores perfumes de mujer y hombre, colonias y fragancias',
+    emoji: '🌸',
+  },
+  {
+    slug: 'dispositivos',
+    nombre: 'Dispositivos',
+    descripcion: 'Aparatos de belleza: mascarillas LED, microcorriente, limpieza facial',
     emoji: '✨',
   },
 ];
 ---
 
 <BaseLayout
-  title="PielSmart — Reseñas de Dispositivos de Belleza para LATAM"
-  description="Reseñas honestas y comparaciones de los mejores dispositivos de belleza: mascarillas LED, microcorriente, microneedling y más. Probados de verdad en NAZ Beauty Shop."
+  title="PielSmart — Tu guía de belleza en español"
+  description="Reseñas, guías y comparativas de skincare, maquillaje, cabello, uñas, perfumes y más — todo en español, con precios en Amazon."
 >
   <section class="hero">
-    <h1>Los mejores dispositivos de belleza, probados de verdad.</h1>
+    <h1>Tu guía de belleza en español</h1>
     <p class="hero-sub">
-      Somos NAZ Beauty Shop en Panamá — vendemos y usamos estas marcas a diario
-      (FOREO, MEDICUBE, GESKE, MIXSOON, SHARK). Nuestras reseñas vienen de experiencia real,
-      no de fichas técnicas.
+      Reseñas, guías y comparativas de skincare, maquillaje, cabello, uñas, perfumes y más — todo en español, con precios en Amazon.
     </p>
   </section>
 
-  <section class="categorias">
+  <section class="pillars">
     <h2>Explora por categoría</h2>
-    <div class="categoria-grid">
-      {categorias.map(({ slug, nombre, descripcion, emoji }) => (
-        <a href={`/${slug}/`} class="categoria-card">
+    <div class="pillar-grid">
+      {pillars.map(({ slug, nombre, descripcion, emoji }) => (
+        <a href={`/${slug}/`} class="pillar-card">
           <span class="emoji">{emoji}</span>
           <h3>{nombre}</h3>
           <p>{descripcion}</p>
-          <span class="ver-mas">Ver reseñas →</span>
+          <span class="ver-mas">Ver artículos →</span>
         </a>
       ))}
     </div>
@@ -92,15 +102,15 @@ const categorias = [
     line-height: 1.8;
   }
 
-  .categorias { margin: 3rem 0; }
-  .categorias h2 { margin-bottom: 1.5rem; }
+  .pillars { margin: 3rem 0; }
+  .pillars h2 { margin-bottom: 1.5rem; }
 
-  .categoria-grid {
+  .pillar-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
     gap: 1.25rem;
   }
-  .categoria-card {
+  .pillar-card {
     display: block;
     border: 1px solid #e5e7eb;
     border-radius: 10px;
@@ -109,13 +119,13 @@ const categorias = [
     color: inherit;
     transition: border-color 0.2s, box-shadow 0.2s;
   }
-  .categoria-card:hover {
+  .pillar-card:hover {
     border-color: #e07b39;
     box-shadow: 0 4px 12px rgba(224, 123, 57, 0.12);
   }
-  .categoria-card .emoji { font-size: 2rem; display: block; margin-bottom: 0.75rem; }
-  .categoria-card h3 { margin: 0 0 0.5rem; font-size: 1.1rem; }
-  .categoria-card p { margin: 0 0 1rem; font-size: 0.9rem; color: #4b5563; line-height: 1.6; }
+  .pillar-card .emoji { font-size: 2rem; display: block; margin-bottom: 0.75rem; }
+  .pillar-card h3 { margin: 0 0 0.5rem; font-size: 1.1rem; }
+  .pillar-card p { margin: 0 0 1rem; font-size: 0.9rem; color: #4b5563; line-height: 1.6; }
   .ver-mas { font-size: 0.9rem; font-weight: 600; color: #e07b39; }
 
   .por-que { margin: 3rem 0; }

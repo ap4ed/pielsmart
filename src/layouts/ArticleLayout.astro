@@ -1,0 +1,209 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  pillar: 'skincare' | 'maquillaje' | 'cabello' | 'unas' | 'perfumes' | 'dispositivos';
+  datePublished: string;
+  dateModified?: string;
+  targetKeyword: string;
+}
+
+const {
+  title,
+  description,
+  pillar,
+  datePublished,
+  dateModified,
+  targetKeyword,
+} = Astro.props;
+
+const pillarNames: Record<string, string> = {
+  skincare: 'Skincare',
+  maquillaje: 'Maquillaje',
+  cabello: 'Cabello',
+  unas: 'Uñas',
+  perfumes: 'Perfumes',
+  dispositivos: 'Dispositivos',
+};
+
+const pillarName = pillarNames[pillar];
+
+function formatDateSpanish(isoDate: string): string {
+  const [year, month, day] = isoDate.split('-').map(Number);
+  const date = new Date(year, month - 1, day);
+  return date.toLocaleDateString('es-419', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+const formattedDate = formatDateSpanish(datePublished);
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  datePublished,
+  dateModified: dateModified ?? datePublished,
+  author: { '@type': 'Organization', name: 'PielSmart' },
+  publisher: {
+    '@type': 'Organization',
+    name: 'PielSmart',
+    url: 'https://pielsmart.com',
+  },
+  keywords: targetKeyword,
+  inLanguage: 'es-419',
+};
+---
+
+<BaseLayout title={title} description={description}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+  </Fragment>
+
+  <article class="article-page">
+    <nav class="breadcrumb" aria-label="Ruta de navegación">
+      <a href="/">Inicio</a>
+      <span>/</span>
+      <a href={`/${pillar}/`}>{pillarName}</a>
+      <span>/</span>
+      <span>{title}</span>
+    </nav>
+
+    <header class="article-header">
+      <h1>{title}</h1>
+      <p class="article-meta">
+        Publicado el <time datetime={datePublished}>{formattedDate}</time>
+        {dateModified && dateModified !== datePublished && (
+          <> · Actualizado el <time datetime={dateModified}>{formatDateSpanish(dateModified)}</time></>
+        )}
+        {' '}· PielSmart
+      </p>
+    </header>
+
+    <div class="article-body">
+      <slot />
+    </div>
+
+    <div class="cta-box">
+      <span class="cta-icon">🛍️</span>
+      <div class="cta-text">
+        <strong>¿Lista para comprar?</strong>
+        <a href="https://www.amazon.com/?tag=pielsmart-20" target="_blank" rel="noopener sponsored">
+          Encuentra los mejores productos en Amazon →
+        </a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .article-page {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .breadcrumb {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-bottom: 1.25rem;
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .breadcrumb a {
+    color: #6b7280;
+    text-decoration: none;
+  }
+  .breadcrumb a:hover {
+    color: #e07b39;
+  }
+  .breadcrumb span:not(:last-child) {
+    color: #9ca3af;
+  }
+
+  .article-header {
+    margin-bottom: 2rem;
+  }
+  .article-header h1 {
+    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+    color: #1a1a2e;
+    margin-bottom: 0.5rem;
+    line-height: 1.25;
+  }
+  .article-meta {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+  }
+
+  .article-body {
+    color: #374151;
+    line-height: 1.8;
+    font-size: 1.05rem;
+  }
+  .article-body h2 {
+    font-size: 1.45rem;
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    color: #1a1a2e;
+  }
+  .article-body h3 {
+    font-size: 1.15rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+    color: #1a1a2e;
+  }
+  .article-body p {
+    margin-bottom: 1.25rem;
+  }
+  .article-body ul,
+  .article-body ol {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
+  .article-body li {
+    margin-bottom: 0.4rem;
+  }
+  .article-body a {
+    color: #e07b39;
+  }
+
+  .cta-box {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #fff8f3;
+    border: 2px solid #e07b39;
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-top: 3rem;
+  }
+  .cta-icon {
+    font-size: 1.75rem;
+    flex-shrink: 0;
+  }
+  .cta-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .cta-text strong {
+    font-size: 1rem;
+    color: #1a1a2e;
+  }
+  .cta-text a {
+    color: #e07b39;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+  }
+  .cta-text a:hover {
+    text-decoration: underline;
+  }
+</style>

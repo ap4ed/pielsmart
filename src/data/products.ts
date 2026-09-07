@@ -79,3 +79,12 @@ export function getProductsByCategoria(categoria: string): Product[] {
 export function buildAmazonUrl(asin: string, tag: string): string {
   return `https://www.amazon.com/dp/${asin}?tag=${tag}`;
 }
+
+export const pillars = [
+  { slug: 'skincare', nombre: 'Skincare', emoji: '🧴' },
+  { slug: 'maquillaje', nombre: 'Maquillaje', emoji: '💄' },
+  { slug: 'cabello', nombre: 'Cabello', emoji: '💇' },
+  { slug: 'unas', nombre: 'Uñas', emoji: '💅' },
+  { slug: 'perfumes', nombre: 'Perfumes', emoji: '🌸' },
+  { slug: 'dispositivos', nombre: 'Dispositivos', emoji: '✨' },
+] as const;

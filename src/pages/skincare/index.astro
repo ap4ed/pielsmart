@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const pillar = 'skincare';
+const pillarName = 'Skincare';
+const description = 'Guías, reseñas y comparativas de skincare en español: retinol, ácido hialurónico, serum, protector solar y más.';
+
+const allArticles = await getCollection('articles');
+const articles = allArticles.filter((a) => a.data.pillar === pillar);
+---
+
+<BaseLayout title={`${pillarName} — PielSmart`} description={description}>
+  <div class="pillar-header">
+    <nav class="breadcrumb" aria-label="Ruta de navegación">
+      <a href="/">Inicio</a> <span>/</span> <span>{pillarName}</span>
+    </nav>
+    <h1>{pillarName}</h1>
+    <p class="intro">{description}</p>
+  </div>
+
+  {articles.length > 0 ? (
+    <section class="articles-list">
+      <h2>Artículos y guías</h2>
+      <div class="article-grid">
+        {articles.map((article) => (
+          <a href={`/${pillar}/${article.id}/`} class="article-card">
+            <h3>{article.data.title}</h3>
+            <p>{article.data.description}</p>
+            <span class="leer-mas">Leer artículo →</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  ) : (
+    <p class="coming-soon">Artículos próximamente. Estamos preparando el contenido.</p>
+  )}
+</BaseLayout>
+
+<style>
+  .pillar-header { margin-bottom: 2.5rem; }
+  .breadcrumb {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-bottom: 0.75rem;
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+  }
+  .breadcrumb a { color: #6b7280; text-decoration: none; }
+  .breadcrumb a:hover { color: #e07b39; }
+  .pillar-header h1 { margin-bottom: 0.75rem; font-size: 2rem; }
+  .intro { font-size: 1.05rem; color: #4b5563; line-height: 1.8; max-width: 720px; margin: 0; }
+
+  .articles-list h2 { margin-bottom: 1.25rem; }
+  .article-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+  .article-card {
+    display: block;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .article-card:hover {
+    border-color: #e07b39;
+    box-shadow: 0 4px 12px rgba(224, 123, 57, 0.12);
+  }
+  .article-card h3 { margin: 0 0 0.5rem; font-size: 1.05rem; color: #1a1a2e; }
+  .article-card p { margin: 0 0 1rem; font-size: 0.9rem; color: #4b5563; line-height: 1.6; }
+  .leer-mas { font-size: 0.9rem; font-weight: 600; color: #e07b39; }
+
+  .coming-soon { color: #6b7280; font-style: italic; padding: 2rem 0; }
+</style>
