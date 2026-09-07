@@ -2,136 +2,175 @@
 interface Props {
   asin?: string;
   name: string;
-  description: string;
-  rating?: number;
-  reviews?: string;
+  tagline: string;
+  why: string;
+  price: string;
+  badge?: string;
+  badgeColor?: string;
   link: string;
+  image?: string;
+  retailer?: string;
 }
 
-const { asin, name, description, rating = 4.5, reviews, link } = Astro.props;
+const {
+  asin,
+  name,
+  tagline,
+  why,
+  price,
+  badge,
+  badgeColor = '#c4693a',
+  link,
+  image,
+  retailer = 'Amazon',
+} = Astro.props;
 
-const imageUrl = asin
+const imageUrl = image ?? (asin
   ? `https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=${asin}&Format=_SL250_&ID=AsinImage&MarketPlace=US&ServiceVersion=20070822&WS=1&tag=pielsmart-20`
-  : null;
-
-const fullStars = Math.floor(rating);
-const hasHalf = rating % 1 >= 0.5;
-const emptyStars = 5 - fullStars - (hasHalf ? 1 : 0);
+  : null);
 ---
 
-<div class="product-card">
-  {imageUrl && (
-    <div class="product-img-wrap">
-      <a href={link} target="_blank" rel="noopener nofollow">
-        <img
-          src={imageUrl}
-          alt={name}
-          class="product-img"
-          loading="lazy"
-          onerror="this.closest('.product-img-wrap').style.display='none'"
-        />
-      </a>
-    </div>
+<div class="wc-card">
+  {badge && (
+    <div class="wc-badge" style={`background:${badgeColor}`}>{badge}</div>
   )}
-  <div class="product-body">
-    <p class="product-name">
-      <a href={link} target="_blank" rel="noopener nofollow">{name}</a>
-    </p>
-    <div class="product-rating">
-      <span class="stars">
-        {'★'.repeat(fullStars)}{hasHalf ? '½' : ''}{'☆'.repeat(emptyStars)}
-      </span>
-      <span class="rating-num">{rating.toFixed(1)}</span>
-      {reviews && <span class="review-count">({reviews} reseñas)</span>}
+  <div class="wc-inner">
+    {imageUrl && (
+      <div class="wc-img-wrap">
+        <a href={link} target="_blank" rel="noopener nofollow">
+          <img
+            src={imageUrl}
+            alt={name}
+            class="wc-img"
+            loading="lazy"
+            onerror="this.closest('.wc-img-wrap').style.display='none'"
+          />
+        </a>
+      </div>
+    )}
+    <div class="wc-body">
+      <h3 class="wc-name">
+        <a href={link} target="_blank" rel="noopener nofollow">{name}</a>
+      </h3>
+      <p class="wc-tagline">{tagline}</p>
+      <div class="wc-buy-row">
+        <span class="wc-price">{price}</span>
+        <a href={link} target="_blank" rel="noopener nofollow" class="wc-btn">
+          Ver en {retailer} →
+        </a>
+      </div>
+      <div class="wc-why">
+        <span class="wc-why-label">Por qué lo elegimos:</span> {why}
+      </div>
     </div>
-    <p class="product-desc">{description}</p>
-    <a href={link} target="_blank" rel="noopener nofollow" class="amazon-btn">
-      Ver en Amazon →
-    </a>
   </div>
 </div>
 
 <style>
-  .product-card {
-    display: flex;
-    gap: 1.25rem;
+  .wc-card {
     border: 1px solid #e8e8e8;
-    border-radius: 12px;
-    padding: 1.25rem;
-    margin-bottom: 1rem;
-    transition: box-shadow 0.2s, border-color 0.2s;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 1.75rem;
+    transition: box-shadow 0.2s;
   }
-  .product-card:hover {
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-    border-color: #d0d0d0;
+  .wc-card:hover {
+    box-shadow: 0 6px 24px rgba(0,0,0,0.09);
   }
-  .product-img-wrap {
+  .wc-badge {
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.35rem 1rem;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .wc-inner {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    align-items: flex-start;
+  }
+  .wc-img-wrap {
     flex-shrink: 0;
-    width: 120px;
-    height: 120px;
+    width: 140px;
+    height: 140px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: #f9f9f9;
+    border-radius: 10px;
+    overflow: hidden;
   }
-  .product-img {
-    width: 120px;
-    height: 120px;
+  .wc-img {
+    width: 140px;
+    height: 140px;
     object-fit: contain;
-    border-radius: 8px;
   }
-  .product-body {
+  .wc-body {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
-    flex: 1;
+    gap: 0.5rem;
   }
-  .product-name {
+  .wc-name {
+    font-size: 1.15rem;
     margin: 0;
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 1rem;
-    font-weight: 600;
     line-height: 1.3;
-    color: #1a1a2e;
+    font-family: 'Playfair Display', Georgia, serif;
   }
-  .product-name a {
-    color: inherit;
+  .wc-name a {
+    color: #1a1a2e;
     text-decoration: none;
   }
-  .product-name a:hover { text-decoration: underline; }
-  .product-rating {
+  .wc-name a:hover { text-decoration: underline; }
+  .wc-tagline {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+    font-style: italic;
+  }
+  .wc-buy-row {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    font-size: 0.85rem;
+    gap: 1rem;
+    margin: 0.25rem 0;
+    flex-wrap: wrap;
   }
-  .stars { color: #e07b39; font-size: 0.9rem; letter-spacing: 1px; }
-  .rating-num { font-weight: 600; color: #2d2d2d; }
-  .review-count { color: #888; }
-  .product-desc {
-    margin: 0;
-    font-size: 0.875rem;
-    color: #5a5a6e;
-    line-height: 1.6;
-    flex: 1;
+  .wc-price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1a1a2e;
   }
-  .amazon-btn {
-    display: inline-block;
-    margin-top: 0.5rem;
+  .wc-btn {
     background: #FF9900;
     color: #111;
     font-size: 0.85rem;
     font-weight: 700;
-    padding: 0.45rem 1rem;
+    padding: 0.45rem 1.1rem;
     border-radius: 6px;
     text-decoration: none;
-    width: fit-content;
     transition: background 0.15s;
+    white-space: nowrap;
   }
-  .amazon-btn:hover { background: #e68900; color: #111; }
+  .wc-btn:hover { background: #e68900; color: #111; }
+  .wc-why {
+    font-size: 0.9rem;
+    color: #4a4a5e;
+    line-height: 1.7;
+    margin: 0;
+    padding-top: 0.5rem;
+    border-top: 1px solid #f0f0f0;
+  }
+  .wc-why-label {
+    font-weight: 700;
+    color: #1a1a2e;
+  }
 
-  @media (max-width: 480px) {
-    .product-card { flex-direction: column; }
-    .product-img-wrap { width: 100%; height: 160px; }
-    .product-img { width: 100%; height: 160px; }
+  @media (max-width: 520px) {
+    .wc-inner { flex-direction: column; }
+    .wc-img-wrap { width: 100%; height: 200px; }
+    .wc-img { width: 100%; height: 200px; }
   }
 </style>
