@@ -2,78 +2,118 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-const pillar = 'unas';
+const pillarSlug = 'unas';
 const pillarName = 'Uñas';
-const description = 'Guías y tendencias de uñas en español: diseños acrílicos, de gel, esmaltes y las últimas tendencias de LATAM.';
+const pillarColor = '#9B7EC8';
 
 const allArticles = await getCollection('articles');
-const articles = allArticles.filter((a) => a.data.pillar === pillar);
+const articles = allArticles
+  .filter(a => a.data.pillar === pillarSlug)
+  .sort((a, b) => new Date(b.data.datePublished).getTime() - new Date(a.data.datePublished).getTime());
+
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString('es-419', { day: 'numeric', month: 'long', year: 'numeric' });
+}
 ---
 
-<BaseLayout title={`${pillarName} — PielSmart`} description={description}>
-  <div class="pillar-header">
-    <nav class="breadcrumb" aria-label="Ruta de navegación">
-      <a href="/">Inicio</a> <span>/</span> <span>{pillarName}</span>
-    </nav>
-    <h1>{pillarName}</h1>
-    <p class="intro">{description}</p>
-  </div>
+<BaseLayout
+  title={`${pillarName} — PielSmart`}
+  description={`Guías, reseñas y comparativas de uñas para América Latina. Todo en español con productos en Amazon.`}
+>
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Inicio</a>
+    <span>›</span>
+    <span>{pillarName}</span>
+  </nav>
 
-  {articles.length > 0 ? (
-    <section class="articles-list">
-      <h2>Artículos y guías</h2>
-      <div class="article-grid">
-        {articles.map((article) => (
-          <a href={`/${pillar}/${article.id}/`} class="article-card">
-            <h3>{article.data.title}</h3>
-            <p>{article.data.description}</p>
-            <span class="leer-mas">Leer artículo →</span>
-          </a>
-        ))}
-      </div>
-    </section>
+  <h1 class="pillar-h1">{pillarName}</h1>
+  <hr class="divider" />
+
+  {articles.length === 0 ? (
+    <p class="empty">Artículos en camino — vuelve pronto.</p>
   ) : (
-    <p class="coming-soon">Artículos próximamente. Estamos preparando el contenido.</p>
+    <div class="article-grid">
+      {articles.map(article => (
+        <a href={`/${pillarSlug}/${article.id}/`} class="article-card">
+          {article.data.image && (
+            <div class="card-img-wrap">
+              <img
+                src={`${article.data.image}?auto=compress&cs=tinysrgb&w=600&h=340&fit=crop`}
+                alt={article.data.title}
+                class="card-img"
+                loading="lazy"
+              />
+            </div>
+          )}
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="date">{formatDate(article.data.datePublished)}</span>
+            </div>
+            <h2 class="card-title">{article.data.title}</h2>
+            <p class="card-desc">{article.data.description}</p>
+            <span class="card-link" style={`color:${pillarColor}`}>Leer artículo →</span>
+          </div>
+        </a>
+      ))}
+    </div>
   )}
 </BaseLayout>
 
 <style>
-  .pillar-header { margin-bottom: 2.5rem; }
-  .breadcrumb {
-    font-size: 0.85rem;
-    color: #6b7280;
-    margin-bottom: 0.75rem;
-    display: flex;
-    gap: 0.4rem;
-    align-items: center;
-  }
-  .breadcrumb a { color: #6b7280; text-decoration: none; }
-  .breadcrumb a:hover { color: #e07b39; }
-  .pillar-header h1 { margin-bottom: 0.75rem; font-size: 2rem; }
-  .intro { font-size: 1.05rem; color: #4b5563; line-height: 1.8; max-width: 720px; margin: 0; }
-
-  .articles-list h2 { margin-bottom: 1.25rem; }
-  .article-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.25rem;
-  }
-  .article-card {
-    display: block;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 1.5rem;
-    text-decoration: none;
-    color: inherit;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .article-card:hover {
-    border-color: #e07b39;
-    box-shadow: 0 4px 12px rgba(224, 123, 57, 0.12);
-  }
-  .article-card h3 { margin: 0 0 0.5rem; font-size: 1.05rem; color: #1a1a2e; }
-  .article-card p { margin: 0 0 1rem; font-size: 0.9rem; color: #4b5563; line-height: 1.6; }
-  .leer-mas { font-size: 0.9rem; font-weight: 600; color: #e07b39; }
-
-  .coming-soon { color: #6b7280; font-style: italic; padding: 2rem 0; }
+.breadcrumb {
+  font-size: 0.875rem;
+  color: #999;
+  margin: 2rem 0 1.5rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.breadcrumb a { color: #999; text-decoration: none; }
+.breadcrumb a:hover { color: #c4693a; }
+.pillar-h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin: 0 0 1rem;
+  color: #1a1a2e;
+}
+.divider {
+  border: none;
+  border-top: 1px solid #e8e8e8;
+  margin: 0 0 2.5rem;
+}
+.empty {
+  color: #999;
+  font-size: 1rem;
+  padding: 3rem 0;
+}
+.article-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+@media (max-width: 768px) { .article-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .article-grid { grid-template-columns: 1fr; } }
+.article-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.article-card:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.09);
+  border-color: #ccc;
+}
+.card-img-wrap { width: 100%; height: 200px; overflow: hidden; }
+.card-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s; }
+.article-card:hover .card-img { transform: scale(1.04); }
+.card-body { padding: 1.25rem; display: flex; flex-direction: column; flex: 1; }
+.card-meta { margin-bottom: 0.6rem; }
+.date { font-size: 0.8rem; color: #999; }
+.card-title { font-size: 1.05rem; margin: 0 0 0.6rem; line-height: 1.3; color: #1a1a2e; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.card-desc { font-size: 0.875rem; color: #5a5a6e; margin: 0 0 1rem; line-height: 1.6; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.card-link { font-size: 0.875rem; font-weight: 600; margin-top: auto; }
 </style>

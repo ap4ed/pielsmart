@@ -11,6 +11,7 @@ const articles = defineCollection({
     targetKeyword: z.string(),
     datePublished: z.string(),
     dateModified: z.string().optional(),
+    image: z.string().optional(),
   }),
 });
 

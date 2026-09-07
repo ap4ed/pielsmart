@@ -71,6 +71,7 @@ const { Content } = entry ? await render(entry) : { Content: null };
     datePublished={entry.data.datePublished}
     dateModified={entry.data.dateModified}
     targetKeyword={entry.data.targetKeyword}
+    image={entry.data.image}
   >
     <Content />
   </ArticleLayout>

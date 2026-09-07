@@ -1,264 +1,295 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allArticles = await getCollection('articles');
+allArticles.sort((a, b) => new Date(b.data.datePublished).getTime() - new Date(a.data.datePublished).getTime());
+
+const featured = allArticles[0];
+const rest = allArticles.slice(1);
+
+const pillarColors: Record<string, string> = {
+  skincare: '#7DB9A8',
+  maquillaje: '#C4728A',
+  cabello: '#C9A35E',
+  unas: '#9B7EC8',
+  perfumes: '#C47898',
+  dispositivos: '#5E9EC4',
+};
+
+const pillarNames: Record<string, string> = {
+  skincare: 'Skincare',
+  maquillaje: 'Maquillaje',
+  cabello: 'Cabello',
+  unas: 'Uñas',
+  perfumes: 'Perfumes',
+  dispositivos: 'Dispositivos',
+};
 
 const pillars = [
-  {
-    slug: 'skincare',
-    nombre: 'Skincare',
-    descripcion: 'Retinol, ácido hialurónico, serum, protector solar y rutinas que funcionan',
-    emoji: '🧴',
-    color: '#7DB9A8',
-    bg: '#f0faf7',
-  },
-  {
-    slug: 'maquillaje',
-    nombre: 'Maquillaje',
-    descripcion: 'Base, labial, mascara, iluminador, bb cream y todo para tu look perfecto',
-    emoji: '💄',
-    color: '#C4728A',
-    bg: '#fdf0f4',
-  },
-  {
-    slug: 'cabello',
-    nombre: 'Cabello',
-    descripcion: 'Shampoo, planchas, rizadores, tinte y tratamientos que transforman',
-    emoji: '💇',
-    color: '#C9A35E',
-    bg: '#fdf8ee',
-  },
-  {
-    slug: 'unas',
-    nombre: 'Uñas',
-    descripcion: 'Diseños de uñas acrílicas, de gel, esmaltes y las últimas tendencias',
-    emoji: '💅',
-    color: '#9B7EC8',
-    bg: '#f5f0fc',
-  },
-  {
-    slug: 'perfumes',
-    nombre: 'Perfumes',
-    descripcion: 'Los mejores perfumes de mujer y hombre, colonias y fragancias irresistibles',
-    emoji: '🌸',
-    color: '#C47898',
-    bg: '#fdf0f5',
-  },
-  {
-    slug: 'dispositivos',
-    nombre: 'Dispositivos',
-    descripcion: 'Aparatos de belleza: mascarillas LED, microcorriente, limpieza facial y más',
-    emoji: '✨',
-    color: '#5E9EC4',
-    bg: '#f0f6fd',
-  },
+  { slug: 'skincare', nombre: 'Skincare' },
+  { slug: 'maquillaje', nombre: 'Maquillaje' },
+  { slug: 'cabello', nombre: 'Cabello' },
+  { slug: 'unas', nombre: 'Uñas' },
+  { slug: 'perfumes', nombre: 'Perfumes' },
+  { slug: 'dispositivos', nombre: 'Dispositivos' },
 ];
+
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString('es-419', { day: 'numeric', month: 'long', year: 'numeric' });
+}
 ---
 
 <BaseLayout
-  title="PielSmart — Tu guía de belleza en español"
-  description="Reseñas, guías y comparativas de skincare, maquillaje, cabello, uñas, perfumes y más — todo en español, con precios en Amazon."
+  title="PielSmart — Guías y reseñas de belleza en español"
+  description="Guías, reseñas y comparativas de skincare, maquillaje, cabello, uñas y perfumes para América Latina."
 >
-  <section class="hero">
-    <div class="hero-inner">
-      <p class="hero-eyebrow">Belleza para toda América Latina</p>
-      <h1>Tu guía de belleza<br /><em>en español</em></h1>
-      <p class="hero-sub">
-        Guías, reseñas y comparativas de skincare, maquillaje, cabello, uñas y perfumes —
-        con precios en Amazon para toda LATAM.
-      </p>
-      <div class="hero-tags">
-        <span>✔ Sin publicidad engañosa</span>
-        <span>✔ Probado y verificado</span>
-        <span>✔ Precios en Amazon USD</span>
-      </div>
-    </div>
-  </section>
-
-  <section class="pillars">
-    <h2>Explora por categoría</h2>
-    <div class="pillar-grid">
-      {pillars.map(({ slug, nombre, descripcion, emoji, color, bg }) => (
-        <a href={`/${slug}/`} class="pillar-card" style={`--accent: ${color}; --bg: ${bg};`}>
-          <div class="card-icon-wrap">
-            <span class="emoji">{emoji}</span>
-          </div>
-          <div class="card-body">
-            <h3>{nombre}</h3>
-            <p>{descripcion}</p>
-          </div>
-          <span class="ver-mas">Ver artículos →</span>
+  {featured && (
+    <article class="featured">
+      {featured.data.image && (
+        <div class="featured-img-wrap">
+          <img
+            src={`${featured.data.image}?auto=compress&cs=tinysrgb&w=1200&h=520&fit=crop`}
+            alt={featured.data.title}
+            class="featured-img"
+            loading="eager"
+          />
+        </div>
+      )}
+      <div class="featured-body">
+        <div class="featured-meta">
+          <span class="tag" style={`background:${pillarColors[featured.data.pillar]}22; color:${pillarColors[featured.data.pillar]}`}>
+            {pillarNames[featured.data.pillar]}
+          </span>
+          <span class="date">{formatDate(featured.data.datePublished)}</span>
+        </div>
+        <h2 class="featured-title">
+          <a href={`/${featured.data.pillar}/${featured.id}/`}>{featured.data.title}</a>
+        </h2>
+        <p class="featured-desc">{featured.data.description}</p>
+        <a href={`/${featured.data.pillar}/${featured.id}/`} class="read-more" style={`color:${pillarColors[featured.data.pillar]}`}>
+          Leer artículo →
         </a>
-      ))}
-    </div>
-  </section>
+      </div>
+    </article>
+  )}
 
-  <section class="por-que">
-    <h2>¿Por qué confiar en PielSmart?</h2>
-    <div class="razones">
-      <div class="razon">
-        <div class="razon-icon">🔍</div>
-        <strong>Investigación honesta y profunda</strong>
-        <p>Cada artículo está respaldado por investigación real: revisamos ingredientes, comparamos precios y leemos cientos de reseñas antes de recomendar algo.</p>
+  {rest.length > 0 && (
+    <section class="articles-section">
+      <h2 class="section-title">Últimas guías</h2>
+      <div class="article-grid">
+        {rest.map(article => (
+          <a href={`/${article.data.pillar}/${article.id}/`} class="article-card">
+            {article.data.image && (
+              <div class="card-img-wrap">
+                <img
+                  src={`${article.data.image}?auto=compress&cs=tinysrgb&w=600&h=340&fit=crop`}
+                  alt={article.data.title}
+                  class="card-img"
+                  loading="lazy"
+                />
+              </div>
+            )}
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag" style={`background:${pillarColors[article.data.pillar]}22; color:${pillarColors[article.data.pillar]}`}>
+                  {pillarNames[article.data.pillar]}
+                </span>
+                <span class="date">{formatDate(article.data.datePublished)}</span>
+              </div>
+              <h3 class="card-title">{article.data.title}</h3>
+              <p class="card-desc">{article.data.description}</p>
+              <span class="card-link" style={`color:${pillarColors[article.data.pillar]}`}>Leer artículo →</span>
+            </div>
+          </a>
+        ))}
       </div>
-      <div class="razon">
-        <div class="razon-icon">💬</div>
-        <strong>Solo recomendamos lo que funciona</strong>
-        <p>No hacemos listas de 30 productos para inflar contenido. Te decimos qué comprar y por qué — una recomendación clara y directa.</p>
-      </div>
-      <div class="razon">
-        <div class="razon-icon">🌎</div>
-        <strong>Para LATAM, en español de verdad</strong>
-        <p>Precios en USD vía Amazon US — accesible desde México, Colombia, Argentina, Panamá y toda América Latina. Español latinoamericano, sin traducciones genéricas.</p>
-      </div>
-    </div>
-  </section>
+    </section>
+  )}
+
+  <nav class="browse-nav" aria-label="Explorar categorías">
+    <span class="browse-label">Explorar:</span>
+    {pillars.map(({ slug, nombre }, i) => (
+      <>
+        <a href={`/${slug}/`} class="browse-link">{nombre}</a>
+        {i < pillars.length - 1 && <span class="dot">·</span>}
+      </>
+    ))}
+  </nav>
 </BaseLayout>
 
 <style>
-  /* Hero */
-  .hero {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    background: linear-gradient(160deg, #fdf5f0 0%, #fff8fb 50%, #f5f0ff 100%);
-    padding: 5rem 1.25rem 4.5rem;
-    text-align: center;
-    margin-bottom: 4rem;
-  }
-  .hero-inner {
-    max-width: 680px;
-    margin: 0 auto;
-  }
-  .hero-eyebrow {
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #c4693a;
-    margin: 0 0 1.25rem;
-  }
-  .hero h1 {
-    font-size: clamp(2.2rem, 5vw, 3.5rem);
-    margin-bottom: 1.25rem;
-    color: #1a1a2e;
-    line-height: 1.2;
-  }
-  .hero h1 em {
-    font-style: italic;
-    color: #c4693a;
-  }
-  .hero-sub {
-    font-size: 1.1rem;
-    color: #5a5a6e;
-    line-height: 1.8;
-    margin-bottom: 2rem;
-  }
-  .hero-tags {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-  .hero-tags span {
-    background: #fff;
-    border: 1px solid #e8ddd8;
-    border-radius: 100px;
-    padding: 0.35rem 1rem;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #4b4b4b;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  }
+/* Featured article */
+.featured {
+  border: 1px solid #e8e8e8;
+  border-radius: 14px;
+  overflow: hidden;
+  margin: 2.5rem 0 3rem;
+}
+.featured-img-wrap {
+  width: 100%;
+  height: 420px;
+  overflow: hidden;
+}
+.featured-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.featured:hover .featured-img { transform: scale(1.02); }
+.featured-body {
+  padding: 2rem 2.5rem 2.5rem;
+}
+.featured-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.25rem 0.75rem;
+  border-radius: 100px;
+}
+.date {
+  font-size: 0.85rem;
+  color: #999;
+}
+.featured-title {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  margin: 0 0 1rem;
+  line-height: 1.2;
+}
+.featured-title a {
+  text-decoration: none;
+  color: #1a1a2e;
+}
+.featured-title a:hover { text-decoration: underline; }
+.featured-desc {
+  font-size: 1rem;
+  color: #5a5a6e;
+  margin: 0 0 1.25rem;
+  line-height: 1.7;
+  max-width: 680px;
+}
+.read-more {
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+.read-more:hover { text-decoration: underline; }
 
-  /* Pillars */
-  .pillars { margin-bottom: 5rem; }
-  .pillars h2 {
-    font-size: clamp(1.4rem, 3vw, 2rem);
-    margin-bottom: 2rem;
-  }
-  .pillar-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.25rem;
-  }
-  .pillar-card {
-    display: flex;
-    flex-direction: column;
-    background: var(--bg);
-    border: 1.5px solid transparent;
-    border-radius: 14px;
-    padding: 1.75rem 1.5rem 1.5rem;
-    text-decoration: none;
-    color: inherit;
-    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-  }
-  .pillar-card:hover {
-    border-color: var(--accent);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.09);
-    transform: translateY(-2px);
-  }
-  .card-icon-wrap {
-    width: 52px;
-    height: 52px;
-    background: #fff;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1.1rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-    font-size: 1.6rem;
-  }
-  .card-body { flex: 1; }
-  .pillar-card h3 {
-    margin: 0 0 0.5rem;
-    font-size: 1.15rem;
-    color: #1a1a2e;
-  }
-  .pillar-card p {
-    margin: 0;
-    font-size: 0.9rem;
-    color: #5a5a6e;
-    line-height: 1.65;
-  }
-  .ver-mas {
-    display: inline-block;
-    margin-top: 1.25rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--accent);
-  }
+/* Articles section */
+.articles-section { margin-bottom: 3rem; }
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'DM Sans', sans-serif;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e8e8e8;
+}
+.article-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+@media (max-width: 768px) { .article-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .article-grid { grid-template-columns: 1fr; } }
 
-  /* Por qué */
-  .por-que h2 {
-    font-size: clamp(1.4rem, 3vw, 2rem);
-    margin-bottom: 2rem;
-  }
-  .razones {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.5rem;
-  }
-  .razon {
-    background: #fafafa;
-    border: 1px solid #f0ece8;
-    border-radius: 14px;
-    padding: 1.75rem;
-  }
-  .razon-icon {
-    font-size: 1.75rem;
-    margin-bottom: 1rem;
-  }
-  .razon strong {
-    display: block;
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 1.05rem;
-    color: #1a1a2e;
-    margin-bottom: 0.6rem;
-    line-height: 1.3;
-  }
-  .razon p {
-    margin: 0;
-    font-size: 0.9rem;
-    color: #5a5a6e;
-    line-height: 1.75;
-  }
+.article-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.article-card:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.09);
+  border-color: #ccc;
+}
+.card-img-wrap {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+.article-card:hover .card-img { transform: scale(1.04); }
+.card-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.card-title {
+  font-size: 1.05rem;
+  margin: 0 0 0.6rem;
+  line-height: 1.3;
+  color: #1a1a2e;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card-desc {
+  font-size: 0.875rem;
+  color: #5a5a6e;
+  margin: 0 0 1rem;
+  line-height: 1.6;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card-link {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-top: auto;
+}
+
+/* Browse nav */
+.browse-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 2rem 0 1rem;
+  border-top: 1px solid #e8e8e8;
+  font-size: 0.9rem;
+}
+.browse-label {
+  color: #999;
+  font-weight: 500;
+}
+.browse-link {
+  color: #2d2d2d;
+  text-decoration: none;
+  font-weight: 500;
+}
+.browse-link:hover { color: #c4693a; }
+.dot { color: #ccc; }
 </style>
