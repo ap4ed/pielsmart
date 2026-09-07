@@ -5,38 +5,50 @@ const pillars = [
   {
     slug: 'skincare',
     nombre: 'Skincare',
-    descripcion: 'Retinol, ácido hialurónico, serum, protector solar y más',
+    descripcion: 'Retinol, ácido hialurónico, serum, protector solar y rutinas que funcionan',
     emoji: '🧴',
+    color: '#7DB9A8',
+    bg: '#f0faf7',
   },
   {
     slug: 'maquillaje',
     nombre: 'Maquillaje',
-    descripcion: 'Base, labial, mascara, iluminador, bb cream y todo lo que necesitas',
+    descripcion: 'Base, labial, mascara, iluminador, bb cream y todo para tu look perfecto',
     emoji: '💄',
+    color: '#C4728A',
+    bg: '#fdf0f4',
   },
   {
     slug: 'cabello',
     nombre: 'Cabello',
-    descripcion: 'Shampoo, planchas, rizadores, tinte y tratamientos capilares',
+    descripcion: 'Shampoo, planchas, rizadores, tinte y tratamientos que transforman',
     emoji: '💇',
+    color: '#C9A35E',
+    bg: '#fdf8ee',
   },
   {
     slug: 'unas',
     nombre: 'Uñas',
-    descripcion: 'Diseños de uñas acrílicas, de gel, esmaltes y más tendencias',
+    descripcion: 'Diseños de uñas acrílicas, de gel, esmaltes y las últimas tendencias',
     emoji: '💅',
+    color: '#9B7EC8',
+    bg: '#f5f0fc',
   },
   {
     slug: 'perfumes',
     nombre: 'Perfumes',
-    descripcion: 'Los mejores perfumes de mujer y hombre, colonias y fragancias',
+    descripcion: 'Los mejores perfumes de mujer y hombre, colonias y fragancias irresistibles',
     emoji: '🌸',
+    color: '#C47898',
+    bg: '#fdf0f5',
   },
   {
     slug: 'dispositivos',
     nombre: 'Dispositivos',
-    descripcion: 'Aparatos de belleza: mascarillas LED, microcorriente, limpieza facial',
+    descripcion: 'Aparatos de belleza: mascarillas LED, microcorriente, limpieza facial y más',
     emoji: '✨',
+    color: '#5E9EC4',
+    bg: '#f0f6fd',
   },
 ];
 ---
@@ -46,20 +58,33 @@ const pillars = [
   description="Reseñas, guías y comparativas de skincare, maquillaje, cabello, uñas, perfumes y más — todo en español, con precios en Amazon."
 >
   <section class="hero">
-    <h1>Tu guía de belleza en español</h1>
-    <p class="hero-sub">
-      Reseñas, guías y comparativas de skincare, maquillaje, cabello, uñas, perfumes y más — todo en español, con precios en Amazon.
-    </p>
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Belleza para toda América Latina</p>
+      <h1>Tu guía de belleza<br /><em>en español</em></h1>
+      <p class="hero-sub">
+        Guías, reseñas y comparativas de skincare, maquillaje, cabello, uñas y perfumes —
+        con precios en Amazon para toda LATAM.
+      </p>
+      <div class="hero-tags">
+        <span>✔ Sin publicidad engañosa</span>
+        <span>✔ Probado y verificado</span>
+        <span>✔ Precios en Amazon USD</span>
+      </div>
+    </div>
   </section>
 
   <section class="pillars">
     <h2>Explora por categoría</h2>
     <div class="pillar-grid">
-      {pillars.map(({ slug, nombre, descripcion, emoji }) => (
-        <a href={`/${slug}/`} class="pillar-card">
-          <span class="emoji">{emoji}</span>
-          <h3>{nombre}</h3>
-          <p>{descripcion}</p>
+      {pillars.map(({ slug, nombre, descripcion, emoji, color, bg }) => (
+        <a href={`/${slug}/`} class="pillar-card" style={`--accent: ${color}; --bg: ${bg};`}>
+          <div class="card-icon-wrap">
+            <span class="emoji">{emoji}</span>
+          </div>
+          <div class="card-body">
+            <h3>{nombre}</h3>
+            <p>{descripcion}</p>
+          </div>
           <span class="ver-mas">Ver artículos →</span>
         </a>
       ))}
@@ -70,76 +95,170 @@ const pillars = [
     <h2>¿Por qué confiar en PielSmart?</h2>
     <div class="razones">
       <div class="razon">
-        <strong>Experiencia real de retail</strong>
-        <p>Operamos NAZ Beauty Shop en Panamá. Compramos, vendemos y probamos estas marcas con clientes reales — no somos un blog que solo lee manuales.</p>
+        <div class="razon-icon">🔍</div>
+        <strong>Investigación honesta y profunda</strong>
+        <p>Cada artículo está respaldado por investigación real: revisamos ingredientes, comparamos precios y leemos cientos de reseñas antes de recomendar algo.</p>
       </div>
       <div class="razon">
-        <strong>Picks decisivos, no listas interminables</strong>
-        <p>Por categoría te decimos cuál comprar y por qué. Sin listas de 20 productos que no ayudan a nadie.</p>
+        <div class="razon-icon">💬</div>
+        <strong>Solo recomendamos lo que funciona</strong>
+        <p>No hacemos listas de 30 productos para inflar contenido. Te decimos qué comprar y por qué — una recomendación clara y directa.</p>
       </div>
       <div class="razon">
+        <div class="razon-icon">🌎</div>
         <strong>Para LATAM, en español de verdad</strong>
-        <p>Precios en USD (funciona para compradores en toda América Latina vía Amazon US). Español latinoamericano, sin traducciones genéricas.</p>
+        <p>Precios en USD vía Amazon US — accesible desde México, Colombia, Argentina, Panamá y toda América Latina. Español latinoamericano, sin traducciones genéricas.</p>
       </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
+  /* Hero */
   .hero {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    background: linear-gradient(160deg, #fdf5f0 0%, #fff8fb 50%, #f5f0ff 100%);
+    padding: 5rem 1.25rem 4.5rem;
     text-align: center;
-    padding: 3rem 0 2rem;
-    max-width: 760px;
+    margin-bottom: 4rem;
+  }
+  .hero-inner {
+    max-width: 680px;
     margin: 0 auto;
   }
+  .hero-eyebrow {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #c4693a;
+    margin: 0 0 1.25rem;
+  }
   .hero h1 {
-    font-size: clamp(1.8rem, 4vw, 2.8rem);
-    margin-bottom: 1rem;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    margin-bottom: 1.25rem;
+    color: #1a1a2e;
+    line-height: 1.2;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: #c4693a;
   }
   .hero-sub {
     font-size: 1.1rem;
-    color: #4b5563;
+    color: #5a5a6e;
     line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+  .hero-tags {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .hero-tags span {
+    background: #fff;
+    border: 1px solid #e8ddd8;
+    border-radius: 100px;
+    padding: 0.35rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #4b4b4b;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   }
 
-  .pillars { margin: 3rem 0; }
-  .pillars h2 { margin-bottom: 1.5rem; }
-
+  /* Pillars */
+  .pillars { margin-bottom: 5rem; }
+  .pillars h2 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    margin-bottom: 2rem;
+  }
   .pillar-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.25rem;
   }
   .pillar-card {
-    display: block;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    border: 1.5px solid transparent;
+    border-radius: 14px;
+    padding: 1.75rem 1.5rem 1.5rem;
     text-decoration: none;
     color: inherit;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
   }
   .pillar-card:hover {
-    border-color: #e07b39;
-    box-shadow: 0 4px 12px rgba(224, 123, 57, 0.12);
+    border-color: var(--accent);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.09);
+    transform: translateY(-2px);
   }
-  .pillar-card .emoji { font-size: 2rem; display: block; margin-bottom: 0.75rem; }
-  .pillar-card h3 { margin: 0 0 0.5rem; font-size: 1.1rem; }
-  .pillar-card p { margin: 0 0 1rem; font-size: 0.9rem; color: #4b5563; line-height: 1.6; }
-  .ver-mas { font-size: 0.9rem; font-weight: 600; color: #e07b39; }
+  .card-icon-wrap {
+    width: 52px;
+    height: 52px;
+    background: #fff;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    font-size: 1.6rem;
+  }
+  .card-body { flex: 1; }
+  .pillar-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.15rem;
+    color: #1a1a2e;
+  }
+  .pillar-card p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #5a5a6e;
+    line-height: 1.65;
+  }
+  .ver-mas {
+    display: inline-block;
+    margin-top: 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
 
-  .por-que { margin: 3rem 0; }
-  .por-que h2 { margin-bottom: 1.5rem; }
+  /* Por qué */
+  .por-que h2 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    margin-bottom: 2rem;
+  }
   .razones {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 1.5rem;
   }
   .razon {
-    background: #f9fafb;
-    border-radius: 8px;
-    padding: 1.25rem;
+    background: #fafafa;
+    border: 1px solid #f0ece8;
+    border-radius: 14px;
+    padding: 1.75rem;
   }
-  .razon strong { display: block; margin-bottom: 0.5rem; font-size: 1rem; }
-  .razon p { margin: 0; font-size: 0.9rem; color: #4b5563; line-height: 1.6; }
+  .razon-icon {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+  .razon strong {
+    display: block;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.05rem;
+    color: #1a1a2e;
+    margin-bottom: 0.6rem;
+    line-height: 1.3;
+  }
+  .razon p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #5a5a6e;
+    line-height: 1.75;
+  }
 </style>

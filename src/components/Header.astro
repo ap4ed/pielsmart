@@ -13,8 +13,10 @@ const { pathname } = Astro.url;
 ---
 
 <header class="site-header">
-  <div class="container">
-    <a href="/" class="logo">PielSmart</a>
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <span class="logo-piel">Piel</span><span class="logo-smart">Smart</span>
+    </a>
     <nav aria-label="Navegación principal">
       <ul>
         {nav.map(({ label, href }) => (
@@ -29,14 +31,14 @@ const { pathname } = Astro.url;
 
 <style>
   .site-header {
-    border-bottom: 1px solid #e5e7eb;
-    padding: 0.75rem 0;
     background: #fff;
+    border-bottom: 1px solid #f0e8e4;
     position: sticky;
     top: 0;
     z-index: 100;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
   }
-  .container {
+  .header-inner {
     max-width: 1100px;
     margin: 0 auto;
     padding: 0 1.25rem;
@@ -44,41 +46,51 @@ const { pathname } = Astro.url;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    flex-wrap: wrap;
+    height: 64px;
   }
   .logo {
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: #1a1a2e;
     text-decoration: none;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.6rem;
+    font-weight: 700;
     letter-spacing: -0.5px;
     flex-shrink: 0;
+    line-height: 1;
   }
+  .logo-piel { color: #1a1a2e; }
+  .logo-smart { color: #c4693a; }
+
   nav {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
+  nav::-webkit-scrollbar { display: none; }
   nav ul {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
-    gap: 1.25rem;
+    gap: 0.25rem;
     flex-wrap: nowrap;
     white-space: nowrap;
   }
   nav a {
-    color: #374151;
+    color: #4b4b4b;
     text-decoration: none;
     font-size: 0.875rem;
     font-weight: 500;
-    padding-bottom: 2px;
-    border-bottom: 2px solid transparent;
-    transition: border-color 0.15s, color 0.15s;
+    padding: 0.4rem 0.65rem;
+    border-radius: 6px;
+    transition: background 0.15s, color 0.15s;
+    display: block;
   }
-  nav a:hover,
+  nav a:hover {
+    background: #fdf0ea;
+    color: #c4693a;
+  }
   nav a.active {
-    color: #e07b39;
-    border-bottom-color: #e07b39;
+    color: #c4693a;
+    font-weight: 600;
   }
 </style>

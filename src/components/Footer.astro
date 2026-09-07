@@ -1,57 +1,123 @@
 ---
 const year = new Date().getFullYear();
+const pillars = [
+  { label: 'Skincare', href: '/skincare/' },
+  { label: 'Maquillaje', href: '/maquillaje/' },
+  { label: 'Cabello', href: '/cabello/' },
+  { label: 'Uñas', href: '/unas/' },
+  { label: 'Perfumes', href: '/perfumes/' },
+  { label: 'Dispositivos', href: '/dispositivos/' },
+];
 ---
 
 <footer class="site-footer">
-  <div class="container">
-    <div class="footer-links">
-      <a href="/como-resenamos/">Cómo Reseñamos</a>
-      <a href="/divulgacion/">Divulgación de Afiliados</a>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="/" class="footer-logo">
+          <span class="logo-piel">Piel</span><span class="logo-smart">Smart</span>
+        </a>
+        <p>Tu guía de belleza en español para toda América Latina.</p>
+      </div>
+      <div class="footer-nav">
+        <p class="footer-nav-title">Categorías</p>
+        <ul>
+          {pillars.map(({ label, href }) => (
+            <li><a href={href}>{label}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <p class="footer-nav-title">Nosotros</p>
+        <ul>
+          <li><a href="/como-resenamos/">Cómo Reseñamos</a></li>
+          <li><a href="/divulgacion/">Divulgación de Afiliados</a></li>
+        </ul>
+      </div>
     </div>
-    <p class="disclosure">
-      Como Asociado de Amazon, ganamos comisiones por compras elegibles.
-      Los precios y la disponibilidad pueden cambiar. Consulta Amazon para detalles actualizados.
-    </p>
-    <p class="copyright">© {year} PielSmart. Todos los derechos reservados.</p>
+    <div class="footer-bottom">
+      <p class="disclosure">
+        Como Asociado de Amazon, ganamos comisiones por compras elegibles. Los precios y disponibilidad pueden cambiar.
+      </p>
+      <p class="copyright">© {year} PielSmart. Todos los derechos reservados.</p>
+    </div>
   </div>
 </footer>
 
 <style>
   .site-footer {
-    border-top: 1px solid #e5e7eb;
-    padding: 2rem 0;
-    margin-top: 4rem;
-    background: #f9fafb;
-    font-size: 0.85rem;
-    color: #6b7280;
+    background: #1a1a2e;
+    color: #c8c8d8;
+    padding: 3.5rem 0 2rem;
+    margin-top: 5rem;
   }
-  .container {
+  .footer-inner {
     max-width: 1100px;
     margin: 0 auto;
     padding: 0 1.25rem;
-    text-align: center;
   }
-  .footer-links {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 2rem;
   }
-  .footer-links a {
-    color: #374151;
+  @media (max-width: 640px) {
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .footer-brand { grid-column: 1 / -1; }
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.5rem;
+    font-weight: 700;
     text-decoration: none;
-    font-weight: 500;
+    display: inline-block;
+    margin-bottom: 0.75rem;
   }
-  .footer-links a:hover {
-    color: #e07b39;
+  .logo-piel { color: #fff; }
+  .logo-smart { color: #e07b39; }
+  .footer-brand p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #9999aa;
   }
+  .footer-nav-title {
+    font-weight: 600;
+    color: #fff;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 1rem;
+  }
+  .footer-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .footer-nav a {
+    color: #9999aa;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.15s;
+  }
+  .footer-nav a:hover { color: #e07b39; }
+  .footer-bottom { text-align: center; }
   .disclosure {
-    max-width: 640px;
+    font-size: 0.8rem;
+    color: #6b6b7b;
+    max-width: 560px;
     margin: 0 auto 0.75rem;
     line-height: 1.6;
   }
   .copyright {
+    font-size: 0.8rem;
+    color: #555566;
     margin: 0;
   }
 </style>
