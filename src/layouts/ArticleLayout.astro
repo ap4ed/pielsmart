@@ -1,6 +1,13 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 
+interface RelatedArticle {
+  title: string;
+  slug: string;
+  pillar: string;
+  image?: string;
+}
+
 interface Props {
   title: string;
   description: string;
@@ -9,6 +16,7 @@ interface Props {
   dateModified?: string;
   targetKeyword: string;
   image?: string;
+  relatedArticles?: RelatedArticle[];
 }
 
 const {
@@ -19,7 +27,17 @@ const {
   dateModified,
   targetKeyword,
   image,
+  relatedArticles,
 } = Astro.props;
+
+const pillarColors: Record<string, string> = {
+  skincare: '#7DB9A8',
+  maquillaje: '#C4728A',
+  cabello: '#C9A35E',
+  unas: '#9B7EC8',
+  perfumes: '#C47898',
+  dispositivos: '#5E9EC4',
+};
 
 const pillarNames: Record<string, string> = {
   skincare: 'Skincare',
@@ -96,6 +114,27 @@ const articleSchema = {
       <slot />
     </div>
 
+    {relatedArticles && relatedArticles.length > 0 && (
+      <div class="related-section">
+        <h2 class="related-title">Sigue leyendo</h2>
+        <div class="related-grid">
+          {relatedArticles.map(article => (
+            <a href={`/${article.pillar}/${article.slug}/`} class="related-card">
+              {article.image && (
+                <div class="related-img-wrap">
+                  <img src={`${article.image}?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop`} alt={article.title} class="related-img" loading="lazy" />
+                </div>
+              )}
+              <div class="related-body">
+                <span class="related-tag" style={`color:${pillarColors[article.pillar]}`}>{article.pillar.charAt(0).toUpperCase() + article.pillar.slice(1)}</span>
+                <p class="related-card-title">{article.title}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+
     <div class="cta-box">
       <span class="cta-icon">🛍️</span>
       <div class="cta-text">
@@ -170,9 +209,11 @@ const articleSchema = {
   }
   .article-body h2 {
     font-size: 1.45rem;
-    margin-top: 2.5rem;
+    margin-top: 3rem;
     margin-bottom: 0.75rem;
     color: #1a1a2e;
+    border-top: 3px solid #1a1a2e;
+    padding-top: 1.5rem;
   }
   .article-body h3 {
     font-size: 1.15rem;
@@ -194,6 +235,45 @@ const articleSchema = {
   .article-body a {
     color: #e07b39;
   }
+
+  .related-section {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e8e8e8;
+  }
+  .related-title {
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #999;
+    font-family: 'DM Sans', sans-serif;
+    margin-bottom: 1.25rem;
+    border-top: none !important;
+    padding-top: 0 !important;
+  }
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.2s;
+  }
+  .related-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+  .related-img-wrap { width: 100%; height: 160px; overflow: hidden; }
+  .related-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .related-body { padding: 0.875rem; }
+  .related-tag { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .related-card-title { font-size: 0.95rem; font-weight: 600; color: #1a1a2e; margin: 0.35rem 0 0; line-height: 1.4; font-family: 'Playfair Display', Georgia, serif; }
+  @media (max-width: 520px) { .related-grid { grid-template-columns: 1fr; } }
 
   .cta-box {
     display: flex;

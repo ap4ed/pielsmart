@@ -11,6 +11,30 @@ import ComparisonTable from '../../components/ComparisonTable.astro';
 import { products } from '../../data/products';
 import { getCollection, render } from 'astro:content';
 
+const NAIL_IMG = 'https://images.pexels.com/photos/34971940/pexels-photo-34971940/free-photo-of-close-up-of-stylish-turquoise-nail-art.jpeg';
+const SKINCARE_IMG = 'https://images.pexels.com/photos/30968097/pexels-photo-30968097.jpeg';
+const MAQUILLAJE_IMG = 'https://images.pexels.com/photos/3993398/pexels-photo-3993398.jpeg';
+const PERFUMES_IMG = 'https://images.pexels.com/photos/7270671/pexels-photo-7270671.jpeg';
+
+const relatedArticlesMap: Record<string, { title: string; slug: string; pillar: string; image?: string }[]> = {
+  'modelos-de-unas-2025': [
+    { title: '¿Para qué sirve el ácido hialurónico?', slug: 'para-que-sirve-el-acido-hialuronico', pillar: 'skincare', image: SKINCARE_IMG },
+    { title: 'Maquillaje sencillo paso a paso', slug: 'maquillaje-sencillo-paso-a-paso', pillar: 'maquillaje', image: MAQUILLAJE_IMG },
+  ],
+  'perfumes-para-hombre': [
+    { title: '¿Para qué sirve el ácido hialurónico?', slug: 'para-que-sirve-el-acido-hialuronico', pillar: 'skincare', image: SKINCARE_IMG },
+    { title: 'Modelos de Uñas 2026', slug: 'modelos-de-unas-2025', pillar: 'unas', image: NAIL_IMG },
+  ],
+  'para-que-sirve-el-acido-hialuronico': [
+    { title: 'Maquillaje sencillo paso a paso', slug: 'maquillaje-sencillo-paso-a-paso', pillar: 'maquillaje', image: MAQUILLAJE_IMG },
+    { title: 'Modelos de Uñas 2026', slug: 'modelos-de-unas-2025', pillar: 'unas', image: NAIL_IMG },
+  ],
+  'maquillaje-sencillo-paso-a-paso': [
+    { title: '¿Para qué sirve el ácido hialurónico?', slug: 'para-que-sirve-el-acido-hialuronico', pillar: 'skincare', image: SKINCARE_IMG },
+    { title: 'Modelos de Uñas 2026', slug: 'modelos-de-unas-2025', pillar: 'unas', image: NAIL_IMG },
+  ],
+};
+
 export async function getStaticPaths() {
   // --- Product review paths (existing) ---
   const reviewPaths = products.map((p) => ({
@@ -72,6 +96,7 @@ const { Content } = entry ? await render(entry) : { Content: null };
     dateModified={entry.data.dateModified}
     targetKeyword={entry.data.targetKeyword}
     image={entry.data.image}
+    relatedArticles={relatedArticlesMap[entry.id] ?? []}
   >
     <Content />
   </ArticleLayout>
