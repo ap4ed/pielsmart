@@ -126,19 +126,21 @@ for (const asin of asins) {
   data.url = `https://www.amazon.com/dp/${asin}?tag=pielsmart-20`;
   results.push(data);
 
+  const isDeal = !!(data.listPrice && data.listPrice !== data.salePrice) || !!data.discount || !!data.coupon;
+  data.isDeal = isDeal;
+
   console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
-  console.log(`ASIN:        ${asin}`);
-  console.log(`Title:       ${data.title ?? 'n/a'}`);
-  console.log(`Image:       ${data.imageUrl ?? 'n/a'}`);
-  console.log(`Rating:      ${data.rating ?? 'n/a'}`);
-  console.log(`Reviews:     ${data.reviewCount ?? 'n/a'}`);
-  console.log(`Sale price:  ${data.salePrice ?? 'n/a'}`);
-  console.log(`List price:  ${data.listPrice ?? 'n/a'} (strikethrough)`);
-  console.log(`Discount:    ${data.discount ?? 'n/a'}`);
-  console.log(`Prime:       ${data.prime ? 'Yes' : 'No'}`);
-  console.log(`Coupon:      ${data.coupon ?? 'none'}`);
-  console.log(`Availability:${data.availability ?? 'n/a'}`);
-  console.log(`Link:        ${data.url}`);
+  console.log(`${isDeal ? '🔥 DEAL ' : ''}ASIN: ${asin}`);
+  console.log(`Title:        ${data.title ?? 'n/a'}`);
+  console.log(`Image:        ${data.imageUrl ?? 'n/a'}`);
+  console.log(`Rating:       ${data.rating ?? 'n/a'} ${data.reviewCount ?? ''}`);
+  console.log(`Sale price:   ${data.salePrice ?? 'n/a'}`);
+  console.log(`List price:   ${data.listPrice ?? 'none'} (strikethrough)`);
+  console.log(`Discount:     ${data.discount ?? 'none'}`);
+  console.log(`Coupon:       ${data.coupon ?? 'none'}`);
+  console.log(`Prime:        ${data.prime ? 'Yes ✈️' : 'No'}`);
+  console.log(`Availability: ${data.availability ?? 'n/a'}`);
+  console.log(`Link:         ${data.url}`);
 }
 
 console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');

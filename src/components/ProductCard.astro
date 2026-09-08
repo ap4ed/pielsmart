@@ -5,6 +5,11 @@ interface Props {
   tagline: string;
   why: string;
   price: string;
+  listPrice?: string;
+  discount?: string;
+  coupon?: string;
+  rating?: string;
+  reviews?: string;
   badge?: string;
   badgeColor?: string;
   link: string;
@@ -18,6 +23,11 @@ const {
   tagline,
   why,
   price,
+  listPrice,
+  discount,
+  coupon,
+  rating,
+  reviews,
   badge,
   badgeColor = '#c4693a',
   link,
@@ -53,12 +63,28 @@ const imageUrl = image ?? (asin
         <a href={link} target="_blank" rel="noopener nofollow">{name}</a>
       </h3>
       <p class="wc-tagline">{tagline}</p>
+      {(rating || reviews) && (
+        <div class="wc-rating">
+          {rating && <span class="wc-stars">{'★'.repeat(Math.round(parseFloat(rating)))}{'☆'.repeat(5 - Math.round(parseFloat(rating)))}</span>}
+          {rating && <span class="wc-rating-num">{rating}</span>}
+          {reviews && <span class="wc-reviews">({reviews})</span>}
+        </div>
+      )}
       <div class="wc-buy-row">
-        <span class="wc-price">{price}</span>
+        <div class="wc-price-block">
+          <span class="wc-price">{price}</span>
+          {listPrice && listPrice !== price && (
+            <span class="wc-list-price">{listPrice}</span>
+          )}
+          {discount && <span class="wc-discount">{discount}</span>}
+        </div>
         <a href={link} target="_blank" rel="noopener nofollow" class="wc-btn">
           Ver en {retailer} →
         </a>
       </div>
+      {coupon && (
+        <div class="wc-coupon">🏷️ Cupón disponible: ahorra {coupon} al aplicar en el checkout</div>
+      )}
       <div class="wc-why">
         <span class="wc-why-label">Por qué lo elegimos:</span> {why}
       </div>
@@ -131,6 +157,23 @@ const imageUrl = image ?? (asin
     color: #666;
     font-style: italic;
   }
+  .wc-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.82rem;
+  }
+  .wc-stars {
+    color: #FF9900;
+    letter-spacing: -1px;
+  }
+  .wc-rating-num {
+    font-weight: 600;
+    color: #1a1a2e;
+  }
+  .wc-reviews {
+    color: #888;
+  }
   .wc-buy-row {
     display: flex;
     align-items: center;
@@ -138,10 +181,37 @@ const imageUrl = image ?? (asin
     margin: 0.25rem 0;
     flex-wrap: wrap;
   }
+  .wc-price-block {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
   .wc-price {
     font-size: 1.1rem;
     font-weight: 700;
-    color: #1a1a2e;
+    color: #B12704;
+  }
+  .wc-list-price {
+    font-size: 0.9rem;
+    color: #888;
+    text-decoration: line-through;
+  }
+  .wc-discount {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #fff;
+    background: #B12704;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+  }
+  .wc-coupon {
+    font-size: 0.82rem;
+    color: #2d6a2d;
+    background: #edfaed;
+    border: 1px solid #b6dfb6;
+    border-radius: 6px;
+    padding: 0.35rem 0.75rem;
   }
   .wc-btn {
     background: #FF9900;
