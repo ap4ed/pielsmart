@@ -67,7 +67,7 @@ const imageUrl = image ?? (asin
         <div class="wc-rating">
           {rating && <span class="wc-stars">{'★'.repeat(Math.round(parseFloat(rating)))}{'☆'.repeat(5 - Math.round(parseFloat(rating)))}</span>}
           {rating && <span class="wc-rating-num">{rating}</span>}
-          {reviews && <span class="wc-reviews">({reviews})</span>}
+          {reviews && <span class="wc-reviews">{reviews}</span>}
         </div>
       )}
       <div class="wc-buy-row">
