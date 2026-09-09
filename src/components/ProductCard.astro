@@ -72,10 +72,10 @@ const imageUrl = image ?? (asin
       )}
       <div class="wc-buy-row">
         <div class="wc-price-block">
-          <span class="wc-price">{price}</span>
           {listPrice && listPrice !== price && (
             <span class="wc-list-price">{listPrice}</span>
           )}
+          <span class="wc-price">{price}</span>
           {discount && <span class="wc-discount">{discount}</span>}
         </div>
         <a href={link} target="_blank" rel="noopener nofollow" class="wc-btn">
