@@ -5,6 +5,7 @@ import { getCollection } from 'astro:content';
 const pillarSlug = 'skincare';
 const pillarName = 'Skincare';
 const pillarColor = '#7DB9A8';
+const pillarIntro = 'Guías de skincare basadas en evidencia: ácido hialurónico, retinol, vitamina C y ceramidas. Rutinas para todo tipo de piel, adaptadas al clima de América Latina. Todo con productos disponibles en Amazon.';
 
 const allArticles = await getCollection('articles');
 const articles = allArticles
@@ -14,12 +15,39 @@ const articles = allArticles
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString('es-419', { day: 'numeric', month: 'long', year: 'numeric' });
 }
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://pielsmart.com/' },
+    { '@type': 'ListItem', position: 2, name: pillarName, item: `https://pielsmart.com/${pillarSlug}/` },
+  ],
+};
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: `${pillarName} — PielSmart`,
+  url: `https://pielsmart.com/${pillarSlug}/`,
+  itemListElement: articles.map((a, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: `https://pielsmart.com/${pillarSlug}/${a.id}/`,
+    name: a.data.title,
+  })),
+};
 ---
 
 <BaseLayout
   title={`${pillarName} — PielSmart`}
-  description={`Guías, reseñas y comparativas de ${pillarName.toLowerCase()} para América Latina. Todo en español con productos en Amazon.`}
+  description="Guías de skincare en español: ácido hialurónico, retinol y más. Productos recomendados con precios reales en Amazon para América Latina."
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} />
+  </Fragment>
+
   <nav class="breadcrumb" aria-label="Breadcrumb">
     <a href="/">Inicio</a>
     <span>›</span>
@@ -27,6 +55,7 @@ function formatDate(dateStr: string) {
   </nav>
 
   <h1 class="pillar-h1">{pillarName}</h1>
+  <p class="pillar-intro">{pillarIntro}</p>
   <hr class="divider" />
 
   {articles.length === 0 ? (
@@ -72,8 +101,15 @@ function formatDate(dateStr: string) {
 .breadcrumb a:hover { color: #c4693a; }
 .pillar-h1 {
   font-size: clamp(2rem, 4vw, 3rem);
-  margin: 0 0 1rem;
+  margin: 0 0 0.75rem;
   color: #1a1a2e;
+}
+.pillar-intro {
+  font-size: 1.05rem;
+  color: #4b5563;
+  line-height: 1.75;
+  max-width: 720px;
+  margin: 0 0 1.5rem;
 }
 .divider {
   border: none;

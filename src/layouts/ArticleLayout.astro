@@ -62,27 +62,50 @@ function formatDateSpanish(isoDate: string): string {
 
 const formattedDate = formatDateSpanish(datePublished);
 
-const articleSchema = {
+const canonicalUrl = `https://pielsmart.com/${pillar}/${Astro.url.pathname.split('/').filter(Boolean).pop()}/`;
+
+const articleSchema: Record<string, unknown> = {
   '@context': 'https://schema.org',
   '@type': 'Article',
   headline: title,
   description,
   datePublished,
   dateModified: dateModified ?? datePublished,
-  author: { '@type': 'Organization', name: 'PielSmart' },
+  author: { '@type': 'Organization', name: 'PielSmart', url: 'https://pielsmart.com' },
   publisher: {
     '@type': 'Organization',
     name: 'PielSmart',
     url: 'https://pielsmart.com',
+    logo: { '@type': 'ImageObject', url: 'https://pielsmart.com/favicon.svg' },
   },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
   keywords: targetKeyword,
   inLanguage: 'es-419',
 };
+if (image) {
+  articleSchema.image = {
+    '@type': 'ImageObject',
+    url: image,
+    width: 1200,
+    height: 630,
+  };
+}
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://pielsmart.com/' },
+    { '@type': 'ListItem', position: 2, name: pillarName, item: `https://pielsmart.com/${pillar}/` },
+    { '@type': 'ListItem', position: 3, name: title },
+  ],
+};
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} ogImage={image} canonicalUrl={canonicalUrl}>
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   </Fragment>
 
   <article class="article-page">

@@ -2,6 +2,30 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'PielSmart',
+  url: 'https://pielsmart.com',
+  description: 'Guías y reseñas de belleza en español para América Latina.',
+  inLanguage: 'es-419',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: { '@type': 'EntryPoint', urlTemplate: 'https://pielsmart.com/?q={search_term_string}' },
+    'query-input': 'required name=search_term_string',
+  },
+};
+
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'PielSmart',
+  url: 'https://pielsmart.com',
+  logo: { '@type': 'ImageObject', url: 'https://pielsmart.com/favicon.svg' },
+  description: 'Guías de belleza en español para América Latina — skincare, maquillaje, cabello, uñas, perfumes y dispositivos.',
+  sameAs: ['https://github.com/ap4ed/pielsmart'],
+};
+
 const allArticles = await getCollection('articles');
 allArticles.sort((a, b) => new Date(b.data.datePublished).getTime() - new Date(a.data.datePublished).getTime());
 
@@ -57,6 +81,11 @@ function formatDate(dateStr: string) {
   title="PielSmart — Guías y reseñas de belleza en español"
   description="Guías, reseñas y comparativas de skincare, maquillaje, cabello, uñas y perfumes para América Latina."
 >
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+  </Fragment>
+
   {/* ── Asymmetric Hero ── */}
   {featured && (
     <div class="hero-grid">
