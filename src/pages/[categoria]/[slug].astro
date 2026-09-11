@@ -15,6 +15,8 @@ const NAIL_IMG = 'https://images.pexels.com/photos/34971940/pexels-photo-3497194
 const SKINCARE_IMG = 'https://images.pexels.com/photos/30968097/pexels-photo-30968097.jpeg';
 const MAQUILLAJE_IMG = 'https://images.pexels.com/photos/3993398/pexels-photo-3993398.jpeg';
 const PERFUMES_IMG = 'https://images.pexels.com/photos/7270671/pexels-photo-7270671.jpeg';
+const CABELLO_IMG = 'https://images.pexels.com/photos/3993451/pexels-photo-3993451.jpeg';
+const DISPOSITIVOS_IMG = 'https://images.pexels.com/photos/3738359/pexels-photo-3738359.jpeg';
 
 const relatedArticlesMap: Record<string, { title: string; slug: string; pillar: string; image?: string }[]> = {
   'modelos-de-unas-2025': [
@@ -32,6 +34,30 @@ const relatedArticlesMap: Record<string, { title: string; slug: string; pillar: 
   'maquillaje-sencillo-paso-a-paso': [
     { title: '¿Para qué sirve el ácido hialurónico?', slug: 'para-que-sirve-el-acido-hialuronico', pillar: 'skincare', image: SKINCARE_IMG },
     { title: 'Modelos de Uñas 2026', slug: 'modelos-de-unas-2025', pillar: 'unas', image: NAIL_IMG },
+  ],
+  'mejores-shampoos': [
+    { title: 'Mejores Secadoras y Planchas 2026', slug: 'mejores-secadoras-y-planchas', pillar: 'dispositivos', image: DISPOSITIVOS_IMG },
+    { title: '¿Para qué sirve el ácido hialurónico?', slug: 'para-que-sirve-el-acido-hialuronico', pillar: 'skincare', image: SKINCARE_IMG },
+  ],
+  'mejores-secadoras-y-planchas': [
+    { title: 'Los Mejores Shampoos de 2026', slug: 'mejores-shampoos', pillar: 'cabello', image: CABELLO_IMG },
+    { title: 'Maquillaje sencillo paso a paso', slug: 'maquillaje-sencillo-paso-a-paso', pillar: 'maquillaje', image: MAQUILLAJE_IMG },
+  ],
+  'maquillaje-de-catrina': [
+    { title: 'Maquillaje sencillo paso a paso', slug: 'maquillaje-sencillo-paso-a-paso', pillar: 'maquillaje', image: MAQUILLAJE_IMG },
+    { title: 'Modelos de Uñas 2026', slug: 'modelos-de-unas-2025', pillar: 'unas', image: NAIL_IMG },
+  ],
+  'perfumes-para-mujer': [
+    { title: 'Los Mejores Perfumes para Hombre 2026', slug: 'perfumes-para-hombre', pillar: 'perfumes', image: PERFUMES_IMG },
+    { title: '¿Para qué sirve el ácido hialurónico?', slug: 'para-que-sirve-el-acido-hialuronico', pillar: 'skincare', image: SKINCARE_IMG },
+  ],
+  'unas-de-acrilico-guia-completa': [
+    { title: 'Modelos de Uñas 2026', slug: 'modelos-de-unas-2025', pillar: 'unas', image: NAIL_IMG },
+    { title: 'Maquillaje sencillo paso a paso', slug: 'maquillaje-sencillo-paso-a-paso', pillar: 'maquillaje', image: MAQUILLAJE_IMG },
+  ],
+  'perfumes-arabes': [
+    { title: 'Los Mejores Perfumes para Hombre 2026', slug: 'perfumes-para-hombre', pillar: 'perfumes', image: PERFUMES_IMG },
+    { title: 'Los Mejores Perfumes para Mujer 2026', slug: 'perfumes-para-mujer', pillar: 'perfumes', image: PERFUMES_IMG },
   ],
 };
 
