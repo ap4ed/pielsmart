@@ -102,7 +102,7 @@ const breadcrumbSchema = {
 };
 ---
 
-<BaseLayout title={title} description={description} ogImage={image} canonicalUrl={canonicalUrl}>
+<BaseLayout title={title} description={description} ogImage={image} canonicalUrl={canonicalUrl} ogType="article">
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />

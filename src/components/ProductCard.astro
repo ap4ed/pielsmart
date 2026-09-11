@@ -38,7 +38,36 @@ const {
 const imageUrl = image ?? (asin
   ? `https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=${asin}&Format=_SL250_&ID=AsinImage&MarketPlace=US&ServiceVersion=20070822&WS=1&tag=pielsmart-20`
   : null);
+
+const numericPrice = price ? parseFloat(price.replace(/[^0-9.]/g, '')) : null;
+const productSchema = numericPrice ? {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name,
+  description: tagline,
+  ...(imageUrl && { image: imageUrl }),
+  ...(rating && {
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: rating,
+      ...(reviews && { reviewCount: reviews.replace(/[^0-9]/g, '') }),
+      bestRating: '5',
+    },
+  }),
+  offers: {
+    '@type': 'Offer',
+    url: link,
+    priceCurrency: 'USD',
+    price: numericPrice.toFixed(2),
+    availability: 'https://schema.org/InStock',
+    seller: { '@type': 'Organization', name: retailer },
+  },
+} : null;
 ---
+
+{productSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify(productSchema)} />
+)}
 
 <div class="wc-card">
   {badge && (
