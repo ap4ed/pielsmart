@@ -12,13 +12,41 @@ const pillars = [
 
 <footer class="site-footer">
   <div class="footer-inner">
+
+    {/* ── Top section: logo + about + social ── */}
     <div class="footer-top">
       <div class="footer-brand">
         <a href="/" class="footer-logo">
           <span class="logo-piel">Piel</span><span class="logo-smart">Smart</span>
         </a>
-        <p>Tu guía de belleza en español para toda América Latina.</p>
+        <p class="footer-about">
+          PielSmart es una guía independiente de belleza en español. Analizamos productos y tendencias para ayudarte a elegir mejor.
+        </p>
+        <div class="footer-social">
+          {/* Instagram */}
+          <a href="#" class="social-icon" aria-label="Instagram" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/>
+            </svg>
+          </a>
+          {/* TikTok */}
+          <a href="#" class="social-icon" aria-label="TikTok" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V9.61a8.16 8.16 0 0 0 4.77 1.52V7.68a4.85 4.85 0 0 1-1-.99z"/>
+            </svg>
+          </a>
+          {/* Pinterest */}
+          <a href="#" class="social-icon" aria-label="Pinterest" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/>
+            </svg>
+          </a>
+        </div>
       </div>
+
+      {/* ── Nav columns ── */}
       <div class="footer-nav">
         <p class="footer-nav-title">Categorías</p>
         <ul>
@@ -35,89 +63,157 @@ const pillars = [
         </ul>
       </div>
     </div>
+
+    {/* ── Bottom bar ── */}
     <div class="footer-bottom">
       <p class="disclosure">
         Como Asociado de Amazon, ganamos comisiones por compras elegibles. Los precios y disponibilidad pueden cambiar.
       </p>
-      <p class="copyright">© {year} PielSmart. Todos los derechos reservados.</p>
+      <p class="copyright">© {year} PielSmart · <a href="/divulgacion/">Divulgación</a> · <a href="/como-resenamos/">Cómo Reseñamos</a></p>
     </div>
+
   </div>
 </footer>
 
 <style>
   .site-footer {
-    background: #1a1a2e;
-    color: #c8c8d8;
-    padding: 3.5rem 0 2rem;
+    background: #111;
+    color: #bbb;
     margin-top: 5rem;
   }
+
   .footer-inner {
     max-width: 1100px;
     margin: 0 auto;
     padding: 0 1.25rem;
   }
+
+  /* ── Top section ── */
   .footer-top {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
     gap: 3rem;
-    padding-bottom: 2.5rem;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    margin-bottom: 2rem;
+    padding: 3.5rem 0 2.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
   }
-  @media (max-width: 640px) {
-    .footer-top { grid-template-columns: 1fr 1fr; }
-    .footer-brand { grid-column: 1 / -1; }
-  }
+
+  /* ── Brand ── */
   .footer-logo {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 700;
     text-decoration: none;
     display: inline-block;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    letter-spacing: -0.5px;
   }
   .logo-piel { color: #fff; }
   .logo-smart { color: #e07b39; }
-  .footer-brand p {
-    margin: 0;
+
+  .footer-about {
+    margin: 0 0 1.25rem;
     font-size: 0.9rem;
     line-height: 1.7;
-    color: #9999aa;
+    color: #888;
+    max-width: 340px;
   }
+
+  /* ── Social icons ── */
+  .footer-social {
+    display: flex;
+    gap: 0.6rem;
+  }
+
+  .social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #999;
+    text-decoration: none;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .social-icon:hover {
+    border-color: #e07b39;
+    color: #e07b39;
+  }
+
+  /* ── Nav columns ── */
   .footer-nav-title {
-    font-weight: 600;
+    font-weight: 700;
     color: #fff;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
     margin: 0 0 1rem;
+    font-family: 'DM Sans', sans-serif;
   }
+
   .footer-nav ul {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.55rem;
   }
+
   .footer-nav a {
-    color: #9999aa;
+    color: #888;
     text-decoration: none;
     font-size: 0.9rem;
+    font-family: 'DM Sans', sans-serif;
     transition: color 0.15s;
   }
   .footer-nav a:hover { color: #e07b39; }
-  .footer-bottom { text-align: center; }
-  .disclosure {
-    font-size: 0.8rem;
-    color: #6b6b7b;
-    max-width: 560px;
-    margin: 0 auto 0.75rem;
-    line-height: 1.6;
+
+  /* ── Bottom bar ── */
+  .footer-bottom {
+    background: #0a0a0a;
+    margin: 0 -1.25rem;
+    padding: 1.5rem 1.25rem;
+    text-align: center;
   }
+
+  .disclosure {
+    font-size: 0.78rem;
+    color: #555;
+    max-width: 560px;
+    margin: 0 auto 0.6rem;
+    line-height: 1.6;
+    font-family: 'DM Sans', sans-serif;
+  }
+
   .copyright {
-    font-size: 0.8rem;
-    color: #555566;
+    font-size: 0.78rem;
+    color: #444;
     margin: 0;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .copyright a {
+    color: #555;
+    text-decoration: none;
+  }
+  .copyright a:hover { color: #e07b39; }
+
+  /* ── Mobile ── */
+  @media (max-width: 768px) {
+    .footer-top {
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .footer-brand {
+      grid-column: 1 / -1;
+    }
+    .footer-about { max-width: 100%; }
+  }
+
+  @media (max-width: 480px) {
+    .footer-top { grid-template-columns: 1fr; }
+    .footer-logo { font-size: 1.6rem; }
   }
 </style>

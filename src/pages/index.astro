@@ -7,7 +7,7 @@ const websiteSchema = {
   '@type': 'WebSite',
   name: 'PielSmart',
   url: 'https://pielsmart.com',
-  description: 'Guías y reseñas de belleza en español para América Latina.',
+  description: 'Guías y reseñas de belleza en español.',
   inLanguage: 'es-419',
   potentialAction: {
     '@type': 'SearchAction',
@@ -16,31 +16,8 @@ const websiteSchema = {
   },
 };
 
-const orgSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: 'PielSmart',
-  url: 'https://pielsmart.com',
-  logo: { '@type': 'ImageObject', url: 'https://pielsmart.com/favicon.svg' },
-  description: 'Guías de belleza en español para América Latina — skincare, maquillaje, cabello, uñas, perfumes y dispositivos.',
-  sameAs: ['https://github.com/ap4ed/pielsmart'],
-};
-
 const allArticles = await getCollection('articles');
 allArticles.sort((a, b) => new Date(b.data.datePublished).getTime() - new Date(a.data.datePublished).getTime());
-
-const featured = allArticles[0];
-const second = allArticles[1];
-const third = allArticles[2];
-
-const pillarColors: Record<string, string> = {
-  skincare: '#7DB9A8',
-  maquillaje: '#C4728A',
-  cabello: '#C9A35E',
-  unas: '#9B7EC8',
-  perfumes: '#C47898',
-  dispositivos: '#5E9EC4',
-};
 
 const pillarNames: Record<string, string> = {
   skincare: 'Skincare',
@@ -51,17 +28,87 @@ const pillarNames: Record<string, string> = {
   dispositivos: 'Dispositivos',
 };
 
-// Group articles by pillar, preserving order of first appearance
+// Subcategory links per pillar → link to existing articles
+const pillarSubcats: Record<string, { label: string; href: string }[]> = {
+  skincare: [
+    { label: 'Ácido Hialurónico', href: '/skincare/para-que-sirve-el-acido-hialuronico/' },
+    { label: 'Retinol', href: '/skincare/para-que-sirve-el-retinol/' },
+  ],
+  maquillaje: [
+    { label: 'Paso a Paso', href: '/maquillaje/maquillaje-sencillo-paso-a-paso/' },
+    { label: 'Correctores', href: '/maquillaje/correctores-de-maquillaje/' },
+    { label: 'Sombras', href: '/maquillaje/sombras-de-ojos/' },
+    { label: 'Cejas', href: '/maquillaje/cejas-perfectas/' },
+  ],
+  cabello: [
+    { label: 'Shampoos', href: '/cabello/mejores-shampoos/' },
+    { label: 'Secadoras y Planchas', href: '/dispositivos/mejores-secadoras-y-planchas/' },
+  ],
+  unas: [
+    { label: 'Acrílicas', href: '/unas/unas-de-acrilico-guia-completa/' },
+    { label: 'Semipermanentes', href: '/unas/unas-semipermanentes/' },
+    { label: 'Modelos', href: '/unas/modelos-de-unas-2025/' },
+  ],
+  perfumes: [
+    { label: 'Mujer', href: '/perfumes/perfumes-para-mujer/' },
+    { label: 'Hombre', href: '/perfumes/perfumes-para-hombre/' },
+    { label: 'Árabes', href: '/perfumes/perfumes-arabes/' },
+  ],
+  dispositivos: [
+    { label: 'Secadoras y Planchas', href: '/dispositivos/mejores-secadoras-y-planchas/' },
+  ],
+};
+
+// Group by pillar
 const pillarOrder: string[] = [];
 const byPillar = new Map<string, typeof allArticles>();
 for (const article of allArticles) {
   const p = article.data.pillar;
-  if (!byPillar.has(p)) {
-    byPillar.set(p, []);
-    pillarOrder.push(p);
-  }
+  if (!byPillar.has(p)) { byPillar.set(p, []); pillarOrder.push(p); }
   byPillar.get(p)!.push(article);
 }
+
+const topStory = allArticles[0];
+const sidebarArticles = allArticles.slice(0, 8);
+// Editorial section: articles 1-4
+const editorialFeatured = allArticles[1];
+const editorialList = allArticles.slice(2, 5);
+
+// Deals sidebar — hardcoded discounted products
+const deals = [
+  {
+    name: "Armaf Club de Nuit Intense Man",
+    price: "$30.25",
+    discount: "-31%",
+    image: "https://m.media-amazon.com/images/I/517KoN9DUQL.jpg",
+    link: "https://www.amazon.com/dp/B00M3IFUMK?tag=pielsmart-20",
+    article: "/perfumes/perfumes-arabes/",
+  },
+  {
+    name: "Rasasi Hawas EDP 100ml",
+    price: "$29.90",
+    discount: "-32%",
+    image: "https://m.media-amazon.com/images/I/51h+3KRCLiL.jpg",
+    link: "https://www.amazon.com/dp/B01LDT51ZU?tag=pielsmart-20",
+    article: "/perfumes/perfumes-arabes/",
+  },
+  {
+    name: "L'Oreal Elvive Total Repair 5",
+    price: "$7.68",
+    discount: "-27%",
+    image: "https://m.media-amazon.com/images/I/71Er4Rss1LL.jpg",
+    link: "https://www.amazon.com/dp/B07525QJC8?tag=pielsmart-20",
+    article: "/cabello/mejores-shampoos/",
+  },
+  {
+    name: "CeraVe Hyaluronic Acid Serum",
+    price: "$17.29",
+    discount: "-25%",
+    image: "https://m.media-amazon.com/images/I/61LGrVlTaCL.jpg",
+    link: "https://www.amazon.com/dp/B07K3261ZD?tag=pielsmart-20",
+    article: "/skincare/para-que-sirve-el-acido-hialuronico/",
+  },
+];
 
 const pillars = [
   { slug: 'skincare', nombre: 'Skincare' },
@@ -75,125 +122,226 @@ const pillars = [
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString('es-419', { day: 'numeric', month: 'long', year: 'numeric' });
 }
+
+const articlesJson = JSON.stringify(allArticles.map(a => ({
+  id: a.id,
+  title: a.data.title,
+  description: a.data.description,
+  pillar: a.data.pillar,
+  image: a.data.image ?? null,
+  keyword: a.data.targetKeyword ?? '',
+})));
+
+const finderSuggestions = [
+  { label: '¿Para qué sirve el ácido hialurónico?', q: 'ácido hialurónico' },
+  { label: '¿Cuál es el mejor shampoo para cabello dañado?', q: 'shampoo cabello' },
+  { label: '¿Cómo maquillarme paso a paso?', q: 'maquillaje paso a paso' },
+  { label: '¿Qué perfumes árabes valen la pena?', q: 'perfumes árabes' },
+];
 ---
 
 <BaseLayout
   title="PielSmart — Guías y reseñas de belleza en español"
-  description="Guías, reseñas y comparativas de skincare, maquillaje, cabello, uñas y perfumes para América Latina."
+  description="Guías, reseñas y comparativas de skincare, maquillaje, cabello, uñas y perfumes."
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
-    <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
   </Fragment>
 
-  {/* ── Asymmetric Hero ── */}
-  {featured && (
-    <div class="hero-grid">
-      {/* Featured — left 2/3 */}
-      <a href={`/${featured.data.pillar}/${featured.id}/`} class="hero-featured">
-        {featured.data.image && (
-          <div class="hero-featured-img">
+  {/* ── 3-column hero ── */}
+  <div class="hero-grid">
+
+    {/* LEFT: recent article list */}
+    <aside class="hero-sidebar-left">
+      <p class="sidebar-title">Lo último</p>
+      <ul class="sidebar-list">
+        {sidebarArticles.map(a => (
+          <li>
+            <a href={`/${a.data.pillar}/${a.id}/`} class="sidebar-link">
+              <span class="sidebar-pillar">{pillarNames[a.data.pillar]}</span>
+              {a.data.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <a href="/skincare/" class="sidebar-see-all">Ver todo →</a>
+    </aside>
+
+    {/* CENTER: featured article */}
+    {topStory && (
+      <a href={`/${topStory.data.pillar}/${topStory.id}/`} class="hero-center">
+        {topStory.data.image && (
+          <div class="hero-center-img">
             <img
-              src={`${featured.data.image}?auto=compress&cs=tinysrgb&w=900&h=360&fit=crop`}
-              alt={featured.data.title}
+              src={`${topStory.data.image}?auto=compress&cs=tinysrgb&w=800&h=460&fit=crop`}
+              alt={topStory.data.title}
               loading="eager"
             />
           </div>
         )}
-        <div class="hero-featured-body">
-          <div class="hero-featured-meta">
-            <span class="pill" style={`background:${pillarColors[featured.data.pillar]}28; color:${pillarColors[featured.data.pillar]}`}>
-              {pillarNames[featured.data.pillar]}
-            </span>
-            <span class="meta-date">{formatDate(featured.data.datePublished)}</span>
-          </div>
-          <h1 class="hero-featured-title">{featured.data.title}</h1>
-          <p class="hero-featured-desc">{featured.data.description}</p>
-          <span class="hero-read">Leer artículo →</span>
+        <div class="hero-center-body">
+          <span class="hero-center-byline">PielSmart · {formatDate(topStory.data.datePublished)}</span>
+          <h1 class="hero-center-title">{topStory.data.title}</h1>
+          <p class="hero-center-desc">{topStory.data.description}</p>
         </div>
       </a>
+    )}
 
-      {/* Side column — right 1/3 */}
-      <div class="hero-side">
-        {second && (
-          <a href={`/${second.data.pillar}/${second.id}/`} class="hero-side-card">
-            {second.data.image && (
-              <div class="hero-side-img">
-                <img
-                  src={`${second.data.image}?auto=compress&cs=tinysrgb&w=500&h=220&fit=crop`}
-                  alt={second.data.title}
-                  loading="eager"
-                />
+    {/* RIGHT: deals sidebar */}
+    <aside class="hero-sidebar-right">
+      <p class="sidebar-title">Ofertas del día</p>
+      <ul class="deals-list">
+        {deals.map(deal => (
+          <li class="deal-item">
+            <a href={deal.link} target="_blank" rel="noopener nofollow" class="deal-img-wrap">
+              <img src={deal.image} alt={deal.name} loading="lazy" />
+            </a>
+            <div class="deal-body">
+              <a href={deal.link} target="_blank" rel="noopener nofollow" class="deal-name">{deal.name}</a>
+              <div class="deal-price-row">
+                <span class="deal-price">{deal.price}</span>
+                <span class="deal-badge">{deal.discount}</span>
               </div>
-            )}
-            <div class="hero-side-body">
-              <div class="side-meta">
-                <span class="pill" style={`background:${pillarColors[second.data.pillar]}22; color:${pillarColors[second.data.pillar]}`}>
-                  {pillarNames[second.data.pillar]}
-                </span>
-                <span class="meta-date">{formatDate(second.data.datePublished)}</span>
-              </div>
-              <p class="hero-side-title">{second.data.title}</p>
             </div>
-          </a>
-        )}
-        {third && (
-          <a href={`/${third.data.pillar}/${third.id}/`} class="hero-side-card">
-            {third.data.image && (
-              <div class="hero-side-img">
-                <img
-                  src={`${third.data.image}?auto=compress&cs=tinysrgb&w=500&h=220&fit=crop`}
-                  alt={third.data.title}
-                  loading="lazy"
-                />
-              </div>
-            )}
-            <div class="hero-side-body">
-              <div class="side-meta">
-                <span class="pill" style={`background:${pillarColors[third.data.pillar]}22; color:${pillarColors[third.data.pillar]}`}>
-                  {pillarNames[third.data.pillar]}
-                </span>
-                <span class="meta-date">{formatDate(third.data.datePublished)}</span>
-              </div>
-              <p class="hero-side-title">{third.data.title}</p>
-            </div>
-          </a>
-        )}
+          </li>
+        ))}
+      </ul>
+      <a href="/perfumes/perfumes-arabes/" class="sidebar-see-all">Ver todas las ofertas →</a>
+    </aside>
+
+  </div>
+
+  <hr class="hero-divider" />
+
+  {/* ── Finder section ── */}
+  <section class="finder-section" aria-label="Buscador de belleza">
+    <div class="finder-body">
+      <div class="finder-copy">
+        <h2 class="finder-headline">¿Qué necesitas encontrar?</h2>
+        <p class="finder-sub">PielSmart analiza cientos de productos para ayudarte a elegir bien.</p>
+      </div>
+      <div class="finder-controls">
+        <div class="finder-input-wrap">
+          <span class="finder-sparkle" aria-hidden="true">✦</span>
+          <input
+            type="text"
+            id="finderInput"
+            class="finder-input"
+            placeholder="Cuéntanos qué buscas..."
+            autocomplete="off"
+            spellcheck="false"
+          />
+        </div>
+        <div class="finder-chips">
+          {finderSuggestions.map(s => (
+            <button class="finder-chip" data-q={s.q} type="button">{s.label}</button>
+          ))}
+        </div>
       </div>
     </div>
+    <div class="finder-results" id="finderResults" hidden></div>
+  </section>
+
+  <hr class="section-divider" />
+
+  {/* ── Editorial section ("Artículos Destacados") ── */}
+  {editorialFeatured && (
+    <section class="editorial-section">
+      <div class="editorial-header">
+        <h2 class="editorial-title">Artículos Destacados</h2>
+        <p class="editorial-sub">Selección editorial de PielSmart</p>
+      </div>
+      <div class="editorial-grid">
+
+        {/* Featured left: image LEFT + text RIGHT */}
+        <a href={`/${editorialFeatured.data.pillar}/${editorialFeatured.id}/`} class="ed-featured">
+          {editorialFeatured.data.image && (
+            <div class="ed-featured-img">
+              <img
+                src={`${editorialFeatured.data.image}?auto=compress&cs=tinysrgb&w=600&h=360&fit=crop`}
+                alt={editorialFeatured.data.title}
+                loading="lazy"
+              />
+            </div>
+          )}
+          <div class="ed-featured-body">
+            <span class="ed-label">{pillarNames[editorialFeatured.data.pillar]}</span>
+            <h3 class="ed-featured-title">{editorialFeatured.data.title}</h3>
+            <p class="ed-featured-desc">{editorialFeatured.data.description}</p>
+            <span class="ed-date">Actualizado {formatDate(editorialFeatured.data.datePublished)}</span>
+          </div>
+        </a>
+
+        {/* Right list: text LEFT + thumb RIGHT */}
+        <div class="ed-list">
+          {editorialList.map((article, idx) => (
+            <>
+              <a href={`/${article.data.pillar}/${article.id}/`} class="ed-list-item">
+                <div class="ed-list-body">
+                  <span class="ed-label">{pillarNames[article.data.pillar]}</span>
+                  <p class="ed-list-title">{article.data.title}</p>
+                  <span class="ed-date">Actualizado {formatDate(article.data.datePublished)}</span>
+                </div>
+                {article.data.image && (
+                  <div class="ed-list-thumb">
+                    <img
+                      src={`${article.data.image}?auto=compress&cs=tinysrgb&w=160&h=120&fit=crop`}
+                      alt={article.data.title}
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+              </a>
+              {idx < editorialList.length - 1 && <hr class="ed-divider" />}
+            </>
+          ))}
+        </div>
+
+      </div>
+    </section>
   )}
 
-  {/* ── Per-Pillar Category Sections ── */}
+  <hr class="section-divider" />
+
+  {/* ── Per-pillar category sections ── */}
   {pillarOrder.map(pillar => {
     const articles = (byPillar.get(pillar) ?? []).slice(0, 3);
     if (articles.length === 0) return null;
+    const subcats = pillarSubcats[pillar] ?? [];
     return (
-      <section class="cat-section">
-        <div class="cat-header">
-          <h2 class="cat-title">{pillarNames[pillar]}</h2>
-          <a href={`/${pillar}/`} class="cat-more" style={`color:${pillarColors[pillar]}`}>ver todo →</a>
+      <section class="pillar-section">
+        <div class="pillar-header">
+          <div class="pillar-header-top">
+            <h2 class="pillar-title">{pillarNames[pillar]}</h2>
+            <a href={`/${pillar}/`} class="pillar-more">ver todo en {pillarNames[pillar]} →</a>
+          </div>
+          {subcats.length > 0 && (
+            <div class="pillar-subcats">
+              {subcats.map((sc, i) => (
+                <>
+                  <a href={sc.href} class="pillar-subcat">{sc.label}</a>
+                  {i < subcats.length - 1 && <span class="subcat-dot">·</span>}
+                </>
+              ))}
+            </div>
+          )}
         </div>
-        <div class="cat-grid" style={articles.length === 1 ? 'grid-template-columns: repeat(1, minmax(0, 380px))' : articles.length === 2 ? 'grid-template-columns: repeat(2, 1fr)' : ''}>
+
+        <div class={`pillar-cards ${articles.length === 1 ? 'pillar-cards--one' : articles.length === 2 ? 'pillar-cards--two' : ''}`}>
           {articles.map(article => (
-            <a href={`/${article.data.pillar}/${article.id}/`} class="art-card">
+            <a href={`/${article.data.pillar}/${article.id}/`} class="pillar-card">
               {article.data.image && (
-                <div class="art-img-wrap">
+                <div class="pillar-card-img">
                   <img
-                    src={`${article.data.image}?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop`}
+                    src={`${article.data.image}?auto=compress&cs=tinysrgb&w=500&h=280&fit=crop`}
                     alt={article.data.title}
-                    class="art-img"
                     loading="lazy"
                   />
                 </div>
               )}
-              <div class="art-body">
-                <div class="art-meta">
-                  <span class="pill" style={`background:${pillarColors[article.data.pillar]}22; color:${pillarColors[article.data.pillar]}`}>
-                    {pillarNames[article.data.pillar]}
-                  </span>
-                  <span class="meta-date">{formatDate(article.data.datePublished)}</span>
-                </div>
-                <p class="art-title">{article.data.title}</p>
+              <div class="pillar-card-body">
+                <p class="pillar-card-title">{article.data.title}</p>
+                <span class="pillar-card-date">Actualizado {formatDate(article.data.datePublished)}</span>
               </div>
             </a>
           ))}
@@ -202,254 +350,568 @@ function formatDate(dateStr: string) {
     );
   })}
 
-  {/* ── Browse Nav ── */}
+  {/* ── Browse nav ── */}
   <nav class="browse-nav" aria-label="Explorar categorías">
     <span class="browse-label">Explorar:</span>
     {pillars.map(({ slug, nombre }, i) => (
       <>
         <a href={`/${slug}/`} class="browse-link">{nombre}</a>
-        {i < pillars.length - 1 && <span class="dot">·</span>}
+        {i < pillars.length - 1 && <span class="browse-dot">·</span>}
       </>
     ))}
   </nav>
+
 </BaseLayout>
 
 <style>
-/* ── Hero ── */
+/* ══════════════════════════════════════════
+   HERO — 3-column
+══════════════════════════════════════════ */
 .hero-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 1.25rem;
-  margin: 2.5rem 0 3.5rem;
-  align-items: stretch;
+  grid-template-columns: 200px 1fr 200px;
+  gap: 0;
+  margin: 2rem 0 0;
+  align-items: start;
 }
 
-.hero-featured {
-  border-radius: 14px;
-  overflow: hidden;
+/* Shared sidebar styles */
+.hero-sidebar-left,
+.hero-sidebar-right {
+  padding-top: 0.25rem;
+}
+.hero-sidebar-left { padding-right: 1.5rem; border-right: 1px solid #e8e8e8; }
+.hero-sidebar-right { padding-left: 1.5rem; border-left: 1px solid #e8e8e8; }
+
+.sidebar-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #999;
+  font-family: 'DM Sans', sans-serif;
+  margin: 0 0 0.875rem;
+  border-bottom: 1px solid #e8e8e8;
+  padding-bottom: 0.5rem;
+}
+
+/* Left sidebar — article list */
+.sidebar-list {
+  list-style: none;
+  margin: 0 0 0.75rem;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  background: #1a1a2e;
+  gap: 0;
+}
+.sidebar-list li { border-bottom: 1px solid #f0f0f0; }
+.sidebar-link {
+  display: block;
+  padding: 0.6rem 0;
+  font-size: 0.82rem;
+  color: #222;
+  text-decoration: none;
+  line-height: 1.35;
+  font-family: 'DM Sans', sans-serif;
+  transition: color 0.15s;
+}
+.sidebar-link:hover { color: #c4693a; }
+.sidebar-pillar {
+  display: block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #c4693a;
+  margin-bottom: 0.15rem;
+}
+.sidebar-see-all {
+  font-size: 0.78rem;
+  color: #c4693a;
+  text-decoration: none;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+}
+.sidebar-see-all:hover { text-decoration: underline; }
+
+/* Center featured */
+.hero-center {
+  display: block;
   text-decoration: none;
   color: inherit;
-  transition: box-shadow 0.2s;
+  padding: 0 2rem;
 }
-.hero-featured:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.18); }
-
-.hero-featured-img {
+.hero-center-img {
   width: 100%;
-  height: 300px;
+  height: 320px;
   overflow: hidden;
-  flex-shrink: 0;
+  margin-bottom: 1.25rem;
 }
-.hero-featured-img img {
+.hero-center-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
   transition: transform 0.4s;
 }
-.hero-featured:hover .hero-featured-img img { transform: scale(1.03); }
+.hero-center:hover .hero-center-img img { transform: scale(1.02); }
 
-.hero-featured-body {
-  padding: 1.75rem 2rem 2rem;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-.hero-featured-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 0.875rem;
-}
-.hero-featured-title {
-  font-size: clamp(1.3rem, 2.5vw, 1.9rem);
-  color: #fff;
-  margin: 0 0 0.75rem;
-  line-height: 1.2;
-  font-family: 'Playfair Display', Georgia, serif;
-}
-.hero-featured-desc {
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.72);
-  margin: 0 0 1.25rem;
-  line-height: 1.65;
-  flex: 1;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.hero-read {
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: #e07b39;
-}
-
-/* Side column */
-.hero-side {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-.hero-side-card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #e8e8e8;
-  border-radius: 12px;
-  overflow: hidden;
-  text-decoration: none;
-  color: inherit;
-  transition: box-shadow 0.2s;
-  min-height: 0;
-}
-.hero-side-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
-.hero-side-img {
-  width: 100%;
-  height: 150px;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-.hero-side-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.hero-center-byline {
+  font-size: 0.72rem;
+  color: #999;
+  font-family: 'DM Sans', sans-serif;
   display: block;
-  transition: transform 0.3s;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
 }
-.hero-side-card:hover .hero-side-img img { transform: scale(1.04); }
-.hero-side-body {
-  padding: 0.875rem 1rem;
+.hero-center-title {
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 0.75rem;
+  line-height: 1.18;
+}
+.hero-center:hover .hero-center-title { color: #c4693a; }
+.hero-center-desc {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.65;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Right sidebar — deals */
+.deals-list {
+  list-style: none;
+  margin: 0 0 0.75rem;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  flex: 1;
+  gap: 0;
 }
-.side-meta {
+.deal-item {
+  display: flex;
+  gap: 0.6rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid #f0f0f0;
+  align-items: flex-start;
+}
+.deal-img-wrap {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #f9f9f9;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
 }
-.hero-side-title {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #1a1a2e;
-  margin: 0;
-  line-height: 1.35;
+.deal-img-wrap img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  display: block;
+}
+.deal-body { flex: 1; min-width: 0; }
+.deal-name {
+  font-size: 0.76rem;
+  color: #222;
+  text-decoration: none;
+  line-height: 1.3;
+  font-family: 'DM Sans', sans-serif;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.deal-name:hover { color: #c4693a; }
+.deal-price-row { display: flex; align-items: center; gap: 0.35rem; }
+.deal-price { font-size: 0.85rem; font-weight: 700; color: #b12704; font-family: 'DM Sans', sans-serif; }
+.deal-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  background: #b12704;
+  color: #fff;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+}
+
+/* Dividers */
+.hero-divider {
+  border: none;
+  border-top: 2px solid #111;
+  margin: 2rem 0;
+}
+.section-divider {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 0 0 2.5rem;
+}
+
+/* ══════════════════════════════════════════
+   FINDER
+══════════════════════════════════════════ */
+.finder-section {
+  background: #f7f5f2;
+  border-radius: 10px;
+  padding: 1.75rem 2rem;
+  margin-bottom: 2.5rem;
+}
+.finder-body {
+  display: grid;
+  grid-template-columns: 1fr 1.8fr;
+  gap: 2rem;
+  align-items: start;
+}
+.finder-headline {
   font-family: 'Playfair Display', Georgia, serif;
-}
-
-/* Shared pill + date */
-.pill {
-  display: inline-block;
-  font-size: 0.67rem;
+  font-size: 1.4rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 0.18rem 0.55rem;
-  border-radius: 100px;
-  white-space: nowrap;
+  color: #111;
+  margin: 0 0 0.4rem;
+  line-height: 1.2;
 }
-.meta-date {
-  font-size: 0.75rem;
-  color: #aaa;
-  white-space: nowrap;
-}
-
-/* ── Category sections ── */
-.cat-section { margin-bottom: 3rem; }
-
-.cat-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-  padding-left: 0.875rem;
-  border-left: 4px solid #1a1a2e;
-}
-.cat-title {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #1a1a2e;
+.finder-sub {
+  font-size: 0.85rem;
+  color: #666;
   margin: 0;
   font-family: 'DM Sans', sans-serif;
-  letter-spacing: 0.3px;
 }
-.cat-more {
-  font-size: 0.82rem;
-  font-weight: 600;
-  text-decoration: none;
-  white-space: nowrap;
-}
-.cat-more:hover { text-decoration: underline; }
-
-.cat-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
-
-/* Article card */
-.art-card {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #e8e8e8;
-  border-radius: 10px;
-  overflow: hidden;
-  text-decoration: none;
-  color: inherit;
-  transition: box-shadow 0.2s;
-}
-.art-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.09); }
-.art-img-wrap { width: 100%; height: 160px; overflow: hidden; flex-shrink: 0; }
-.art-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s; }
-.art-card:hover .art-img { transform: scale(1.04); }
-.art-body { padding: 0.875rem; display: flex; flex-direction: column; gap: 0.35rem; flex: 1; }
-.art-meta { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
-.art-title {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #1a1a2e;
-  margin: 0;
-  line-height: 1.35;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  font-family: 'Playfair Display', Georgia, serif;
-}
-
-/* ── Browse nav ── */
-.browse-nav {
+.finder-controls { display: flex; flex-direction: column; gap: 0.75rem; }
+.finder-input-wrap {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  padding: 2rem 0 1rem;
-  border-top: 1px solid #e8e8e8;
-  font-size: 0.9rem;
+  background: #fff;
+  border: 1.5px solid #ddd;
+  border-radius: 100px;
+  padding: 0 1.1rem;
+  gap: 0.6rem;
+  height: 44px;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
-.browse-label { color: #999; font-weight: 500; }
-.browse-link { color: #2d2d2d; text-decoration: none; font-weight: 500; }
-.browse-link:hover { color: #c4693a; }
-.dot { color: #ccc; }
+.finder-input-wrap:focus-within {
+  border-color: #c4693a;
+  box-shadow: 0 0 0 3px rgba(196,105,58,0.12);
+}
+.finder-sparkle { font-size: 0.9rem; color: #c4693a; flex-shrink: 0; }
+.finder-input {
+  flex: 1; border: none; background: transparent;
+  font-size: 0.88rem; color: #333;
+  font-family: 'DM Sans', sans-serif; outline: none;
+}
+.finder-input::placeholder { color: #bbb; }
+.finder-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.finder-chip {
+  font-size: 0.75rem; font-family: 'DM Sans', sans-serif;
+  color: #444; background: #fff; border: 1px solid #ddd;
+  border-radius: 100px; padding: 0.3rem 0.75rem;
+  cursor: pointer; transition: background 0.15s, border-color 0.15s, color 0.15s;
+  line-height: 1.4;
+}
+.finder-chip:hover { background: #fdf0ea; border-color: #c4693a; color: #c4693a; }
+.finder-results { margin-top: 1.1rem; border-top: 1px solid #e8e0d8; padding-top: 1.1rem; }
+.finder-results[hidden] { display: none; }
+.fr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.875rem; }
+.fr-item {
+  display: flex; gap: 0.7rem; text-decoration: none; color: inherit;
+  padding: 0.65rem; border-radius: 7px; transition: background 0.15s;
+}
+.fr-item:hover { background: #fff; }
+.fr-thumb { width: 60px; height: 46px; border-radius: 3px; overflow: hidden; flex-shrink: 0; }
+.fr-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fr-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.15rem; }
+.fr-label {
+  font-size: 0.62rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.8px; color: #c4693a; font-family: 'DM Sans', sans-serif;
+}
+.fr-title {
+  font-size: 0.8rem; font-weight: 600; color: #111;
+  font-family: 'Playfair Display', Georgia, serif; line-height: 1.3;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.fr-item:hover .fr-title { color: #c4693a; }
+.fr-empty { font-size: 0.85rem; color: #999; font-family: 'DM Sans', sans-serif; text-align: center; padding: 0.5rem 0; }
 
-/* ── Mobile ── */
-@media (max-width: 768px) {
-  .hero-grid { grid-template-columns: 1fr; }
-  .hero-side { flex-direction: row; }
-  .hero-side-card { flex: 1; }
-  .cat-grid { grid-template-columns: repeat(2, 1fr); }
+/* ══════════════════════════════════════════
+   EDITORIAL SECTION
+══════════════════════════════════════════ */
+.editorial-section { margin-bottom: 2.5rem; }
+
+.editorial-header { margin-bottom: 1.25rem; }
+.editorial-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.15rem; font-weight: 700; color: #111;
+  margin: 0 0 0.2rem; text-transform: uppercase; letter-spacing: 0.5px;
 }
-@media (max-width: 520px) {
-  .hero-side { flex-direction: column; }
-  .cat-grid { grid-template-columns: 1fr; }
+.editorial-sub {
+  font-size: 0.82rem; color: #888; font-family: 'DM Sans', sans-serif;
+  margin: 0; font-style: italic;
+}
+
+.editorial-grid {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 2rem;
+  border-top: 2px solid #111;
+  padding-top: 1.25rem;
+}
+
+/* Featured: image left + text right */
+.ed-featured {
+  display: flex;
+  gap: 1.25rem;
+  text-decoration: none;
+  color: inherit;
+  align-items: flex-start;
+}
+.ed-featured-img {
+  flex-shrink: 0;
+  width: 55%;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 3px;
+}
+.ed-featured-img img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 0.35s;
+}
+.ed-featured:hover .ed-featured-img img { transform: scale(1.03); }
+.ed-featured-body { flex: 1; }
+.ed-label {
+  font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: #c4693a; font-family: 'DM Sans', sans-serif;
+  display: block; margin-bottom: 0.4rem;
+}
+.ed-featured-title {
+  font-size: 1.1rem; font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700; color: #111; margin: 0 0 0.5rem; line-height: 1.25;
+}
+.ed-featured:hover .ed-featured-title { color: #c4693a; }
+.ed-featured-desc {
+  font-size: 0.83rem; color: #555; line-height: 1.6; margin: 0 0 0.5rem;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.ed-date { font-size: 0.72rem; color: #aaa; font-family: 'DM Sans', sans-serif; }
+
+/* Right list: text left + thumb right */
+.ed-list {
+  border-left: 1px solid #e8e8e8;
+  padding-left: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+.ed-list-item {
+  display: flex;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+  align-items: center;
+  padding: 0.75rem 0;
+}
+.ed-list-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+.ed-list-title {
+  font-size: 0.88rem; font-weight: 600; color: #111; margin: 0; line-height: 1.3;
+  font-family: 'Playfair Display', Georgia, serif;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.ed-list-item:hover .ed-list-title { color: #c4693a; }
+.ed-list-thumb {
+  flex-shrink: 0; width: 80px; height: 60px;
+  overflow: hidden; border-radius: 3px;
+}
+.ed-list-thumb img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 0.3s;
+}
+.ed-list-item:hover .ed-list-thumb img { transform: scale(1.05); }
+.ed-divider { border: none; border-top: 1px solid #eee; margin: 0; }
+
+/* ══════════════════════════════════════════
+   PILLAR SECTIONS
+══════════════════════════════════════════ */
+.pillar-section { margin-bottom: 3rem; }
+
+.pillar-header { margin-bottom: 0.6rem; }
+.pillar-header-top {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid #111;
+  margin-bottom: 0.5rem;
+}
+.pillar-title {
+  font-family: 'DM Sans', sans-serif; font-size: 1.05rem; font-weight: 700;
+  color: #111; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.pillar-more {
+  font-size: 0.78rem; color: #c4693a; text-decoration: none;
+  font-family: 'DM Sans', sans-serif; white-space: nowrap;
+}
+.pillar-more:hover { text-decoration: underline; }
+
+.pillar-subcats {
+  display: flex; flex-wrap: wrap; gap: 0.3rem 0.4rem;
+  align-items: center; margin-bottom: 1rem;
+}
+.pillar-subcat {
+  font-size: 0.78rem; color: #666; text-decoration: none;
+  font-family: 'DM Sans', sans-serif;
+  transition: color 0.15s;
+}
+.pillar-subcat:hover { color: #c4693a; text-decoration: underline; }
+.subcat-dot { font-size: 0.78rem; color: #ccc; }
+
+.pillar-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+.pillar-cards--one { grid-template-columns: repeat(1, minmax(0, 360px)); }
+.pillar-cards--two { grid-template-columns: repeat(2, 1fr); }
+
+.pillar-card {
+  display: flex; flex-direction: column;
+  text-decoration: none; color: inherit;
+  transition: opacity 0.2s;
+}
+.pillar-card:hover { opacity: 0.85; }
+.pillar-card-img {
+  width: 100%; height: 170px; overflow: hidden;
+  border-radius: 3px; margin-bottom: 0.75rem;
+}
+.pillar-card-img img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 0.35s;
+}
+.pillar-card:hover .pillar-card-img img { transform: scale(1.03); }
+.pillar-card-body { display: flex; flex-direction: column; gap: 0.3rem; }
+.pillar-card-title {
+  font-size: 0.92rem; font-weight: 600; color: #111; margin: 0; line-height: 1.3;
+  font-family: 'Playfair Display', Georgia, serif;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.pillar-card:hover .pillar-card-title { color: #c4693a; }
+.pillar-card-date { font-size: 0.72rem; color: #aaa; font-family: 'DM Sans', sans-serif; }
+
+/* ══════════════════════════════════════════
+   BROWSE NAV
+══════════════════════════════════════════ */
+.browse-nav {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem;
+  padding: 1.5rem 0 0.5rem; border-top: 1px solid #e0e0e0; font-size: 0.88rem;
+}
+.browse-label { color: #aaa; font-weight: 500; font-family: 'DM Sans', sans-serif; }
+.browse-link { color: #2d2d2d; text-decoration: none; font-weight: 500; font-family: 'DM Sans', sans-serif; }
+.browse-link:hover { color: #c4693a; }
+.browse-dot { color: #ccc; }
+
+/* ══════════════════════════════════════════
+   MOBILE
+══════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .hero-sidebar-left {
+    border-right: none;
+    border-bottom: 1px solid #e8e8e8;
+    padding-right: 0;
+    padding-bottom: 1rem;
+    display: none; /* hide on mobile for space */
+  }
+  .hero-center { padding: 0; }
+  .hero-center-img { height: 220px; }
+  .hero-sidebar-right {
+    border-left: none;
+    border-top: 1px solid #e8e8e8;
+    padding-left: 0;
+    padding-top: 1rem;
+  }
+  .editorial-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .ed-list { border-left: none; padding-left: 0; border-top: 1px solid #e8e8e8; padding-top: 1rem; }
+  .pillar-cards { grid-template-columns: repeat(2, 1fr); }
+  .finder-body { grid-template-columns: 1fr; gap: 1rem; }
+  .finder-section { padding: 1.25rem; }
+}
+@media (max-width: 580px) {
+  .pillar-cards { grid-template-columns: 1fr; }
+  .ed-featured { flex-direction: column; }
+  .ed-featured-img { width: 100%; height: 180px; }
 }
 </style>
+
+{/* ── Article data + finder logic ── */}
+<script define:vars={{ articlesJson }}>
+  window.__PS_ARTICLES__ = JSON.parse(articlesJson);
+
+  const PILLAR_NAMES = {
+    skincare: 'Skincare', maquillaje: 'Maquillaje', cabello: 'Cabello',
+    unas: 'Uñas', perfumes: 'Perfumes', dispositivos: 'Dispositivos'
+  };
+
+  function normalize(s) {
+    return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  function search(q, articles) {
+    if (!q || q.trim().length < 2) return [];
+    const terms = normalize(q.trim()).split(/\s+/);
+    return articles.filter(a => {
+      const hay = normalize(a.title + ' ' + a.description + ' ' + a.pillar + ' ' + (a.keyword || ''));
+      return terms.every(t => hay.includes(t));
+    }).slice(0, 6);
+  }
+
+  function renderResults(items, container) {
+    if (items.length === 0) {
+      container.innerHTML = '<p class="fr-empty">Sin resultados — prueba con otras palabras.</p>';
+    } else {
+      container.innerHTML = `<div class="fr-grid">${items.map(a => `
+        <a href="/${a.pillar}/${a.id}/" class="fr-item">
+          ${a.image ? `<div class="fr-thumb"><img src="${a.image}?auto=compress&cs=tinysrgb&w=120&h=90&fit=crop" alt="" loading="lazy"/></div>` : ''}
+          <div class="fr-body">
+            <span class="fr-label">${PILLAR_NAMES[a.pillar] || a.pillar}</span>
+            <div class="fr-title">${a.title}</div>
+          </div>
+        </a>
+      `).join('')}</div>`;
+    }
+    container.hidden = false;
+  }
+
+  const articles = window.__PS_ARTICLES__;
+  const finderInput = document.getElementById('finderInput');
+  const finderResults = document.getElementById('finderResults');
+
+  document.querySelectorAll('.finder-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const q = chip.dataset.q || '';
+      if (finderInput) { finderInput.value = q; finderInput.focus(); }
+      renderResults(search(q, articles), finderResults);
+    });
+  });
+
+  let debounce;
+  if (finderInput) {
+    finderInput.addEventListener('input', () => {
+      clearTimeout(debounce);
+      const q = finderInput.value.trim();
+      if (q.length < 2) { finderResults.hidden = true; return; }
+      debounce = setTimeout(() => renderResults(search(q, articles), finderResults), 180);
+    });
+  }
+
+  const urlQ = new URLSearchParams(location.search).get('q');
+  if (urlQ && urlQ.trim().length >= 2) {
+    if (finderInput) finderInput.value = urlQ;
+    renderResults(search(urlQ, articles), finderResults);
+    document.querySelector('.finder-section')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+</script>
