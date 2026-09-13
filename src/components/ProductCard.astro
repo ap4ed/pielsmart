@@ -107,10 +107,11 @@ const productSchema = numericPrice ? {
           <span class="wc-price">{price}</span>
           {discount && <span class="wc-discount">{discount}</span>}
         </div>
-        <a href={link} target="_blank" rel="noopener nofollow" class="wc-btn">
+        <a href={link} target="_blank" rel="noopener nofollow sponsored" class="wc-btn">
           Ver en {retailer} →
         </a>
       </div>
+      <p class="wc-price-disclaimer">Precio aproximado · Verificar precio actual en Amazon</p>
       {coupon && (
         <div class="wc-coupon">🏷️ Cupón disponible: ahorra {coupon} al aplicar en el checkout</div>
       )}
@@ -233,6 +234,11 @@ const productSchema = numericPrice ? {
     background: #B12704;
     padding: 0.1rem 0.4rem;
     border-radius: 4px;
+  }
+  .wc-price-disclaimer {
+    font-size: 0.72rem;
+    color: #aaa;
+    margin: 0.2rem 0 0.5rem;
   }
   .wc-coupon {
     font-size: 0.82rem;
