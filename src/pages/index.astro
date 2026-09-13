@@ -193,11 +193,11 @@ const finderSuggestions = [
       <ul class="deals-list">
         {deals.map(deal => (
           <li class="deal-item">
-            <a href={deal.link} target="_blank" rel="noopener nofollow" class="deal-img-wrap">
+            <a href={deal.link} target="_blank" rel="noopener nofollow sponsored" class="deal-img-wrap">
               <img src={deal.image} alt={deal.name} loading="lazy" />
             </a>
             <div class="deal-body">
-              <a href={deal.link} target="_blank" rel="noopener nofollow" class="deal-name">{deal.name}</a>
+              <a href={deal.link} target="_blank" rel="noopener nofollow sponsored" class="deal-name">{deal.name}</a>
               <div class="deal-price-row">
                 <span class="deal-price">{deal.price}</span>
                 <span class="deal-badge">{deal.discount}</span>
