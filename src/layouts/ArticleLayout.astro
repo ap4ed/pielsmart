@@ -137,6 +137,17 @@ const breadcrumbSchema = {
       <slot />
     </div>
 
+    <div class="author-box">
+      <div class="author-avatar">NAZ</div>
+      <div class="author-info">
+        <p class="author-label">Revisado por</p>
+        <p class="author-name">
+          <a href="https://nazbeautyshoplatam.com/" target="_blank" rel="noopener noreferrer">NAZ Beauty Shop</a>
+        </p>
+        <p class="author-bio">NAZ Beauty Shop es una tienda de belleza profesional en Panamá especializada en skincare, maquillaje y cuidado capilar. Nuestros editores trabajan de la mano con el equipo de NAZ para verificar que cada producto recomendado en PielSmart sea probado y evaluado por personas que venden y usan belleza a diario.</p>
+      </div>
+    </div>
+
     {relatedArticles && relatedArticles.length > 0 && (
       <div class="related-section">
         <h2 class="related-title">Sigue leyendo</h2>
@@ -257,6 +268,58 @@ const breadcrumbSchema = {
   }
   .article-body a {
     color: #e07b39;
+  }
+
+  .author-box {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    background: #f9f7f4;
+    border: 1px solid #e8e2d9;
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-top: 3rem;
+  }
+  .author-avatar {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #c4693a;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.5px;
+  }
+  .author-info { flex: 1; }
+  .author-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #999;
+    font-family: 'DM Sans', sans-serif;
+    margin: 0 0 0.2rem;
+  }
+  .author-name {
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: 'Playfair Display', Georgia, serif;
+    margin: 0 0 0.4rem;
+    color: #1a1a2e;
+  }
+  .author-name a { color: #1a1a2e; text-decoration: none; }
+  .author-name a:hover { color: #c4693a; text-decoration: underline; }
+  .author-bio {
+    font-size: 0.85rem;
+    color: #666;
+    line-height: 1.65;
+    margin: 0;
+    font-family: 'DM Sans', sans-serif;
   }
 
   .related-section {
