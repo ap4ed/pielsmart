@@ -23,3 +23,19 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 .vercel
+
+# Debug screenshots from scraper
+debug-*.png
+
+# Wirecutter reference screenshots
+wc-*.png
+wirecutter-full.png
+
+# Research data (local only)
+research/
+
+# Other local screenshots
+wc-product*.png
+wc-home*.png
+wc-card*.png
+wc-top.png
