@@ -292,9 +292,12 @@ const { pathname } = Astro.url;
       return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     }
 
+    const STOP = new Set('el la los las un una unos unas de del en con para por sin a al me mi mis yo tu te su necesito quiero busco tengo hay es son ser usar utilizar cual cuales como que donde muy mas tanto poco mucho algo mejor mejores bueno buena buenos buenas buen hacer quitar poner aplicar conseguir comprar recomiendas recomienda recomiendo recomiendan probaste probar quito quitas tienes tienen pongo pones ponerse debo deberia'.split(' '));
+
     function search(q) {
       if (!q || q.trim().length < 2) return [];
-      const terms = normalize(q.trim()).split(/\s+/);
+      const terms = normalize(q.trim()).split(/\s+/).filter(t => t.length > 1 && !STOP.has(t));
+      if (terms.length === 0) return [];
       return getArticles().filter(a => {
         const hay = normalize(a.title + ' ' + a.description + ' ' + a.pillar + ' ' + (a.keyword || '') + ' ' + (a.tags || ''));
         return terms.every(t => hay.includes(t));
