@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { getCollection } from 'astro:content';
 
 interface Props {
   title: string;
@@ -23,6 +24,17 @@ const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
 const ogImageUrl = ogImage
   ? (ogImage.startsWith('http') ? ogImage : new URL(ogImage, Astro.site).href)
   : undefined;
+
+const allArticles = await getCollection('articles');
+const articlesJson = JSON.stringify(allArticles.map(a => ({
+  id: a.id,
+  title: a.data.title,
+  description: a.data.description,
+  pillar: a.data.pillar,
+  image: a.data.image ?? null,
+  keyword: a.data.targetKeyword ?? '',
+  tags: (a.data.tags ?? []).join(' '),
+})));
 ---
 
 <!doctype html>
@@ -97,6 +109,18 @@ const ogImageUrl = ogImage
       <slot />
     </main>
     <Footer />
+    <script define:vars={{ articlesJson }}>
+      window.__PS_ARTICLES__ = JSON.parse(articlesJson);
+    </script>
+    <button class="back-to-top" id="backToTop" aria-label="Volver arriba" hidden>↑</button>
+    <script is:inline>
+      (function() {
+        var btn = document.getElementById('backToTop');
+        if (!btn) return;
+        window.addEventListener('scroll', function() { btn.hidden = window.scrollY < 400; }, { passive: true });
+        btn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+      })();
+    </script>
   </body>
 </html>
 
@@ -133,4 +157,24 @@ const ogImageUrl = ogImage
     margin: 0 auto;
     padding: 0 1.25rem;
   }
+
+  .back-to-top {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #1a1a2e;
+    color: #fff;
+    border: none;
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    z-index: 90;
+    transition: background 0.15s, transform 0.15s;
+  }
+  .back-to-top:hover { background: #c4693a; transform: translateY(-2px); }
+  .back-to-top[hidden] { display: none; }
 </style>

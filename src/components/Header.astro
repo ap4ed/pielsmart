@@ -36,9 +36,12 @@ const { pathname } = Astro.url;
       {/* Dropdown results */}
       <div class="header-finder-results" id="headerFinderResults" hidden></div>
     </div>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 
-  <div class="header-nav-row">
+  <div class="header-nav-row" id="mainNavRow">
     <nav aria-label="Navegación principal">
       <ul>
         {nav.map(({ label, href }) => (
@@ -259,10 +262,43 @@ const { pathname } = Astro.url;
     border-bottom-color: #c4693a;
   }
 
+  /* ── Hamburger ── */
+  .hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px 4px;
+    flex-shrink: 0;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+  }
+  .hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: #1a1a2e;
+    border-radius: 2px;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
   /* ── Mobile ── */
-  @media (max-width: 600px) {
+  @media (max-width: 640px) {
+    .hamburger { display: flex; }
     .finder-label { display: none; }
     .header-finder-input::placeholder { font-size: 0.8rem; }
+    #mainNavRow { display: none; }
+    #mainNavRow.open { display: block; }
+    #mainNavRow.open ul { flex-wrap: wrap; }
+    #mainNavRow.open li { width: 50%; }
+    #mainNavRow.open a { font-size: 0.88rem; padding: 0.6rem 1rem; }
   }
   @media (max-width: 420px) {
     .header-top { gap: 0.75rem; }
@@ -354,6 +390,26 @@ const { pathname } = Astro.url;
         const hits = search(input.value.trim());
         if (hits.length) render(hits);
       }
+    });
+  })();
+
+  // ── Mobile hamburger ──
+  (function() {
+    const btn = document.getElementById('hamburgerBtn');
+    const nav = document.getElementById('mainNavRow');
+    if (!btn || !nav) return;
+    btn.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.setAttribute('aria-expanded', String(isOpen));
+    });
+    // Close when a nav link is clicked
+    nav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        nav.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      });
     });
   })();
 </script>
