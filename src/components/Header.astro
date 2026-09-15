@@ -288,11 +288,15 @@ const { pathname } = Astro.url;
       return (window).__PS_ARTICLES__ || [];
     }
 
+    function normalize(s) {
+      return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+
     function search(q) {
       if (!q || q.trim().length < 2) return [];
-      const terms = q.toLowerCase().trim().split(/\s+/);
+      const terms = normalize(q.trim()).split(/\s+/);
       return getArticles().filter(a => {
-        const hay = (a.title + ' ' + a.description + ' ' + a.pillar + ' ' + (a.keyword || '')).toLowerCase();
+        const hay = normalize(a.title + ' ' + a.description + ' ' + a.pillar + ' ' + (a.keyword || '') + ' ' + (a.tags || ''));
         return terms.every(t => hay.includes(t));
       }).slice(0, 5);
     }
