@@ -102,20 +102,11 @@ const relatedArticlesMap: Record<string, { title: string; slug: string; pillar: 
 };
 
 export async function getStaticPaths() {
-  // --- Product review paths (existing) ---
-  const reviewPaths = products.map((p) => ({
-    params: { categoria: p.categoria, slug: p.id },
-    props: { type: 'review' as const, product: p, entry: undefined },
-  }));
-
-  // --- Article paths from content collection ---
   const allArticles = await getCollection('articles');
-  const articlePaths = allArticles.map((entry) => ({
+  return allArticles.map((entry) => ({
     params: { categoria: entry.data.pillar, slug: entry.id },
     props: { type: 'article' as const, product: undefined, entry },
   }));
-
-  return [...reviewPaths, ...articlePaths];
 }
 
 const { type, product, entry } = Astro.props;
