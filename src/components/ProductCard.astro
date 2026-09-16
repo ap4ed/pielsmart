@@ -133,7 +133,8 @@ const productSchema = numericPrice ? {
           <span class="wc-price">{price}</span>
           {discount && <span class="wc-discount">{discount}</span>}
         </div>
-        <a href={link} target="_blank" rel="noopener nofollow sponsored" class="wc-btn">
+        <a href={link} target="_blank" rel="noopener nofollow sponsored" class="wc-btn"
+           data-affiliate-name={name} data-affiliate-price={price}>
           Ver en {retailer} →
         </a>
       </div>
@@ -305,3 +306,17 @@ const productSchema = numericPrice ? {
     .wc-img { width: 100%; height: 200px; }
   }
 </style>
+
+<script>
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as Element).closest('[data-affiliate-name]') as HTMLAnchorElement | null;
+    if (!btn) return;
+    if (typeof (window as any).gtag === 'function') {
+      (window as any).gtag('event', 'affiliate_click', {
+        product_name: btn.dataset.affiliateName,
+        price: btn.dataset.affiliatePrice,
+        link: btn.href,
+      });
+    }
+  });
+</script>
