@@ -15,6 +15,7 @@ interface Props {
   link: string;
   image?: string;
   retailer?: string;
+  brand?: string;
 }
 
 const {
@@ -33,6 +34,7 @@ const {
   link,
   image,
   retailer = 'Amazon',
+  brand,
 } = Astro.props;
 
 const imageUrl = image ?? (asin
@@ -45,6 +47,7 @@ const productSchema = numericPrice ? {
   '@type': 'Product',
   name,
   description: tagline,
+  ...(brand && { brand: { '@type': 'Brand', name: brand } }),
   ...(imageUrl && { image: imageUrl }),
   ...(rating && {
     aggregateRating: {
@@ -66,6 +69,24 @@ const productSchema = numericPrice ? {
     price: numericPrice.toFixed(2),
     availability: 'https://schema.org/InStock',
     seller: { '@type': 'Organization', name: retailer },
+    hasMerchantReturnPolicy: {
+      '@type': 'MerchantReturnPolicy',
+      applicableCountry: 'US',
+      returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+      merchantReturnDays: 30,
+      returnMethod: 'https://schema.org/ReturnByMail',
+      returnFees: 'https://schema.org/FreeReturn',
+    },
+    shippingDetails: {
+      '@type': 'OfferShippingDetails',
+      shippingRate: { '@type': 'MonetaryAmount', value: '0', currency: 'USD' },
+      shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'US' },
+      deliveryTime: {
+        '@type': 'ShippingDeliveryTime',
+        handlingTime: { '@type': 'QuantitativeValue', minValue: 0, maxValue: 1, unitCode: 'DAY' },
+        transitTime: { '@type': 'QuantitativeValue', minValue: 1, maxValue: 5, unitCode: 'DAY' },
+      },
+    },
   },
 } : null;
 ---
