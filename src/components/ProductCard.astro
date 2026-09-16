@@ -54,6 +54,11 @@ const productSchema = numericPrice ? {
       bestRating: '5',
     },
   }),
+  review: {
+    '@type': 'Review',
+    author: { '@type': 'Organization', name: 'PielSmart' },
+    reviewBody: why,
+  },
   offers: {
     '@type': 'Offer',
     url: link,
