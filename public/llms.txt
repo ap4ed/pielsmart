@@ -1,0 +1,49 @@
+# PielSmart
+
+> Guías y reseñas de belleza en español para mujeres latinas. Skincare, maquillaje, cabello, uñas y perfumes con precios reales en Amazon.
+
+PielSmart es un sitio editorial independiente en español (es-419) dirigido a mujeres de América Latina y la comunidad hispana en Estados Unidos. Publicamos guías de compra y reseñas honestas de productos de belleza disponibles en Amazon. No fabricamos productos — evaluamos, comparamos y recomendamos.
+
+## Contenido disponible
+
+### Skincare
+- [¿Para qué sirve el ácido hialurónico?](https://pielsmart.com/skincare/para-que-sirve-el-acido-hialuronico/)
+- [¿Para qué sirve el retinol?](https://pielsmart.com/skincare/para-que-sirve-el-retinol/)
+- [Mejores cremas hidratantes para la cara](https://pielsmart.com/skincare/crema-hidratante-cara/)
+- [Mejores cremas coreanas](https://pielsmart.com/skincare/cremas-coreanas/)
+
+### Maquillaje
+- [Maquillaje sencillo paso a paso](https://pielsmart.com/maquillaje/maquillaje-sencillo-paso-a-paso/)
+- [Mejores bases de maquillaje](https://pielsmart.com/maquillaje/base-de-maquillaje/)
+- [Mejores correctores de maquillaje](https://pielsmart.com/maquillaje/correctores-de-maquillaje/)
+- [Mejores sombras de ojos](https://pielsmart.com/maquillaje/sombras-de-ojos/)
+- [Cómo tener cejas perfectas](https://pielsmart.com/maquillaje/cejas-perfectas/)
+- [Mejores máscaras de pestañas](https://pielsmart.com/maquillaje/mascaras-de-pestanas/)
+- [Maquillaje de catrina](https://pielsmart.com/maquillaje/maquillaje-de-catrina/)
+
+### Cabello
+- [Mejores shampoos](https://pielsmart.com/cabello/mejores-shampoos/)
+
+### Uñas
+- [Modelos de uñas 2025](https://pielsmart.com/unas/modelos-de-unas-2025/)
+- [Uñas de acrílico: guía completa](https://pielsmart.com/unas/unas-de-acrilico-guia-completa/)
+- [Uñas semipermanentes](https://pielsmart.com/unas/unas-semipermanentes/)
+- [Uñas gel](https://pielsmart.com/unas/unas-gel/)
+
+### Perfumes
+- [Mejores perfumes para mujer](https://pielsmart.com/perfumes/perfumes-para-mujer/)
+- [Mejores perfumes para hombre](https://pielsmart.com/perfumes/perfumes-para-hombre/)
+- [Mejores perfumes árabes](https://pielsmart.com/perfumes/perfumes-arabes/)
+
+### Dispositivos
+- [Mejores secadoras y planchas](https://pielsmart.com/dispositivos/mejores-secadoras-y-planchas/)
+
+## Sobre nosotros
+- [Cómo reseñamos](https://pielsmart.com/como-resenamos/)
+- [Divulgación de afiliados](https://pielsmart.com/divulgacion/)
+
+## Detalles técnicos
+- Idioma: Español latinoamericano (es-419)
+- Audiencia: Mujeres latinas en México, Colombia, Argentina, Chile, Perú y comunidad hispana en EE.UU.
+- Afiliado de Amazon: pielsmart-20
+- Sitemap: https://pielsmart.com/sitemap-index.xml
