@@ -7,4 +7,5 @@ export default defineConfig({
   site: 'https://pielsmart.com',
   integrations: [mdx(), sitemap()],
   output: 'static',
+  trailingSlash: 'always',
 });
