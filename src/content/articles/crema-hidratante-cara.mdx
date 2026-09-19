@@ -10,6 +10,7 @@ tags: ["crema", "hidratante", "moisturizer", "piel seca", "piel grasa", "ceramid
 ---
 
 import ProductCard from '../../components/ProductCard.astro';
+import ComparisonTable from '../../components/ComparisonTable.astro';
 
 Una buena crema hidratante para la cara no es un lujo — es la base de cualquier rutina de cuidado de piel que funcione. El problema es que el mercado está saturado de opciones, y elegir mal puede significar brotes en piel grasa, irritación en piel sensible o una hidratación que dura apenas dos horas en piel seca.
 
@@ -125,6 +126,19 @@ El Clinique Dramatically Different Moisturizing Gel es el clásico moderno para 
   retailer="Amazon"
 />
 
+## Comparativa rápida
+
+<ComparisonTable
+  products={["CeraVe", "Cetaphil", "Neutrogena HB", "La Roche-Posay", "Clinique DDMG"]}
+  rows={[
+    { caracteristica: "Tipo de piel ideal", "CeraVe": "Seca, normal", "Cetaphil": "Sensible, atópica", "Neutrogena HB": "Grasa, mixta", "La Roche-Posay": "Hipersensible", "Clinique DDMG": "Normal a grasa" },
+    { caracteristica: "Textura", "CeraVe": "Crema densa", "Cetaphil": "Crema cremosa", "Neutrogena HB": "Gel acuoso", "La Roche-Posay": "Loción satinada", "Clinique DDMG": "Gel ligero" },
+    { caracteristica: "Ingrediente estrella", "CeraVe": "3 ceramidas + HA", "Cetaphil": "Glicerol + nicotinamida", "Neutrogena HB": "HA concentrado", "La Roche-Posay": "Ceramidas + niacinamida", "Clinique DDMG": "Aloe + extractos botánicos" },
+    { caracteristica: "Sin fragancia", "CeraVe": "✓", "Cetaphil": "✓", "Neutrogena HB": "✓", "La Roche-Posay": "✓", "Clinique DDMG": "✓" },
+    { caracteristica: "Precio aprox.", "CeraVe": "$18-19", "Cetaphil": "$18-19", "Neutrogena HB": "$22-23", "La Roche-Posay": "$24-25", "Clinique DDMG": "$34" }
+  ]}
+/>
+
 ## Preguntas frecuentes
 
 ### ¿Debo usar crema hidratante si tengo piel grasa?
@@ -139,6 +153,12 @@ La crema tiene más concentración de emolientes y agentes oclusivos — es más
 ### ¿Puedo usar la misma crema hidratante para la cara que uso en el cuerpo?
 Depende del producto. Algunas cremas como CeraVe Moisturizing Cream están formuladas para cara y cuerpo. Sin embargo, la mayoría de las cremas corporales son más densas y oclusivas de lo que necesita la piel facial — pueden obstruir poros y causar brotes. Si usas una crema corporal en la cara, verifica que sea non-comedogénica.
 
+### ¿Se puede aplicar crema hidratante antes del protector solar?
+Sí — el orden correcto es hidratante primero, protector solar después. La hidratante prepara la piel y potencia la absorción del SPF. Aplica la hidratante, espera 1-2 minutos que se absorba y luego aplica el protector solar. En la noche, el protector no es necesario — solo la hidratante como último paso.
+
+### ¿Cuánto tiempo tarda en hacer efecto una crema hidratante?
+La hidratación superficial se siente inmediatamente después de la primera aplicación. Los beneficios de reparación de barrera cutánea (ceramidas, niacinamida) requieren uso constante de 2 a 4 semanas para ser visibles. Si después de un mes de uso regular no ves mejora, el producto probablemente no es el adecuado para tu tipo de piel.
+
 Si quieres ir más a fondo en los ingredientes activos de tu rutina, nuestra guía sobre [para qué sirve el ácido hialurónico](/skincare/para-que-sirve-el-acido-hialuronico/) explica por qué es el mejor humectante para potenciar cualquier crema hidratante.
 
 <script type="application/ld+json" set:html={JSON.stringify({
@@ -148,6 +168,8 @@ Si quieres ir más a fondo en los ingredientes activos de tu rutina, nuestra gu�
     { "@type": "Question", "name": "¿Debo usar crema hidratante si tengo piel grasa?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. La piel grasa también necesita hidratación — cuando la piel está deshidratada, produce más sebo para compensar. La clave es elegir una fórmula oil-free en textura gel o agua, como el Neutrogena Hydro Boost, que hidrata sin añadir aceite ni obstruir poros." }},
     { "@type": "Question", "name": "¿Cuándo debo aplicar la crema hidratante?", "acceptedAnswer": { "@type": "Answer", "text": "Aplícala dos veces al día: en la mañana después de lavar la cara y en la noche después de tu rutina de limpieza. En la mañana, aplica la hidratante antes del protector solar y el maquillaje. En la noche, puede ser el último paso de tu rutina." }},
     { "@type": "Question", "name": "¿Qué diferencia hay entre una loción hidratante y una crema?", "acceptedAnswer": { "@type": "Answer", "text": "La crema tiene más concentración de emolientes y agentes oclusivos — es más densa y crea una barrera más efectiva para piel muy seca. La loción es más fluida, con mayor contenido de agua, ideal para pieles normales o grasas. El gel es el más ligero, con base de agua y mínimo contenido de aceite." }},
-    { "@type": "Question", "name": "¿Puedo usar la misma crema hidratante para la cara que uso en el cuerpo?", "acceptedAnswer": { "@type": "Answer", "text": "Depende del producto. Algunas cremas como CeraVe Moisturizing Cream están formuladas para cara y cuerpo. Sin embargo, la mayoría de las cremas corporales son más densas de lo que necesita la piel facial y pueden obstruir poros. Si usas una crema corporal en la cara, verifica que sea non-comedogénica." }}
+    { "@type": "Question", "name": "¿Puedo usar la misma crema hidratante para la cara que uso en el cuerpo?", "acceptedAnswer": { "@type": "Answer", "text": "Depende del producto. Algunas cremas como CeraVe Moisturizing Cream están formuladas para cara y cuerpo. Sin embargo, la mayoría de las cremas corporales son más densas de lo que necesita la piel facial y pueden obstruir poros. Si usas una crema corporal en la cara, verifica que sea non-comedogénica." }},
+    { "@type": "Question", "name": "¿Se puede aplicar crema hidratante antes del protector solar?", "acceptedAnswer": { "@type": "Answer", "text": "Sí — el orden correcto es hidratante primero, protector solar después. La hidratante prepara la piel y potencia la absorción del SPF. Aplica la hidratante, espera 1-2 minutos que se absorba y luego aplica el protector solar. En la noche, el protector no es necesario — solo la hidratante como último paso." }},
+    { "@type": "Question", "name": "¿Cuánto tiempo tarda en hacer efecto una crema hidratante?", "acceptedAnswer": { "@type": "Answer", "text": "La hidratación superficial se siente inmediatamente después de la primera aplicación. Los beneficios de reparación de barrera cutánea (ceramidas, niacinamida) requieren uso constante de 2 a 4 semanas para ser visibles. Si después de un mes de uso regular no ves mejora, el producto probablemente no es el adecuado para tu tipo de piel." }}
   ]
 })} />

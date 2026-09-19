@@ -10,6 +10,7 @@ tags: ["mascara", "pestanas", "volumen", "waterproof", "lifting", "rímel", "rim
 ---
 
 import ProductCard from '../../components/ProductCard.astro';
+import ComparisonTable from '../../components/ComparisonTable.astro';
 
 La máscara de pestañas correcta puede transformar una mirada en segundos. El problema no es falta de opciones — es que el mercado tiene cientos de fórmulas que prometen lo mismo pero funcionan de maneras completamente distintas. Volumen sin grumos, longitud sin rigidez, waterproof que no daña al remover: cada resultado requiere una fórmula diferente.
 
@@ -124,6 +125,19 @@ La Charlotte Tilbury Pillow Talk Push Up Lashes Mascara fue diseñada con un cep
   retailer="Amazon"
 />
 
+## Comparativa rápida
+
+<ComparisonTable
+  products={["Sky High", "L'Oreal Vol.", "Lancôme WP", "Lash Sensational", "Urban Decay"]}
+  rows={[
+    { caracteristica: "Efecto principal", "Sky High": "Volumen + lift", "L'Oreal Vol.": "Longitud + separación", "Lancôme WP": "Waterproof 24h", "Lash Sensational": "Efecto natural", "Urban Decay": "Volumen + longitud" },
+    { caracteristica: "Tipo de cepillo", "Sky High": "Cónico curvo", "L'Oreal Vol.": "Ovalado", "Lancôme WP": "Doble cara", "Lash Sensational": "Abanico", "Urban Decay": "Cerdas densas" },
+    { caracteristica: "Fórmula", "Sky High": "Washable", "L'Oreal Vol.": "Washable", "Lancôme WP": "Waterproof", "Lash Sensational": "Washable", "Urban Decay": "Resistente manchas" },
+    { caracteristica: "Precio aprox.", "Sky High": "$10-11", "L'Oreal Vol.": "$8-9", "Lancôme WP": "$30", "Lash Sensational": "$9-10", "Urban Decay": "$28" },
+    { caracteristica: "Para quién", "Sky High": "Pestañas cortas o rectas", "L'Oreal Vol.": "Uso diario confiable", "Lancôme WP": "Clima húmedo / deporte", "Lash Sensational": "Look natural", "Urban Decay": "Look dramático" }
+  ]}
+/>
+
 ## Preguntas frecuentes
 
 ### ¿Cuándo debo reemplazar mi máscara de pestañas?
@@ -138,6 +152,12 @@ Sí, si la fórmula es muy rígida y la remueves con esfuerzo. Las mascaras wate
 ### ¿Puedo usar la misma mascara en párpado superior e inferior?
 Sí, pero con el cepillo adecuado. Para las pestañas inferiores, usa la punta del cepillo o un cepillo pequeño en zigzag — el cepillo completo aplicado en las pestañas inferiores suele manchar la piel. En las inferiores, una o dos pasadas suaves es suficiente.
 
+### ¿Cuál es la diferencia entre una máscara de volumen y una de longitud?
+Las máscaras de volumen tienen fórmulas ricas en ceras y pigmentos que engrosan cada pestaña individualmente — el cepillo suele ser grande y cónico. Las de longitud usan polímeros de nylon o fibras que alargan la pestaña sin añadir mucho peso — el cepillo es más delgado y con cerdas finas. Muchas máscaras modernas combinan ambos efectos, pero siempre priorizan uno sobre el otro.
+
+### ¿Necesito removedor especial para quitar la máscara?
+Para máscaras washable, basta con un limpiador facial suave o agua micelar. Para máscaras waterproof, necesitas un removedor bifásico (aceite + agua) o un aceite limpiador — el agua sola no es suficiente y frotar para removerla daña las pestañas. Nunca uses algodones con movimientos de arrastre horizontal: desliza siempre de arriba hacia abajo con presión suave.
+
 Para enmarcar la mirada completa, unas cejas bien definidas son tan importantes como las pestañas. Revisa nuestra guía de [cejas perfectas](/maquillaje/cejas-perfectas/) para construir el dúo de ojos más efectivo.
 
 <script type="application/ld+json" set:html={JSON.stringify({
@@ -147,6 +167,8 @@ Para enmarcar la mirada completa, unas cejas bien definidas son tan importantes 
     { "@type": "Question", "name": "¿Cuándo debo reemplazar mi máscara de pestañas?", "acceptedAnswer": { "@type": "Answer", "text": "Cada tres meses, independientemente de cuánto quede en el tubo. Las mascaras son uno de los productos de maquillaje con mayor riesgo de contaminación bacteriana. Usar mascara vencida puede causar infecciones oculares." }},
     { "@type": "Question", "name": "¿Cómo se remueve correctamente una mascara waterproof?", "acceptedAnswer": { "@type": "Answer", "text": "Con un removedor bifásico (aceite + agua) o un aceite limpiador. Coloca un algodón empapado en el removedor sobre las pestañas, espera 30 segundos y desliza hacia abajo con presión suave. Nunca jales ni frotes agresivamente." }},
     { "@type": "Question", "name": "¿La mascara demasiado buildada daña las pestañas?", "acceptedAnswer": { "@type": "Answer", "text": "Sí, si la fórmula es muy rígida y la remueves con esfuerzo. Para mantener las pestañas sanas, limita a dos o tres capas máximo, remueve siempre la mascara antes de dormir y usa un sérum de pestañas si notas caída." }},
-    { "@type": "Question", "name": "¿Puedo usar la misma mascara en párpado superior e inferior?", "acceptedAnswer": { "@type": "Answer", "text": "Sí, pero con el cepillo adecuado. Para las pestañas inferiores, usa la punta del cepillo o un cepillo pequeño — el cepillo completo aplicado en las pestañas inferiores suele manchar la piel. Una o dos pasadas suaves es suficiente." }}
+    { "@type": "Question", "name": "¿Puedo usar la misma mascara en párpado superior e inferior?", "acceptedAnswer": { "@type": "Answer", "text": "Sí, pero con el cepillo adecuado. Para las pestañas inferiores, usa la punta del cepillo o un cepillo pequeño — el cepillo completo aplicado en las pestañas inferiores suele manchar la piel. Una o dos pasadas suaves es suficiente." }},
+    { "@type": "Question", "name": "¿Cuál es la diferencia entre una máscara de volumen y una de longitud?", "acceptedAnswer": { "@type": "Answer", "text": "Las máscaras de volumen tienen fórmulas ricas en ceras y pigmentos que engrosan cada pestaña individualmente — el cepillo suele ser grande y cónico. Las de longitud usan polímeros de nylon o fibras que alargan la pestaña sin añadir mucho peso — el cepillo es más delgado y con cerdas finas. Muchas máscaras modernas combinan ambos efectos, pero siempre priorizan uno sobre el otro." }},
+    { "@type": "Question", "name": "¿Necesito removedor especial para quitar la máscara?", "acceptedAnswer": { "@type": "Answer", "text": "Para máscaras washable, basta con un limpiador facial suave o agua micelar. Para máscaras waterproof, necesitas un removedor bifásico (aceite + agua) o un aceite limpiador — el agua sola no es suficiente y frotar para removerla daña las pestañas. Nunca uses algodones con movimientos de arrastre horizontal: desliza siempre de arriba hacia abajo con presión suave." }}
   ]
 })} />
