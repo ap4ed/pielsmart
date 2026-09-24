@@ -87,31 +87,21 @@ console.log('🌐 Opening Amazon...');
 await page.goto('https://www.amazon.com', { waitUntil: 'domcontentloaded', timeout: 30000 });
 await page.waitForTimeout(2500);
 
-let locationSet = false;
-for (let attempt = 0; attempt < 3 && !locationSet; attempt++) {
-  const deliverTo = page.locator('#nav-global-location-popover-link, #glow-ingress-line2');
-  if (await deliverTo.count() > 0) {
-    await deliverTo.first().click();
-    await page.waitForTimeout(1800);
-    const zipInput = page.locator('#GLUXZipUpdateInput');
-    if (await zipInput.count() > 0) {
-      await zipInput.first().fill('33166');
-      await page.waitForTimeout(600);
-      const applyBtn = page.locator('[data-action="GLUXZipUpdate"] input[type=submit], #GLUXZipUpdate input[type=submit]');
-      if (await applyBtn.count() > 0) {
-        await applyBtn.first().click();
-        await page.waitForTimeout(3500);
-      }
-      await page.keyboard.press('Escape');
-      await page.waitForTimeout(1000);
+const deliverTo = page.locator('#nav-global-location-popover-link, #glow-ingress-line2');
+if (await deliverTo.count() > 0) {
+  await deliverTo.first().click();
+  await page.waitForTimeout(1800);
+  const zipInput = page.locator('#GLUXZipUpdateInput');
+  if (await zipInput.count() > 0) {
+    await zipInput.first().fill('33166');
+    await page.waitForTimeout(600);
+    const applyBtn = page.locator('[data-action="GLUXZipUpdate"] input[type=submit], #GLUXZipUpdate input[type=submit]');
+    if (await applyBtn.count() > 0) {
+      await applyBtn.first().click();
+      await page.waitForTimeout(3500);
     }
-  }
-  const loc = await page.locator('#glow-ingress-line2').textContent().catch(() => '');
-  if (loc.includes('33166') || loc.includes('Miami')) {
-    locationSet = true;
-  } else {
-    await page.reload({ waitUntil: 'domcontentloaded' });
-    await page.waitForTimeout(2500);
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(1000);
   }
 }
 
