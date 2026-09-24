@@ -177,8 +177,17 @@ for (const file of files) {
       }
     }
 
-    // Rating/reviews (optional but flag if partial)
-    if (c.rating && !c.reviews) console.log(`      reviews   ⚠️   rating set but no reviews count`);
+    // Rating/reviews — flag low review counts and missing data
+    if (c.rating && !c.reviews) {
+      console.log(`      reviews   ⚠️   rating set but no reviews count`);
+    } else if (c.reviews) {
+      const reviewCount = parseInt(c.reviews.replace(/[^0-9]/g, ''), 10);
+      if (!isNaN(reviewCount) && reviewCount < 500) {
+        issues.push(`⚠️  reviews: only ${reviewCount} reviews — product may lack social proof or be unavailable; consider swapping for one with 500+ reviews`);
+      } else if (!isNaN(reviewCount)) {
+        console.log(`      reviews   ✅  ${c.reviews}`);
+      }
+    }
     if (!c.rating) console.log(`      rating    —   (not set — run scrape-amazon to get)`);
 
     // listPrice/discount (optional but flag as improvement opportunity)
@@ -204,5 +213,9 @@ if (totalIssues === 0) {
   console.log('    Use only m.media-amazon.com URLs (not ws-na.amazon-adsystem.com)');
   console.log('  • Missing prices/deals: run  node scrape-amazon.mjs ASIN1 ASIN2 ...');
   console.log('  • Broken links: verify ASIN is correct at amazon.com/dp/ASIN');
+  console.log('  • Low reviews: replace product with one that has 500+ reviews');
 }
+console.log('\n⚠️  IMPORTANT: Amazon returns HTTP 200 even for unavailable/removed products.');
+console.log('   A passing link check does NOT guarantee the product page is live.');
+console.log('   Always manually verify any new ASIN at amazon.com/dp/ASIN before publishing.');
 console.log('═'.repeat(60));
