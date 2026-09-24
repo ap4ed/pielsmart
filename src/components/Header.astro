@@ -30,11 +30,21 @@ const { pathname } = Astro.url;
           class="header-finder-input"
           placeholder="¿Qué tipo de sérum necesito? ¿Perfume para regalar?"
           aria-label="Buscar en PielSmart"
+          aria-autocomplete="list"
+          aria-controls="headerFinderResults"
+          aria-expanded="false"
+          role="combobox"
           spellcheck="false"
         />
       </form>
       {/* Dropdown results */}
-      <div class="header-finder-results" id="headerFinderResults" hidden></div>
+      <div
+        class="header-finder-results"
+        id="headerFinderResults"
+        role="listbox"
+        aria-label="Resultados de búsqueda"
+        hidden
+      ></div>
     </div>
     <button class="hamburger" id="hamburgerBtn" aria-label="Abrir menú" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -143,37 +153,53 @@ const { pathname } = Astro.url;
   /* ── Dropdown results ── */
   .header-finder-results {
     position: absolute;
-    top: calc(100% + 8px);
+    top: calc(100% + 6px);
     left: 0;
     right: 0;
     background: #fff;
-    border: 1px solid #e8e8e8;
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.13);
+    border: 1px solid #e2ddd9;
+    border-radius: 14px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05), 0 12px 40px rgba(0,0,0,0.12);
     overflow: hidden;
     z-index: 200;
+    /* entrance animation */
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+  }
+  .header-finder-results.is-visible {
+    opacity: 1;
+    transform: translateY(0);
   }
   .header-finder-results[hidden] { display: none; }
 
   .hfr-item {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.7rem 1rem;
+    gap: 0.8rem;
+    padding: 0.65rem 0.9rem;
     text-decoration: none;
     color: inherit;
     transition: background 0.1s;
-    border-bottom: 1px solid #f5f5f5;
+    border-bottom: 1px solid #f3f0ed;
+    outline: none;
   }
-  .hfr-item:last-child { border-bottom: none; }
-  .hfr-item:hover { background: #fdf0ea; }
+  .hfr-item:last-of-type { border-bottom: none; }
+  .hfr-item:hover,
+  .hfr-item[aria-selected="true"] {
+    background: #fdf0ea;
+  }
+  .hfr-item[aria-selected="true"] .hfr-title {
+    color: #c4693a;
+  }
 
   .hfr-thumb {
-    width: 48px;
-    height: 36px;
-    border-radius: 4px;
+    width: 56px;
+    height: 42px;
+    border-radius: 6px;
     overflow: hidden;
     flex-shrink: 0;
+    background: #f5f2ef;
   }
   .hfr-thumb img {
     width: 100%;
@@ -188,33 +214,62 @@ const { pathname } = Astro.url;
   }
 
   .hfr-label {
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.8px;
+    letter-spacing: 0.9px;
     color: #c4693a;
     font-family: 'DM Sans', sans-serif;
     display: block;
-    margin-bottom: 0.15rem;
+    margin-bottom: 0.2rem;
   }
 
   .hfr-title {
-    font-size: 0.85rem;
+    font-size: 0.86rem;
     font-weight: 600;
     color: #1a1a2e;
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'DM Sans', sans-serif;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: color 0.1s;
+  }
+
+  .hfr-arrow {
+    font-size: 0.75rem;
+    color: #ccc;
+    flex-shrink: 0;
+    transition: color 0.1s, transform 0.1s;
+  }
+  .hfr-item:hover .hfr-arrow,
+  .hfr-item[aria-selected="true"] .hfr-arrow {
+    color: #c4693a;
+    transform: translateX(2px);
   }
 
   .hfr-empty {
-    padding: 1rem;
+    padding: 1.2rem 1rem;
     text-align: center;
-    font-size: 0.85rem;
-    color: #999;
+    font-size: 0.84rem;
+    color: #aaa;
     font-family: 'DM Sans', sans-serif;
   }
+
+  .hfr-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.55rem 1rem;
+    background: #faf9f7;
+    border-top: 1px solid #f0ece8;
+    font-size: 0.75rem;
+    font-family: 'DM Sans', sans-serif;
+    color: #888;
+    gap: 0.3rem;
+    text-decoration: none;
+    transition: color 0.1s;
+  }
+  .hfr-footer:hover { color: #c4693a; }
 
   /* ── Nav row ── */
   .header-nav-row {
@@ -308,7 +363,6 @@ const { pathname } = Astro.url;
 
 <script>
   // ── Header Finder client-side search ──
-  // Article data is injected by the page via window.__PS_ARTICLES__
   (function () {
     const input = document.getElementById('headerFinderInput');
     const results = document.getElementById('headerFinderResults');
@@ -320,9 +374,9 @@ const { pathname } = Astro.url;
       unas: 'Uñas', perfumes: 'Perfumes', dispositivos: 'Dispositivos'
     };
 
-    function getArticles() {
-      return (window).__PS_ARTICLES__ || [];
-    }
+    let activeIndex = -1;
+
+    function getArticles() { return (window).__PS_ARTICLES__ || []; }
 
     function normalize(s) {
       return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -343,42 +397,89 @@ const { pathname } = Astro.url;
       return scored.map(({ a }) => a).slice(0, 5);
     }
 
+    function show() {
+      results.hidden = false;
+      // trigger animation on next frame
+      requestAnimationFrame(() => results.classList.add('is-visible'));
+      input.setAttribute('aria-expanded', 'true');
+    }
+
+    function hide() {
+      results.classList.remove('is-visible');
+      results.hidden = true;
+      input.setAttribute('aria-expanded', 'false');
+      input.removeAttribute('aria-activedescendant');
+      activeIndex = -1;
+    }
+
+    function setActive(index) {
+      const items = results.querySelectorAll('.hfr-item');
+      items.forEach((el, i) => {
+        el.setAttribute('aria-selected', i === index ? 'true' : 'false');
+      });
+      if (index >= 0 && items[index]) {
+        input.setAttribute('aria-activedescendant', items[index].id);
+        items[index].scrollIntoView({ block: 'nearest' });
+      } else {
+        input.removeAttribute('aria-activedescendant');
+      }
+      activeIndex = index;
+    }
+
     function render(items) {
+      activeIndex = -1;
       if (items.length === 0) {
         results.innerHTML = '<div class="hfr-empty">Sin resultados — intenta con otras palabras</div>';
       } else {
-        results.innerHTML = items.map(a => `
-          <a href="/${a.pillar}/${a.id}/" class="hfr-item">
-            ${a.image ? `<div class="hfr-thumb"><img src="${a.image}?auto=compress&cs=tinysrgb&w=96&h=72&fit=crop" alt="" loading="lazy" /></div>` : ''}
+        const cards = items.map((a, i) => `
+          <a href="/${a.pillar}/${a.id}/" class="hfr-item" role="option" id="hfr-opt-${i}" aria-selected="false">
+            ${a.image ? `<div class="hfr-thumb"><img src="${a.image}?auto=compress&cs=tinysrgb&w=112&h=84&fit=crop" alt="" loading="lazy" /></div>` : ''}
             <div class="hfr-body">
               <span class="hfr-label">${PILLAR_NAMES[a.pillar] || a.pillar}</span>
               <div class="hfr-title">${a.title}</div>
             </div>
+            <span class="hfr-arrow" aria-hidden="true">→</span>
           </a>
         `).join('');
+        const footer = `<a href="/" class="hfr-footer" tabindex="-1">Explorar todos los artículos →</a>`;
+        results.innerHTML = cards + footer;
       }
-      results.hidden = false;
+      show();
     }
-
-    function hide() { results.hidden = true; }
 
     let debounce;
     input.addEventListener('input', () => {
       clearTimeout(debounce);
       const q = input.value.trim();
       if (q.length < 2) { hide(); return; }
-      debounce = setTimeout(() => {
-        const hits = search(q);
-        render(hits);
-      }, 160);
+      debounce = setTimeout(() => render(search(q)), 160);
     });
 
-    // Prevent form submission if there's a query — let the dropdown handle it
+    // Keyboard navigation
+    input.addEventListener('keydown', (e) => {
+      if (results.hidden) return;
+      const items = results.querySelectorAll('.hfr-item');
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setActive(Math.min(activeIndex + 1, items.length - 1));
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setActive(Math.max(activeIndex - 1, 0));
+      } else if (e.key === 'Enter') {
+        if (activeIndex >= 0 && items[activeIndex]) {
+          e.preventDefault();
+          items[activeIndex].click();
+        }
+      } else if (e.key === 'Escape') {
+        hide();
+        input.blur();
+      }
+    });
+
     form.addEventListener('submit', (e) => {
       const q = input.value.trim();
       if (q.length >= 2 && search(q).length > 0) {
         e.preventDefault();
-        // focus first result
         const first = results.querySelector('.hfr-item');
         if (first) first.click();
       }
