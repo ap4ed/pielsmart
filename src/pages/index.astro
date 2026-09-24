@@ -74,10 +74,11 @@ for (const article of allArticles) {
 }
 
 const topStory = allArticles[0];
+const secondStory = allArticles[1];
 const sidebarArticles = allArticles.slice(0, 8);
-// Editorial section: articles 1-4
-const editorialFeatured = allArticles[1];
-const editorialList = allArticles.slice(2, 5);
+// Editorial section: articles 2-5
+const editorialFeatured = allArticles[2];
+const editorialList = allArticles.slice(3, 6);
 
 // Deals sidebar — hardcoded discounted products
 // Deals rendered client-side for daily rotation — see <script> below
@@ -140,25 +141,47 @@ const finderSuggestions = [
       <a href="/skincare/" class="sidebar-see-all">Ver todo →</a>
     </aside>
 
-    {/* CENTER: featured article */}
-    {topStory && (
-      <a href={`/${topStory.data.pillar}/${topStory.id}/`} class="hero-center">
-        {topStory.data.image && (
-          <div class="hero-center-img">
-            <img
-              src={`${topStory.data.image}?auto=compress&cs=tinysrgb&w=800&h=460&fit=crop`}
-              alt={topStory.data.title}
-              loading="eager"
-            />
+    {/* CENTER: two featured articles */}
+    <div class="hero-center">
+      {topStory && (
+        <a href={`/${topStory.data.pillar}/${topStory.id}/`} class="hero-center-story">
+          {topStory.data.image && (
+            <div class="hero-center-img">
+              <img
+                src={`${topStory.data.image}?auto=compress&cs=tinysrgb&w=800&h=340&fit=crop`}
+                alt={topStory.data.title}
+                loading="eager"
+              />
+            </div>
+          )}
+          <div class="hero-center-body">
+            <span class="hero-center-byline">PielSmart · {formatDate(topStory.data.datePublished)}</span>
+            <h1 class="hero-center-title">{topStory.data.title}</h1>
+            <p class="hero-center-desc">{topStory.data.description}</p>
           </div>
-        )}
-        <div class="hero-center-body">
-          <span class="hero-center-byline">PielSmart · {formatDate(topStory.data.datePublished)}</span>
-          <h1 class="hero-center-title">{topStory.data.title}</h1>
-          <p class="hero-center-desc">{topStory.data.description}</p>
-        </div>
-      </a>
-    )}
+        </a>
+      )}
+      {secondStory && (
+        <>
+          <hr class="hero-center-divider" />
+          <a href={`/${secondStory.data.pillar}/${secondStory.id}/`} class="hero-center-story hero-center-story--secondary">
+            {secondStory.data.image && (
+              <div class="hero-center-img">
+                <img
+                  src={`${secondStory.data.image}?auto=compress&cs=tinysrgb&w=800&h=340&fit=crop`}
+                  alt={secondStory.data.title}
+                  loading="lazy"
+                />
+              </div>
+            )}
+            <div class="hero-center-body">
+              <span class="hero-center-byline">PielSmart · {formatDate(secondStory.data.datePublished)}</span>
+              <h2 class="hero-center-title hero-center-title--sm">{secondStory.data.title}</h2>
+            </div>
+          </a>
+        </>
+      )}
+    </div>
 
     {/* RIGHT: deals sidebar */}
     <aside class="hero-sidebar-right">
@@ -339,7 +362,7 @@ const finderSuggestions = [
   padding-top: 0.25rem;
 }
 .hero-sidebar-left { padding-right: 1.5rem; border-right: 1px solid #e8e8e8; }
-.hero-sidebar-right { padding-left: 1.5rem; border-left: 1px solid #e8e8e8; }
+.hero-sidebar-right { padding-left: 1.5rem; border-left: 1px solid #e8e8e8; overflow: hidden; }
 
 .sidebar-title {
   font-size: 0.68rem;
@@ -394,16 +417,29 @@ const finderSuggestions = [
 
 /* Center featured */
 .hero-center {
+  display: flex;
+  flex-direction: column;
+  padding: 0 2rem;
+  gap: 0;
+}
+.hero-center-story {
   display: block;
   text-decoration: none;
   color: inherit;
-  padding: 0 2rem;
+}
+.hero-center-divider {
+  border: none;
+  border-top: 1px solid #e8e8e8;
+  margin: 1rem 0;
 }
 .hero-center-img {
   width: 100%;
-  height: 320px;
+  height: 210px;
   overflow: hidden;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.9rem;
+}
+.hero-center-img--sm {
+  height: 150px;
 }
 .hero-center-img img {
   width: 100%;
@@ -412,33 +448,37 @@ const finderSuggestions = [
   display: block;
   transition: transform 0.4s;
 }
-.hero-center:hover .hero-center-img img { transform: scale(1.02); }
+.hero-center-story:hover .hero-center-img img { transform: scale(1.02); }
 
 .hero-center-byline {
   font-size: 0.72rem;
   color: #999;
   font-family: 'DM Sans', sans-serif;
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
   text-transform: uppercase;
   letter-spacing: 0.8px;
 }
 .hero-center-title {
-  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-size: clamp(1.2rem, 2.2vw, 1.7rem);
   font-family: 'Playfair Display', Georgia, serif;
   font-weight: 700;
   color: #111;
-  margin: 0 0 0.75rem;
+  margin: 0 0 0.6rem;
   line-height: 1.18;
 }
-.hero-center:hover .hero-center-title { color: #c4693a; }
+.hero-center-title--sm {
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  margin-bottom: 0;
+}
+.hero-center-story:hover .hero-center-title { color: #c4693a; }
 .hero-center-desc {
   font-size: 0.9rem;
   color: #555;
   line-height: 1.65;
   margin: 0;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -453,53 +493,47 @@ const finderSuggestions = [
   gap: 0;
 }
 .deal-item {
-  display: flex;
-  gap: 0.6rem;
   padding: 0.65rem 0;
   border-bottom: 1px solid #f0f0f0;
-  align-items: flex-start;
 }
-.deal-img-wrap {
-  flex-shrink: 0;
-  width: 52px;
-  height: 52px;
-  border-radius: 4px;
-  overflow: hidden;
-  background: #f9f9f9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.deal-img-wrap img {
-  width: 52px;
-  height: 52px;
+.deal-img-link { display: block; margin-bottom: 0.4rem; }
+.deal-img-link img {
+  width: 100%;
+  height: 110px;
   object-fit: contain;
+  background: #f9f9f9;
+  border-radius: 4px;
   display: block;
 }
-.deal-body { flex: 1; min-width: 0; }
 .deal-name {
-  font-size: 0.76rem;
-  color: #222;
+  font-size: 0.78rem;
+  color: #111;
   text-decoration: none;
-  line-height: 1.3;
+  line-height: 1.35;
   font-family: 'DM Sans', sans-serif;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
   display: block;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.3rem;
 }
-.deal-name:hover { color: #c4693a; }
-.deal-price-row { display: flex; align-items: center; gap: 0.35rem; }
-.deal-price { font-size: 0.85rem; font-weight: 700; color: #b12704; font-family: 'DM Sans', sans-serif; }
+.deal-name:hover { color: #c4693a; text-decoration: underline; }
+.deal-rating-row {
+  display: flex; align-items: center; gap: 0.25rem; margin-bottom: 0.25rem;
+}
+.deal-stars { color: #FF9900; font-size: 0.72rem; letter-spacing: -0.5px; }
+.deal-rating-num { font-size: 0.72rem; font-weight: 700; color: #111; font-family: 'DM Sans', sans-serif; }
+.deal-reviews { font-size: 0.7rem; color: #888; font-family: 'DM Sans', sans-serif; }
+.deal-price-row { display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; }
+.deal-list-price {
+  font-size: 0.78rem; color: #888; font-family: 'DM Sans', sans-serif;
+  text-decoration: line-through;
+}
+.deal-price { font-size: 0.88rem; font-weight: 700; color: #b12704; font-family: 'DM Sans', sans-serif; }
 .deal-badge {
-  font-size: 0.62rem;
+  font-size: 0.68rem;
   font-weight: 700;
   background: #b12704;
   color: #fff;
-  padding: 0.1rem 0.35rem;
-  border-radius: 3px;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
 }
 
 /* Dividers */
@@ -785,7 +819,8 @@ const finderSuggestions = [
     display: none; /* hide on mobile for space */
   }
   .hero-center { padding: 0; }
-  .hero-center-img { height: 220px; }
+  .hero-center-img { height: 180px; }
+  .hero-center-img--sm { height: 130px; }
   .hero-sidebar-right {
     border-left: none;
     border-top: 1px solid #e8e8e8;
@@ -887,19 +922,18 @@ const finderSuggestions = [
     if (!list) return;
 
     const POOL = [
-      { name: "Shark FlexStyle Air Styling System", price: "$288.59", discount: "-18%", image: "https://m.media-amazon.com/images/I/71XnLIh6Q1L.jpg", link: "https://www.amazon.com/dp/B0B89P16MC?tag=pielsmart-20" },
-      { name: "T3 SinglePass Curl Professional 1\"", price: "$149.99", discount: null, image: "https://m.media-amazon.com/images/I/61lFVsEriWL.jpg", link: "https://www.amazon.com/dp/B09V49WY5N?tag=pielsmart-20" },
-      { name: "Tatcha The Water Cream", price: "$74.00", discount: null, image: "https://m.media-amazon.com/images/I/51G9yTBH28L.jpg", link: "https://www.amazon.com/dp/B072NNC2LR?tag=pielsmart-20" },
-      { name: "Drunk Elephant A-Passioni Retinol Cream", price: "$72.00", discount: null, image: "https://m.media-amazon.com/images/I/515-DqRU4gL.jpg", link: "https://www.amazon.com/dp/B07KZSP4ZG?tag=pielsmart-20" },
-      { name: "GrandeLASH-MD Lash Enhancing Serum", price: "$68.00", discount: "-15%", image: "https://m.media-amazon.com/images/I/71Tfs0iyo5L.jpg", link: "https://www.amazon.com/dp/B00325D0WK?tag=pielsmart-20" },
-      { name: "BaBylissPRO Nano Titanium Spring Iron", price: "$69.99", discount: null, image: "https://m.media-amazon.com/images/I/61Du-yY2qtL.jpg", link: "https://www.amazon.com/dp/B0047WYO1I?tag=pielsmart-20" },
-      { name: "Hot Tools 24K Gold 3 Barrel Waver", price: "$62.99", discount: "-21%", image: "https://m.media-amazon.com/images/I/613NBULrQuL.jpg", link: "https://www.amazon.com/dp/B09V9MWXSR?tag=pielsmart-20" },
-      { name: "Charlotte Tilbury Airbrush Flawless Foundation", price: "$52.00", discount: null, image: "https://m.media-amazon.com/images/I/61BQ+SOaLOL.jpg", link: "https://www.amazon.com/dp/B0FGLJ3GZV?tag=pielsmart-20" },
-      { name: "NARS Natural Radiant Longwear Foundation", price: "$54.99", discount: null, image: "https://m.media-amazon.com/images/I/41zP5XoxKuL.jpg", link: "https://www.amazon.com/dp/B078QYY2B2?tag=pielsmart-20" },
-      { name: "Clinique Even Better Clinical Foundation SPF 25", price: "$49.00", discount: "-5%", image: "https://m.media-amazon.com/images/I/61cN9F3xarL.jpg", link: "https://www.amazon.com/dp/B09JQTBV3N?tag=pielsmart-20" },
-      { name: "Armaf Club de Nuit Intense Man EDP", price: "$30.25", discount: "-31%", image: "https://m.media-amazon.com/images/I/517KoN9DUQL.jpg", link: "https://www.amazon.com/dp/B00M3IFUMK?tag=pielsmart-20" },
-      { name: "Rasasi Hawas EDP 100ml", price: "$29.90", discount: "-32%", image: "https://m.media-amazon.com/images/I/51h+3KRCLiL.jpg", link: "https://www.amazon.com/dp/B01LDT51ZU?tag=pielsmart-20" },
+      { name: "Shark FlexStyle Air Styling System", price: "$288.59", listPrice: "$352.00", discount: "-18%", rating: "4.3", reviews: "14,621", image: "https://m.media-amazon.com/images/I/71XnLIh6Q1L.jpg", link: "https://www.amazon.com/dp/B0B89P16MC?tag=pielsmart-20" },
+      { name: "GrandeLASH-MD Lash Enhancing Serum", price: "$68.00", listPrice: "$80.00", discount: "-15%", rating: "4.3", reviews: "24,891", image: "https://m.media-amazon.com/images/I/71Tfs0iyo5L.jpg", link: "https://www.amazon.com/dp/B00325D0WK?tag=pielsmart-20" },
+      { name: "Hot Tools 24K Gold 3 Barrel Waver", price: "$62.99", listPrice: "$79.99", discount: "-21%", rating: "4.4", reviews: "7,854", image: "https://m.media-amazon.com/images/I/613NBULrQuL.jpg", link: "https://www.amazon.com/dp/B09V9MWXSR?tag=pielsmart-20" },
+      { name: "Clinique Even Better Clinical Foundation SPF 25", price: "$49.00", listPrice: "$52.00", discount: "-5%", rating: "4.5", reviews: "11,203", image: "https://m.media-amazon.com/images/I/61cN9F3xarL.jpg", link: "https://www.amazon.com/dp/B09JQTBV3N?tag=pielsmart-20" },
+      { name: "Armaf Club de Nuit Intense Man EDP", price: "$30.25", listPrice: "$44.00", discount: "-31%", rating: "4.5", reviews: "29,514", image: "https://m.media-amazon.com/images/I/517KoN9DUQL.jpg", link: "https://www.amazon.com/dp/B00M3IFUMK?tag=pielsmart-20" },
+      { name: "Rasasi Hawas EDP 100ml", price: "$29.90", listPrice: "$44.00", discount: "-32%", rating: "4.4", reviews: "4,982", image: "https://m.media-amazon.com/images/I/51h+3KRCLiL.jpg", link: "https://www.amazon.com/dp/B01LDT51ZU?tag=pielsmart-20" },
     ];
+
+    function stars(r) {
+      const full = Math.round(parseFloat(r));
+      return '★'.repeat(full) + '☆'.repeat(5 - full);
+    }
 
     const day = Math.floor(Date.now() / 86400000);
     const offset = day % POOL.length;
@@ -907,15 +941,21 @@ const finderSuggestions = [
     for (let i = 0; i < 4; i++) shown.push(POOL[(offset + i) % POOL.length]);
 
     list.innerHTML = shown.map(d => `
-      <li class="deal-item">
-        <a href="${d.link}" target="_blank" rel="noopener nofollow sponsored" class="deal-img-wrap">
-          <img src="${d.image}" alt="${d.name}" loading="lazy" />
+      <li style="padding:0.55rem 0;border-bottom:1px solid #f0f0f0;display:flex;gap:0.55rem;align-items:flex-start;">
+        <a href="${d.link}" target="_blank" rel="noopener nofollow sponsored" style="flex-shrink:0;display:block;">
+          <img src="${d.image}" alt="${d.name}" loading="lazy" style="width:52px;height:52px;object-fit:contain;display:block;border-radius:3px;" />
         </a>
-        <div class="deal-body">
-          <a href="${d.link}" target="_blank" rel="noopener nofollow sponsored" class="deal-name">${d.name}</a>
-          <div class="deal-price-row">
-            <span class="deal-price">${d.price}</span>
-            ${d.discount ? `<span class="deal-badge">${d.discount}</span>` : ''}
+        <div style="flex:1;min-width:0;">
+          <a href="${d.link}" target="_blank" rel="noopener nofollow sponsored" style="font-size:0.75rem;color:#111;text-decoration:none;line-height:1.3;font-family:'DM Sans',sans-serif;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:0.2rem;display:block;">${d.name}</a>
+          <div style="display:flex;align-items:center;gap:0.2rem;margin-bottom:0.2rem;">
+            <span style="color:#FF9900;font-size:0.68rem;letter-spacing:-0.5px;">${stars(d.rating)}</span>
+            <span style="font-size:0.67rem;font-weight:700;color:#111;font-family:'DM Sans',sans-serif;">${d.rating}</span>
+            <span style="font-size:0.65rem;color:#888;font-family:'DM Sans',sans-serif;">(${d.reviews})</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.3rem;flex-wrap:wrap;">
+            <span style="font-size:0.72rem;color:#888;font-family:'DM Sans',sans-serif;text-decoration:line-through;">${d.listPrice}</span>
+            <span style="font-size:0.82rem;font-weight:700;color:#b12704;font-family:'DM Sans',sans-serif;">${d.price}</span>
+            <span style="font-size:0.65rem;font-weight:700;background:#b12704;color:#fff;padding:0.12rem 0.35rem;border-radius:4px;">${d.discount}</span>
           </div>
         </div>
       </li>
