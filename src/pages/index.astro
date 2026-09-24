@@ -80,40 +80,7 @@ const editorialFeatured = allArticles[1];
 const editorialList = allArticles.slice(2, 5);
 
 // Deals sidebar — hardcoded discounted products
-const deals = [
-  {
-    name: "Armaf Club de Nuit Intense Man",
-    price: "$30.25",
-    discount: "-31%",
-    image: "https://m.media-amazon.com/images/I/517KoN9DUQL.jpg",
-    link: "https://www.amazon.com/dp/B00M3IFUMK?tag=pielsmart-20",
-    article: "/perfumes/perfumes-arabes/",
-  },
-  {
-    name: "Rasasi Hawas EDP 100ml",
-    price: "$29.90",
-    discount: "-32%",
-    image: "https://m.media-amazon.com/images/I/51h+3KRCLiL.jpg",
-    link: "https://www.amazon.com/dp/B01LDT51ZU?tag=pielsmart-20",
-    article: "/perfumes/perfumes-arabes/",
-  },
-  {
-    name: "L'Oreal Elvive Total Repair 5",
-    price: "$7.68",
-    discount: "-27%",
-    image: "https://m.media-amazon.com/images/I/71Er4Rss1LL.jpg",
-    link: "https://www.amazon.com/dp/B07525QJC8?tag=pielsmart-20",
-    article: "/cabello/mejores-shampoos/",
-  },
-  {
-    name: "CeraVe Hyaluronic Acid Serum",
-    price: "$17.29",
-    discount: "-25%",
-    image: "https://m.media-amazon.com/images/I/61LGrVlTaCL.jpg",
-    link: "https://www.amazon.com/dp/B07K3261ZD?tag=pielsmart-20",
-    article: "/skincare/para-que-sirve-el-acido-hialuronico/",
-  },
-];
+// Deals rendered client-side for daily rotation — see <script> below
 
 const pillars = [
   { slug: 'skincare', nombre: 'Skincare' },
@@ -196,22 +163,7 @@ const finderSuggestions = [
     {/* RIGHT: deals sidebar */}
     <aside class="hero-sidebar-right">
       <p class="sidebar-title">Ofertas del día</p>
-      <ul class="deals-list">
-        {deals.map(deal => (
-          <li class="deal-item">
-            <a href={deal.link} target="_blank" rel="noopener nofollow sponsored" class="deal-img-wrap">
-              <img src={deal.image} alt={deal.name} loading="lazy" />
-            </a>
-            <div class="deal-body">
-              <a href={deal.link} target="_blank" rel="noopener nofollow sponsored" class="deal-name">{deal.name}</a>
-              <div class="deal-price-row">
-                <span class="deal-price">{deal.price}</span>
-                <span class="deal-badge">{deal.discount}</span>
-              </div>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <ul class="deals-list" id="dealsList"></ul>
       <a href="/perfumes/perfumes-arabes/" class="sidebar-see-all">Ver todas las ofertas →</a>
     </aside>
 
@@ -926,4 +878,47 @@ const finderSuggestions = [
     renderResults(search(urlQ, articles), finderResults);
     document.querySelector('.finder-section')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
+</script>
+
+<script>
+  // ── Ofertas del día — daily rotation ──
+  (function () {
+    const list = document.getElementById('dealsList');
+    if (!list) return;
+
+    const POOL = [
+      { name: "Shark FlexStyle Air Styling System", price: "$288.59", discount: "-18%", image: "https://m.media-amazon.com/images/I/71XnLIh6Q1L.jpg", link: "https://www.amazon.com/dp/B0B89P16MC?tag=pielsmart-20" },
+      { name: "T3 SinglePass Curl Professional 1\"", price: "$149.99", discount: null, image: "https://m.media-amazon.com/images/I/61lFVsEriWL.jpg", link: "https://www.amazon.com/dp/B09V49WY5N?tag=pielsmart-20" },
+      { name: "Tatcha The Water Cream", price: "$74.00", discount: null, image: "https://m.media-amazon.com/images/I/51G9yTBH28L.jpg", link: "https://www.amazon.com/dp/B072NNC2LR?tag=pielsmart-20" },
+      { name: "Drunk Elephant A-Passioni Retinol Cream", price: "$72.00", discount: null, image: "https://m.media-amazon.com/images/I/515-DqRU4gL.jpg", link: "https://www.amazon.com/dp/B07KZSP4ZG?tag=pielsmart-20" },
+      { name: "GrandeLASH-MD Lash Enhancing Serum", price: "$68.00", discount: "-15%", image: "https://m.media-amazon.com/images/I/71Tfs0iyo5L.jpg", link: "https://www.amazon.com/dp/B00325D0WK?tag=pielsmart-20" },
+      { name: "BaBylissPRO Nano Titanium Spring Iron", price: "$69.99", discount: null, image: "https://m.media-amazon.com/images/I/61Du-yY2qtL.jpg", link: "https://www.amazon.com/dp/B0047WYO1I?tag=pielsmart-20" },
+      { name: "Hot Tools 24K Gold 3 Barrel Waver", price: "$62.99", discount: "-21%", image: "https://m.media-amazon.com/images/I/613NBULrQuL.jpg", link: "https://www.amazon.com/dp/B09V9MWXSR?tag=pielsmart-20" },
+      { name: "Charlotte Tilbury Airbrush Flawless Foundation", price: "$52.00", discount: null, image: "https://m.media-amazon.com/images/I/61BQ+SOaLOL.jpg", link: "https://www.amazon.com/dp/B0FGLJ3GZV?tag=pielsmart-20" },
+      { name: "NARS Natural Radiant Longwear Foundation", price: "$54.99", discount: null, image: "https://m.media-amazon.com/images/I/41zP5XoxKuL.jpg", link: "https://www.amazon.com/dp/B078QYY2B2?tag=pielsmart-20" },
+      { name: "Clinique Even Better Clinical Foundation SPF 25", price: "$49.00", discount: "-5%", image: "https://m.media-amazon.com/images/I/61cN9F3xarL.jpg", link: "https://www.amazon.com/dp/B09JQTBV3N?tag=pielsmart-20" },
+      { name: "Armaf Club de Nuit Intense Man EDP", price: "$30.25", discount: "-31%", image: "https://m.media-amazon.com/images/I/517KoN9DUQL.jpg", link: "https://www.amazon.com/dp/B00M3IFUMK?tag=pielsmart-20" },
+      { name: "Rasasi Hawas EDP 100ml", price: "$29.90", discount: "-32%", image: "https://m.media-amazon.com/images/I/51h+3KRCLiL.jpg", link: "https://www.amazon.com/dp/B01LDT51ZU?tag=pielsmart-20" },
+    ];
+
+    const day = Math.floor(Date.now() / 86400000);
+    const offset = day % POOL.length;
+    const shown = [];
+    for (let i = 0; i < 4; i++) shown.push(POOL[(offset + i) % POOL.length]);
+
+    list.innerHTML = shown.map(d => `
+      <li class="deal-item">
+        <a href="${d.link}" target="_blank" rel="noopener nofollow sponsored" class="deal-img-wrap">
+          <img src="${d.image}" alt="${d.name}" loading="lazy" />
+        </a>
+        <div class="deal-body">
+          <a href="${d.link}" target="_blank" rel="noopener nofollow sponsored" class="deal-name">${d.name}</a>
+          <div class="deal-price-row">
+            <span class="deal-price">${d.price}</span>
+            ${d.discount ? `<span class="deal-badge">${d.discount}</span>` : ''}
+          </div>
+        </div>
+      </li>
+    `).join('');
+  })();
 </script>
