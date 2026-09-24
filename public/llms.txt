@@ -37,6 +37,7 @@ PielSmart es un sitio editorial independiente en español (es-419) dirigido a mu
 
 ### Dispositivos
 - [Mejores secadoras y planchas](https://pielsmart.com/dispositivos/mejores-secadoras-y-planchas/)
+- [Mejores rizadoras de cabello](https://pielsmart.com/dispositivos/rizadoras-de-cabello/)
 
 ## Sobre nosotros
 - [Cómo reseñamos](https://pielsmart.com/como-resenamos/)
