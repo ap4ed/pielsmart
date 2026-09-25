@@ -1,8 +1,8 @@
 # PielSmart
 
-> Guías y reseñas de belleza en español para mujeres. Skincare, maquillaje, cabello, uñas y perfumes con precios reales en Amazon.
+> Guías y reseñas de belleza para mujeres. Skincare, maquillaje, cabello, uñas y perfumes con precios reales en Amazon.
 
-PielSmart es un sitio editorial independiente en español (es-419) dirigido a mujeres de América Latina y la comunidad hispana en Estados Unidos. Publicamos guías de compra y reseñas honestas de productos de belleza disponibles en Amazon. No fabricamos productos — evaluamos, comparamos y recomendamos.
+PielSmart es un sitio editorial independiente (es-419) dirigido a mujeres de América Latina y la comunidad hispana en Estados Unidos. Publicamos guías de compra y reseñas honestas de productos de belleza disponibles en Amazon. No fabricamos productos — evaluamos, comparamos y recomendamos.
 
 ## Contenido disponible
 

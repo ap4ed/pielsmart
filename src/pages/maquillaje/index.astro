@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 const pillarSlug = 'maquillaje';
 const pillarName = 'Maquillaje';
 const pillarColor = '#C4728A';
-const pillarIntro = 'Tutoriales de maquillaje paso a paso en español para principiantes y avanzadas. Bases, primers, correctores y fijadores probados — con análisis de duración, cobertura y compatibilidad con pieles LATAM.';
+const pillarIntro = 'Tutoriales de maquillaje paso a paso para principiantes y avanzadas. Bases, primers, correctores y fijadores probados — con análisis de duración, cobertura y compatibilidad con pieles LATAM.';
 
 const allArticles = await getCollection('articles');
 const articles = allArticles
@@ -41,7 +41,7 @@ const itemListSchema = {
 
 <BaseLayout
   title={`${pillarName} — PielSmart`}
-  description="Tutoriales de maquillaje paso a paso en español. Las mejores bases, primers y paletas disponibles en Amazon para América Latina."
+  description="Tutoriales de maquillaje paso a paso. Las mejores bases, primers y paletas disponibles en Amazon para América Latina."
 >
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
