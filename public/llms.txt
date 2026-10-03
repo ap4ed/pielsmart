@@ -1,50 +1,47 @@
 # PielSmart
 
-> Guías y reseñas de belleza para mujeres. Skincare, maquillaje, cabello, uñas y perfumes con precios reales en Amazon.
+> Guía editorial de belleza en español para América Latina y Estados Unidos. Recomendaciones de skincare, maquillaje, cabello, uñas, perfumes y dispositivos de belleza. Todos los productos reseñados son verificados con precios reales de Amazon y probados por el equipo de NAZ Beauty Shop en Panamá.
 
-PielSmart es un sitio editorial independiente (es-419) dirigido a mujeres de América Latina y la comunidad hispana en Estados Unidos. Publicamos guías de compra y reseñas honestas de productos de belleza disponibles en Amazon. No fabricamos productos — evaluamos, comparamos y recomendamos.
+## Skincare
 
-## Contenido disponible
+- [¿Para Qué Sirve el Ácido Hialurónico?](https://pielsmart.com/skincare/para-que-sirve-el-acido-hialuronico/): Guía completa sobre los beneficios del ácido hialurónico, cómo usarlo correctamente y los mejores sérums disponibles (La Roche-Posay, CeraVe, Eucerin, Neutrogena, Vichy).
+- [¿Para Qué Sirve el Retinol?](https://pielsmart.com/skincare/para-que-sirve-el-retinol/): Guía de retinol para arrugas, manchas y poros. Los 6 mejores sérums y cómo empezar sin irritación.
+- [Mejores Cremas Hidratantes para la Cara](https://pielsmart.com/skincare/crema-hidratante-cara/): Comparativa por tipo de piel con precios reales.
+- [Cremas Coreanas para la Cara](https://pielsmart.com/skincare/cremas-coreanas/): Las mejores cremas de K-beauty en Amazon para América Latina.
 
-### Skincare
-- [¿Para qué sirve el ácido hialurónico?](https://pielsmart.com/skincare/para-que-sirve-el-acido-hialuronico/)
-- [¿Para qué sirve el retinol?](https://pielsmart.com/skincare/para-que-sirve-el-retinol/)
-- [Mejores cremas hidratantes para la cara](https://pielsmart.com/skincare/crema-hidratante-cara/)
-- [Mejores cremas coreanas](https://pielsmart.com/skincare/cremas-coreanas/)
+## Maquillaje
 
-### Maquillaje
-- [Maquillaje sencillo paso a paso](https://pielsmart.com/maquillaje/maquillaje-sencillo-paso-a-paso/)
-- [Mejores bases de maquillaje](https://pielsmart.com/maquillaje/base-de-maquillaje/)
-- [Mejores correctores de maquillaje](https://pielsmart.com/maquillaje/correctores-de-maquillaje/)
-- [Mejores sombras de ojos](https://pielsmart.com/maquillaje/sombras-de-ojos/)
-- [Cómo tener cejas perfectas](https://pielsmart.com/maquillaje/cejas-perfectas/)
-- [Mejores máscaras de pestañas](https://pielsmart.com/maquillaje/mascaras-de-pestanas/)
-- [Maquillaje de catrina](https://pielsmart.com/maquillaje/maquillaje-de-catrina/)
+- [Maquillaje Sencillo Paso a Paso](https://pielsmart.com/maquillaje/maquillaje-sencillo-paso-a-paso/): El orden correcto, los mejores productos por paso y cómo hacer que dure todo el día.
+- [Mejores Bases de Maquillaje 2026](https://pielsmart.com/maquillaje/base-de-maquillaje/): Las 5 mejores bases para piel grasa, seca y mixta (Maybelline, L'Oréal, Clinique, NARS, Charlotte Tilbury).
+- [Mejores Correctores de Maquillaje](https://pielsmart.com/maquillaje/correctores-de-maquillaje/): Correctores por tipo de cobertura y tono.
+- [Mejores Máscaras de Pestañas](https://pielsmart.com/maquillaje/mascaras-de-pestanas/): Las máscaras más vendidas por volumen, alargamiento y resistencia al agua.
+- [Maquillaje de Catrina Paso a Paso](https://pielsmart.com/maquillaje/maquillaje-de-catrina/): Tutorial para Día de Muertos con los mejores productos de pintura facial.
+- [Cómo Tener Cejas Perfectas](https://pielsmart.com/maquillaje/cejas-perfectas/): Técnicas y productos para definir, rellenar y fijar cejas.
+- [Mejores Sombras de Ojos 2026](https://pielsmart.com/maquillaje/sombras-de-ojos/): Paletas y sombras por acabado y duración.
 
-### Cabello
-- [Mejores shampoos](https://pielsmart.com/cabello/mejores-shampoos/)
+## Cabello
 
-### Uñas
-- [Modelos de uñas 2025](https://pielsmart.com/unas/modelos-de-unas-2025/)
-- [Uñas de acrílico: guía completa](https://pielsmart.com/unas/unas-de-acrilico-guia-completa/)
-- [Uñas semipermanentes](https://pielsmart.com/unas/unas-semipermanentes/)
-- [Uñas gel](https://pielsmart.com/unas/unas-gel/)
+- [Los Mejores Shampoos de 2026](https://pielsmart.com/cabello/mejores-shampoos/): Comparativa por tipo de cabello (graso, seco, rizado, teñido).
+- [Mejores Acondicionadores](https://pielsmart.com/cabello/mejores-acondicionadores/): Los mejores acondicionadores por tipo de cabello.
 
-### Perfumes
-- [Mejores perfumes para mujer](https://pielsmart.com/perfumes/perfumes-para-mujer/)
-- [Mejores perfumes para hombre](https://pielsmart.com/perfumes/perfumes-para-hombre/)
-- [Mejores perfumes árabes](https://pielsmart.com/perfumes/perfumes-arabes/)
+## Uñas
 
-### Dispositivos
-- [Mejores secadoras y planchas](https://pielsmart.com/dispositivos/mejores-secadoras-y-planchas/)
-- [Mejores rizadoras de cabello](https://pielsmart.com/dispositivos/rizadoras-de-cabello/)
+- [Modelos de Uñas 2026](https://pielsmart.com/unas/modelos-de-unas-2025/): Tendencias para cortas, largas, gel y acrílicas con los mejores kits y esmaltes.
+- [Guía Completa de Uñas Acrílicas](https://pielsmart.com/unas/unas-de-acrilico-guia-completa/): Materiales, técnica y los mejores kits para hacer uñas acrílicas en casa.
+- [Uñas de Gel en Casa](https://pielsmart.com/unas/unas-gel/): Kits y técnica para gel UV en casa.
+- [Uñas Semipermanentes](https://pielsmart.com/unas/unas-semipermanentes/): Diferencias entre gel, acrílico y semipermanente con los mejores kits.
 
-## Sobre nosotros
-- [Cómo reseñamos](https://pielsmart.com/como-resenamos/)
-- [Divulgación de afiliados](https://pielsmart.com/divulgacion/)
+## Perfumes
 
-## Detalles técnicos
-- Idioma: Español latinoamericano (es-419)
-- Audiencia: Mujeres latinas en México, Colombia, Argentina, Chile, Perú y comunidad hispana en EE.UU.
-- Afiliado de Amazon: pielsmart-20
-- Sitemap: https://pielsmart.com/sitemap-index.xml
+- [Los Mejores Perfumes para Mujer 2026](https://pielsmart.com/perfumes/perfumes-para-mujer/): Guía por familia olfativa y precio.
+- [Los Mejores Perfumes para Hombre 2026](https://pielsmart.com/perfumes/perfumes-para-hombre/): Comparativa por ocasión y duración.
+- [Perfumes Árabes: Guía Completa](https://pielsmart.com/perfumes/perfumes-arabes/): Oudh, rosa y ámbar en Amazon.
+
+## Dispositivos de Belleza
+
+- [Mejores Secadoras y Planchas 2026](https://pielsmart.com/dispositivos/mejores-secadoras-y-planchas/): Revlon, Remington, BaBylissPRO y CHI con precios reales.
+- [Mejores Rizadoras de Cabello 2026](https://pielsmart.com/dispositivos/rizadoras-de-cabello/): Por tipo de rizo y precio, desde accesibles hasta profesionales.
+
+## Sobre PielSmart
+
+PielSmart es editado por el equipo de NAZ Beauty Shop (https://nazbeautyshoplatam.com/), tienda de belleza profesional en Panamá. Todos los productos son seleccionados editorialmente. Los enlaces de Amazon son de afiliados y no afectan las recomendaciones.
