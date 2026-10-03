@@ -12,7 +12,9 @@ tags: ["antiedad", "arrugas", "manchas", "vitamina a", "retinol", "exfoliante", 
 
 import ProductCard from '../../components/ProductCard.astro';
 
-Para que sirve el retinol es una de las preguntas más frecuentes en skincare, y con razón: el retinol es el ingrediente anti-edad con más evidencia científica disponible. Pero también es uno de los que más se usa mal, concentraciones incorrectas, frecuencia de aplicación incorrecta, o falta del SPF que lo hace funcionar de verdad.
+El retinol es una forma de vitamina A que estimula la producción de colágeno, acelera la renovación celular y reduce manchas oscuras. Es el ingrediente antiedad con más respaldo científico disponible en dermatología: más de 30 años de estudios clínicos lo respaldan como el activo más eficaz para arrugas, manchas y poros sin necesitar receta médica.
+
+El problema no es el retinol, es el uso incorrecto: concentraciones altas de entrada, aplicación diaria sin tolerancia construida, o ausencia del SPF que lo hace funcionar de verdad.
 
 ## Qué es el retinol y cómo actúa en la piel
 
@@ -207,4 +209,13 @@ El retinol reseca e irrita la piel durante las primeras semanas de uso, una crem
     { "@type": "Question", "name": "¿Qué concentración de retinol empezar?", "acceptedAnswer": { "@type": "Answer", "text": "Para principiantes: 0.025% a 0.05%, tres veces por semana. Avanzar a 0.1% después de 2-3 meses, y a 0.3% (el máximo sin receta) después de 6 meses de uso consistente. Saltar a concentraciones altas sin construir tolerancia es la causa principal de abandono prematuro." }},
     { "@type": "Question", "name": "¿El retinol sirve para las manchas del sol?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. El retinol inhibe la producción de melanina y acelera el recambio celular, aclarando gradualmente las manchas solares. Los resultados son visibles entre 3 y 6 meses. Para manchas más profundas, es más efectivo combinarlo con ácido azelaico o niacinamida." }}
   ]
+})} />
+
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [".article-body > p:first-of-type", ".article-body h3 + p"]
+  }
 })} />
