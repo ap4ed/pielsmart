@@ -43,7 +43,7 @@ export const products: Product[] = [
     name: 'MEDICUBE Age-R Booster-H',
     brand: 'MEDICUBE',
     categoria: 'microcorriente',
-    amazon: { asin: 'B0CXYZ5678', tag: AMAZON_TAG },
+    amazon: { asin: 'B0BDCRFB9T', tag: AMAZON_TAG },
   },
   {
     id: 'geske-smartappguard-8in1',
