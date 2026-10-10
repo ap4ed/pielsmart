@@ -6,7 +6,7 @@ const articles = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    pillar: z.enum(['skincare', 'maquillaje', 'cabello', 'unas', 'perfumes', 'dispositivos']),
+    pillar: z.enum(['skincare', 'maquillaje', 'cabello', 'unas', 'perfumes', 'dispositivos', 'microcorriente']),
     type: z.enum(['informational', 'roundup', 'comparison', 'review']),
     targetKeyword: z.string(),
     datePublished: z.string(),
