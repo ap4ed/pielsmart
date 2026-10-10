@@ -112,6 +112,16 @@ console.log(`📍 Location: ${finalLocation.trim()}\n`);
 async function scrapeProduct(asin) {
   await page.goto(`https://www.amazon.com/dp/${asin}`, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
+  // Handle "Continue shopping" bot gate — click through then re-navigate to product
+  const continueBtn = page.locator('input[value="Continue shopping"], button:has-text("Continue shopping")');
+  if (await continueBtn.count() > 0) {
+    await continueBtn.first().click();
+    await page.waitForTimeout(3000);
+    // Button redirects to homepage — go back to the product page
+    await page.goto(`https://www.amazon.com/dp/${asin}`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.waitForTimeout(2000);
+  }
+
   // Wait up to 12s for the product title — if it never appears, this is a bot/CAPTCHA page
   const titleEl = await page.waitForSelector('#productTitle', { timeout: 12000 }).catch(() => null);
 
