@@ -4,6 +4,7 @@
 # Allow all crawlers
 User-agent: *
 Allow: /
+Disallow: /*?q=
 
 # Google
 User-agent: Googlebot
