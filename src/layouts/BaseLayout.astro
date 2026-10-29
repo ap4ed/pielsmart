@@ -94,19 +94,29 @@ const articlesJson = JSON.stringify(allArticles.map(a => ({
       "logo": "https://pielsmart.com/favicon.svg",
       "description": "Guías y reseñas de belleza. Skincare, maquillaje, cabello, uñas y perfumes.",
       "sameAs": [
-        "https://www.instagram.com/pielsmart",
-        "https://www.tiktok.com/@pielsmart",
-        "https://www.pinterest.com/pielsmart"
+        "https://www.pinterest.com/fredpreci95"
       ]
     })} />
 
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SL7FT6Y126"></script>
+    <!-- Google Analytics 4 — loaded only after cookie consent -->
     <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-SL7FT6Y126');
+      (function() {
+        function loadGA4() {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-SL7FT6Y126';
+          document.head.appendChild(s);
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          window.gtag = gtag;
+          gtag('js', new Date());
+          gtag('config', 'G-SL7FT6Y126');
+        }
+        if (localStorage.getItem('ps_cookie_consent') === 'accepted') {
+          loadGA4();
+        }
+        window.__loadGA4 = loadGA4;
+      })();
     </script>
 
     <!-- Google Fonts -->
@@ -133,8 +143,91 @@ const articlesJson = JSON.stringify(allArticles.map(a => ({
         btn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
       })();
     </script>
+
+    <!-- Cookie consent banner -->
+    <div id="cookie-banner" role="dialog" aria-label="Aviso de cookies" aria-live="polite">
+      <p class="cb-text">
+        Usamos cookies de análisis (Google Analytics) para mejorar el sitio.
+        <a href="/privacidad/" class="cb-link">Más información</a>.
+      </p>
+      <div class="cb-actions">
+        <button id="cookie-reject" class="cb-btn cb-btn--reject">Rechazar</button>
+        <button id="cookie-accept" class="cb-btn cb-btn--accept">Aceptar</button>
+      </div>
+    </div>
+    <script is:inline>
+      (function() {
+        var banner = document.getElementById('cookie-banner');
+        var consent = localStorage.getItem('ps_cookie_consent');
+        if (consent) { banner.hidden = true; return; }
+        banner.hidden = false;
+        document.getElementById('cookie-accept').addEventListener('click', function() {
+          localStorage.setItem('ps_cookie_consent', 'accepted');
+          banner.hidden = true;
+          if (window.__loadGA4) window.__loadGA4();
+        });
+        document.getElementById('cookie-reject').addEventListener('click', function() {
+          localStorage.setItem('ps_cookie_consent', 'rejected');
+          banner.hidden = true;
+        });
+      })();
+    </script>
   </body>
 </html>
+
+<style is:global>
+  #cookie-banner {
+    position: fixed;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 2.5rem);
+    max-width: 580px;
+    background: #1a1a2e;
+    color: #e8e8e8;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+    z-index: 999;
+    font-family: 'DM Sans', sans-serif;
+    flex-wrap: wrap;
+  }
+  #cookie-banner[hidden] { display: none; }
+  .cb-text {
+    font-size: 0.83rem;
+    margin: 0;
+    line-height: 1.5;
+    flex: 1;
+    min-width: 200px;
+  }
+  .cb-link { color: #e07b39; }
+  .cb-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
+  .cb-btn {
+    font-size: 0.8rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    padding: 0.4rem 0.9rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .cb-btn--reject {
+    background: transparent;
+    color: #aaa;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .cb-btn--reject:hover { color: #fff; border-color: rgba(255,255,255,0.35); }
+  .cb-btn--accept {
+    background: #e07b39;
+    color: #fff;
+  }
+  .cb-btn--accept:hover { background: #c4693a; }
+</style>
 
 <style is:global>
   *, *::before, *::after { box-sizing: border-box; }

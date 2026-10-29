@@ -48,51 +48,109 @@ const itemListSchema = {
     <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} />
   </Fragment>
 
-  <nav class="breadcrumb" aria-label="Breadcrumb">
-    <a href="/">Inicio</a>
-    <span>›</span>
-    <span>{pillarName}</span>
-  </nav>
-
-  <h1 class="pillar-h1">{pillarName}</h1>
-  <p class="pillar-intro">{pillarIntro}</p>
-  <hr class="divider" />
+  <div class="pillar-header-band" style={`border-top: 4px solid ${pillarColor}`}>
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Inicio</a>
+      <span>›</span>
+      <span>{pillarName}</span>
+    </nav>
+    <h1 class="pillar-h1">{pillarName}</h1>
+    <p class="pillar-intro">{pillarIntro}</p>
+  </div>
 
   {articles.length === 0 ? (
     <p class="empty">Artículos en camino — vuelve pronto.</p>
   ) : (
-    <div class="article-grid">
-      {articles.map(article => (
-        <a href={`/${pillarSlug}/${article.id}/`} class="article-card">
-          {article.data.image && (
-            <div class="card-img-wrap">
-              <img
-                src={`${article.data.image}?auto=compress&cs=tinysrgb&w=600&h=340&fit=crop`}
-                alt={article.data.title}
-                class="card-img"
-                loading="lazy"
-              />
-            </div>
-          )}
-          <div class="card-body">
-            <div class="card-meta">
-              <span class="date">{formatDate(article.data.datePublished)}</span>
-            </div>
-            <h2 class="card-title">{article.data.title}</h2>
-            <p class="card-desc">{article.data.description}</p>
-            <span class="card-link" style={`color:${pillarColor}`}>Leer artículo →</span>
+    <>
+      <a href={`/${pillarSlug}/${articles[0].id}/`} class="featured-article">
+        {articles[0].data.image && (
+          <div class="featured-img">
+            <img
+              src={`${articles[0].data.image}?auto=compress&cs=tinysrgb&w=900&h=460&fit=crop`}
+              alt={articles[0].data.title}
+              loading="eager"
+            />
           </div>
-        </a>
-      ))}
-    </div>
+        )}
+        <div class="featured-body">
+          <span class="featured-label" style={`color:${pillarColor}`}>{pillarName}</span>
+          <h2 class="featured-title">{articles[0].data.title}</h2>
+          <p class="featured-desc">{articles[0].data.description}</p>
+          <div class="featured-meta">
+            <span class="featured-date">{formatDate(articles[0].data.datePublished)}</span>
+            <span class="featured-cta" style={`color:${pillarColor}`}>Leer artículo →</span>
+          </div>
+        </div>
+      </a>
+
+      {articles.slice(1).length > 0 && (
+        <>
+          <hr class="divider" />
+          <div class="article-grid">
+            {articles.slice(1).map(article => (
+              <a href={`/${pillarSlug}/${article.id}/`} class="article-card">
+                {article.data.image && (
+                  <div class="card-img-wrap">
+                    <img
+                      src={`${article.data.image}?auto=compress&cs=tinysrgb&w=600&h=340&fit=crop`}
+                      alt={article.data.title}
+                      class="card-img"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+                <div class="card-body">
+                  <div class="card-meta">
+                    <span class="date">{formatDate(article.data.datePublished)}</span>
+                  </div>
+                  <h2 class="card-title">{article.data.title}</h2>
+                  <p class="card-desc">{article.data.description}</p>
+                  <span class="card-link" style={`color:${pillarColor}`}>Leer artículo →</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </>
+      )}
+    </>
   )}
 </BaseLayout>
 
 <style>
+.pillar-header-band {
+  padding-top: 2rem;
+  margin-bottom: 2rem;
+}
+.featured-article {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  margin-bottom: 2.5rem;
+}
+.featured-img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 8px;
+}
+.featured-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
+.featured-article:hover .featured-img img { transform: scale(1.03); }
+.featured-body { display: flex; flex-direction: column; gap: 0.6rem; }
+.featured-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; font-family: 'DM Sans', sans-serif; }
+.featured-title { font-size: clamp(1.3rem, 2.5vw, 1.9rem); font-family: 'Playfair Display', Georgia, serif; font-weight: 700; color: #111; margin: 0; line-height: 1.2; }
+.featured-article:hover .featured-title { color: #c4693a; }
+.featured-desc { font-size: 0.95rem; color: #555; line-height: 1.7; margin: 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.featured-meta { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 0.25rem; }
+.featured-date { font-size: 0.78rem; color: #aaa; font-family: 'DM Sans', sans-serif; }
+.featured-cta { font-size: 0.85rem; font-weight: 600; font-family: 'DM Sans', sans-serif; white-space: nowrap; }
+@media (max-width: 700px) { .featured-article { grid-template-columns: 1fr; gap: 1.25rem; } }
 .breadcrumb {
   font-size: 0.875rem;
   color: #999;
-  margin: 2rem 0 1.5rem;
+  margin: 0 0 1.5rem;
   display: flex;
   gap: 0.5rem;
   align-items: center;
