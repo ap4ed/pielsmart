@@ -4,6 +4,9 @@
   "installCommand": "npm install",
   "framework": "astro",
   "trailingSlash": true,
+  "redirects": [
+    { "source": "/mascarillas-led/:path*", "destination": "/dispositivos/", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/(.*)",
