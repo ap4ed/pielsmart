@@ -115,7 +115,8 @@ async function scrapeProduct(asin) {
   // Handle "Continue shopping" bot gate — click through then re-navigate to product
   const continueBtn = page.locator('input[value="Continue shopping"], button:has-text("Continue shopping")');
   if (await continueBtn.count() > 0) {
-    await continueBtn.first().click();
+    console.log('🛑 Amazon "Continue shopping" gate — waiting up to 2 min (click it in the Chromium window if it stays grey)...');
+    await continueBtn.first().click({ timeout: 120000 }).catch(() => {});
     await page.waitForTimeout(3000);
     // Button redirects to homepage — go back to the product page
     await page.goto(`https://www.amazon.com/dp/${asin}`, { waitUntil: 'domcontentloaded', timeout: 30000 });
